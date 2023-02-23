@@ -1,4 +1,7 @@
 {% extends 'base.html.twig' %}
+{% block body %}
 <div
- {{ react_component('OrderCard', { 'fullName': app.user.fullName }) }}>
+ {{ react_component('App', { 'fullName': "arrayPedidos" }) }}>
 </div>
+
+{% endblock %}

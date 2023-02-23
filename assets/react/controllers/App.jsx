@@ -1,7 +1,10 @@
-import React from 'react';
+import React from 'react'
+import OrderCard from './components/OrderCard'
 
-function App() {
-	return <div className="container-fluid bg-primary eeeeeeeeeee">App</div>;
+function App({fullName}) {
+  return (
+	<div><OrderCard fullName={fullName}/></div>
+  )
 }
 
-export default App;
+export default App

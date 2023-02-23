@@ -16,7 +16,7 @@ class OrdersController extends AbstractController
     #[Route('/', name: 'app_orders_index', methods: ['GET'])]
     public function index(OrdersRepository $ordersRepository): Response
     {
-        return $this->render('orders/index.html.twig', [
+        return $this->render('waiter/index.html.twig', [
             'orders' => $ordersRepository->findAll(),
         ]);
     }
