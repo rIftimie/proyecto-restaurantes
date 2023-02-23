@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Table{% endblock %}
+
+{% block body %}
+    <h1>Table</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ table.id }}</td>
+            </tr>
+            <tr>
+                <th>Number</th>
+                <td>{{ table.number }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_table_index') }}">back to list</a>
+
+    <a href="{{ path('app_table_edit', {'id': table.id}) }}">edit</a>
+
+    {{ include('table/_delete_form.html.twig') }}
+{% endblock %}

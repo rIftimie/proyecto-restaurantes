@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Table index{% endblock %}
+
+{% block body %}
+    <h1>Table index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Number</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for table in tables %}
+            <tr>
+                <td>{{ table.id }}</td>
+                <td>{{ table.number }}</td>
+                <td>
+                    <a href="{{ path('app_table_show', {'id': table.id}) }}">show</a>
+                    <a href="{{ path('app_table_edit', {'id': table.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_table_new') }}">Create new</a>
+{% endblock %}
