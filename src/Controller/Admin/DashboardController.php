@@ -13,6 +13,7 @@ use App\Entity\Products;
 use App\Entity\Restaurant;
 use App\Entity\Table;
 use App\Entity\User;
+use App\Entity\Menu;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -52,6 +53,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Orders', 'fas fa-list', Orders::class);
         yield MenuItem::linkToCrud('Restaurants', 'fas fa-list', Restaurant::class);
         yield MenuItem::linkToCrud('Tables', 'fas fa-list', Table::class);
-        yield MenuItem::linkToCrud('User', 'fas fa-list', User::class);
+        yield MenuItem::linkToCrud('User', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('Menu', 'fas fa-list', Menu::class);
     }
 }
