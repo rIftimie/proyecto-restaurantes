@@ -18,6 +18,7 @@ class OrdersController extends AbstractController
     {
         return $this->render('waiter/index.html.twig', [
             'orders' => $ordersRepository->findAll(),
+            
         ]);
     }
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { getOrders } from '../../api/orders'
-
+import OrderContainer from '../../components/OrderContainer'
 function WaiterPage({orders}) {
 
-  const [order, setOrder] = useState(second)
+  const [orders, setOrder] = useState(second)
 
    const fetchGetProduct = async () =>{
     try {
@@ -24,7 +24,8 @@ function WaiterPage({orders}) {
 
   return (
     <>
-    
+      <OrderContainer orders={orders}/>
+     
     
     </>
   )

@@ -1,9 +1,17 @@
 import React from 'react'
+import OrderCard from './OrderCard'
 
-function OrderContainer() {
+function OrderContainer({orders}) {
   return (
     
-    <div>OrderContainer</div>
+    <div>{
+    
+        orders.map( (order) =>{
+          <OrderCard key={order.id} orderData={order}/>
+          
+        })
+      
+    }</div>
   )
 }
 
