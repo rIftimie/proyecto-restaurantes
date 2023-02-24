@@ -21,6 +21,15 @@ class OrdersController extends AbstractController
         ]);
     }
 
+    #[Route('/pay', name: 'app_orders_pay', methods: ['GET'])]
+    public function pay(): Response
+    // Orders $order
+    {
+        return $this->render('orders/pay.html.twig', [
+            // 'order' => $order,
+        ]);
+    }
+
     #[Route('/new', name: 'app_orders_new', methods: ['GET', 'POST'])]
     public function new(Request $request, OrdersRepository $ordersRepository): Response
     {
@@ -75,4 +84,6 @@ class OrdersController extends AbstractController
 
         return $this->redirectToRoute('app_orders_index', [], Response::HTTP_SEE_OTHER);
     }
+
+  
 }
