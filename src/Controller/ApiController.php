@@ -23,7 +23,7 @@ class ApiController extends AbstractController
         foreach($orders as $order) {
             $ordersJSON[] = array(
                 'id'=> $order->getId(),
-                'name' => $order->getName(),
+                'note' => $order->getNote(),
             );
         }
 

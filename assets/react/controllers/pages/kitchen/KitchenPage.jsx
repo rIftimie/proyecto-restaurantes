@@ -1,9 +1,9 @@
-import React from 'react'
+// import React from 'react'
 
-function KitchenPage() {
-  return (
-    <div>KitchenPage</div>
-  )
-}
+// function KitchenPage() {
+//   return (
+//     <div>KitchenPage</div>
+//   )
+// }
 
-export default KitchenPage
+// export default KitchenPage
