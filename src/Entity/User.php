@@ -39,6 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'waiter', targetEntity: Orders::class)]
     private Collection $orders;
 
+    #[ORM\Column]
+    private ?bool $hidden = false;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -152,6 +155,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $order->setWaiter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isHidden(): ?bool
+    {
+        return $this->hidden;
+    }
+
+    public function setHidden(bool $hidden): self
+    {
+        $this->hidden = $hidden;
 
         return $this;
     }
