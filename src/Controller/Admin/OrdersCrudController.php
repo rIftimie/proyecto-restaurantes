@@ -21,7 +21,6 @@ class OrdersCrudController extends AbstractCrudController
     {
         return [
 //https://symfony.com/bundles/EasyAdminBundle/current/fields.html
-
             Field::new('note'),
             Field::new('status'),
             AssociationField::new('waiter'), //ok

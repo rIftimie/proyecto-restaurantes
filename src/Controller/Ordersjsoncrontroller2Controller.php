@@ -27,7 +27,7 @@ class Ordersjsoncrontroller2Controller extends AbstractController
             'FechaEntrega' =>    $order->getDeliverDate(),
             'camarero'=>   $order->getWaiter()
             //'Producos'=>getOrderProducts()
-            //Get productos es una array
+            //Get order productos presenta la dificultad de que precisa ser recorrida
          
             );
 

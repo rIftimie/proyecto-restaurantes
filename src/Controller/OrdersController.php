@@ -21,6 +21,14 @@ class OrdersController extends AbstractController
         ]);
     }
 
+    #[Route('/alter', name: 'app_orders_index_alterada', methods: ['GET'])]
+    public function indexalter(OrdersRepository $ordersRepository): Response
+    {
+        return $this->render('orders/indexalter.html.twig', [
+            'orders' => $ordersRepository->findAll(),
+        ]);
+    }
+
     #[Route('/new', name: 'app_orders_new', methods: ['GET', 'POST'])]
     public function new(Request $request, OrdersRepository $ordersRepository): Response
     {
