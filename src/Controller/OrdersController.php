@@ -25,11 +25,15 @@ class OrdersController extends AbstractController
     public function new(Request $request, OrdersRepository $ordersRepository): Response
     {
         $order = new Orders();
+        //MODELO $noticium->setAutor($this->getUser());
+    //    $order-> setOrderDate(new \DateTime('now'));
         $form = $this->createForm(OrdersType::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $ordersRepository->save($order, true);
+            
+
 
             return $this->redirectToRoute('app_orders_index', [], Response::HTTP_SEE_OTHER);
         }
