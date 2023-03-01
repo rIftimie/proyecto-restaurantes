@@ -1,21 +1,50 @@
 {% extends 'base.html.twig' %}
-  {#<style>
 
+
+{% block title %}Orders index{% endblock %}
+
+{% block body %}
+
+ <style>
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap');
+    *{
+
+         background:#ff6347;
+    }
         .orderstyles{
 
             background:#ff6347;
             with:100%;
+         
+            padding:50px;
+            font-family: 'Tilt Warp', cursive;
             color:white;
+           
         }
         .ohmybuttons{
 
-            margin:10px;
+            margin:8px;
+              color:white;
+        }
+       th{
+
+              color:white;
+        }
+        h1{
+            font-family: 'Tilt Warp', cursive;
+             color:#ffff00;
+
+        }
+        td{
+            color:white;
+
+        }
+        a{
+            text-decoration:none;
         }
 
-        </style>#}
-{% block title %}Orders index{% endblock %}
-
-{% block body %}
+        </style>
+<div class="orderstyles">
     <h1>Pedidos</h1>
 
     <table class="table">
@@ -38,8 +67,8 @@
                 <td>{{ order.deliverDate ? order.deliverDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ order.note }}</td>
                 <td>
-                    <a href="{{ path('app_orders_show', {'id': order.id}) }}">show</a>
-                    <a href="{{ path('app_orders_edit', {'id': order.id}) }}">edit</a>
+                    <a class="btn btn-warning ohmybuttons" href="{{ path('app_orders_show', {'id': order.id}) }}">show</a>
+                    <a class="btn btn-warning ohmybuttons" href="{{ path('app_orders_edit', {'id': order.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -49,6 +78,6 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_orders_new') }}">Create new</a>
+<div>
+    <a class="btn btn-warning ohmybuttons" href="{{ path('app_orders_new') }}">Create new</a>
 {% endblock %}
