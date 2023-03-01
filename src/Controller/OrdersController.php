@@ -30,6 +30,15 @@ class OrdersController extends AbstractController
         ]);
     }
 
+    #[Route('/completed', name: 'app_orders_completed', methods: ['GET'])]
+    public function completed(): Response
+    // Orders $order
+    {
+        return $this->render('orders/completed.html.twig', [
+            // 'order' => $order,
+        ]);
+    }
+
     #[Route('/new', name: 'app_orders_new', methods: ['GET', 'POST'])]
     public function new(Request $request, OrdersRepository $ordersRepository): Response
     {
