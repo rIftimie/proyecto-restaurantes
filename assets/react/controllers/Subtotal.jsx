@@ -5,11 +5,12 @@ const Subtotal = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleOpenDrawer = () => {
-    setIsDrawerOpen(true);
+    if(isDrawerOpen){
+      setIsDrawerOpen(false);
+    }else{
+      setIsDrawerOpen(true);
+    }
   };
-  const handleCloseDrawer = () =>{
-    setIsDrawerOpen(false);
-  }
   return (
     <>
       <div className="container d-flex justify-content-between border-bottom border-dark border-top">
