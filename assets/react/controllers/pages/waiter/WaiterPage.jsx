@@ -1,33 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { getOrders } from '../../api/orders'
+import React, { useEffect, useState } from "react";
+import { getOrders } from "../../api/orders";
 
-function WaiterPage({orders}) {
+import OrderContainer from "../../components/OrderContainer";
 
-  const [order, setOrder] = useState(second)
-
-   const fetchGetProduct = async () =>{
-    try {
-      const response = await getOrders();
-      setOrder(response);
-    } catch (error) {
-      console.log(error);
-    }
-
-  }
-
+function WaiterPage() {
+  const [orders, setOrders] = useState([]);
   useEffect(() => {
-
-    fetchGetProduct()
-    
-  }, [])
-  
+    fetch("/api/orders")
+      .then((response) => response.json())
+      .then((json) => setOrders(json));
+  }, []);
 
   return (
     <>
-    
-    
+    <h1 className="text-center">Pedidos</h1>
+      <OrderContainer data={orders} />
     </>
-  )
+  );
 }
 
-export default WaiterPage
+export default WaiterPage;
