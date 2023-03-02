@@ -17,6 +17,7 @@ class ApiController extends AbstractController
     #[Route('/orders', name: 'app_api_orders')]
     public function indexOrders(OrdersRepository $orderRepository): Response
     {
+      
         $orders = $orderRepository->findAll();
         
         $ordersJSON = [];
