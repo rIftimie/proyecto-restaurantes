@@ -208,7 +208,6 @@ class Restaurant
         return $this;
     }
 
-<<<<<<< HEAD
     public function isHidden(): ?bool
     {
         return $this->hidden;
@@ -220,10 +219,8 @@ class Restaurant
 
         return $this;
     }
-=======
     public function __toString()
-{
-    return  $this->name;
-}
->>>>>>> 7da2d393f2eb7230638af817c4187d2a34369328
+    {
+      return  $this->name;
+    }
 }
