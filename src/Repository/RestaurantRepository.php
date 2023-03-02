@@ -29,7 +29,8 @@ class RestaurantRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->persist($entity);
 
-        if ($flush) {
+        if ($flush)
+        {
             $this->getEntityManager()->flush();
         }
     }
@@ -38,19 +39,23 @@ class RestaurantRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->remove($entity);
 
-        if ($flush) {
+        if ($flush)
+        {
             $this->getEntityManager()->flush();
         }
     }
-    public function getRestaurant(): array 
+    public function getRestaurant(): array
     {
         $user = $this->security->getUser();
         $roles = $user->getRoles();
-        if (in_array('ROLE_SUPER_ADMIN', $roles)) {
-            $restaurantes = $this->findAll();
-        } else {
+        if (in_array('ROLE_SUPER_ADMIN', $roles))
+        {
+            $restaurants = $this->findAll();
+        }
+        else
+        {
             $idUsuario = $user->getId();
-            $restaurantes = $this->createQueryBuilder('r')
+            $restaurants = $this->createQueryBuilder('r')
                 ->innerJoin('r.users', 'u')
                 ->where('u.id = :idUsuario')
                 ->setParameter('idUsuario', $idUsuario)
@@ -58,10 +63,46 @@ class RestaurantRepository extends ServiceEntityRepository
                 ->getResult();
         }
         $choices = [];
-        foreach ($restaurantes as $restaurante) {
-            $choices[$restaurante->getName()] = $restaurante;
+        foreach ($restaurants as $restaurant)
+        {
+            $choices[$restaurant->getName()] = $restaurant;
         }
         return $choices;
+    }
+
+    /**
+     * Returns the most profitable restaurant
+     * @return Restaurant[] Returns an array of Restaurant objects
+     */
+    public function getMostProfitableRestaurant(): array
+    {
+        $restaurants = $this->createQueryBuilder('r')
+            ->select('r.name, SUM(o.total) as total')
+            ->innerJoin('r.orders', 'o')
+            ->groupBy('r.name')
+            ->orderBy('total', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+        return $restaurants;
+    }
+
+    /**
+     * Returns the most successful table
+     * @return Restaurant[] Returns an array of Restaurant objects
+     */
+    public function getMostSuccessfulTable(): array
+    {
+        $restaurants = $this->createQueryBuilder('r')
+            ->select('r.name, t.name, SUM(o.total) as total')
+            ->innerJoin('r.orders', 'o')
+            ->innerJoin('o.table', 't')
+            ->groupBy('r.name, t.name')
+            ->orderBy('total', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+        return $restaurants;
     }
 
 //    /**
