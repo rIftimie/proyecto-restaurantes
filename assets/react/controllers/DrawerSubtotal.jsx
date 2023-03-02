@@ -1,13 +1,25 @@
-import React from 'react'
+import React from "react";
 
-function DrawerSubtotal(props) {
+function DrawerSubtotal({ isOpen, setIsDrawerOpen }) {
+  const handleCloseDrawer = () => {
+    if (isOpen) {
+      setIsDrawerOpen(false);
+    }
+  };
   return (
-    <div className={`drawer ${props.isOpen ? 'open' : ''}`}>
-      <p>Pago con tarjeta</p>
-      <p>Pago en efectivo</p>
-      <p>Paypal</p>
+    <div className={`drawer ${isOpen ? "open" : ""}`}>
+      <div className=" d-flex justify-content-center flex-colum flex-wrap">
+        <p>Pago con tarjeta</p>
+        <p>Pago en efectivo</p>
+        <p>Paypal</p>
+      </div>
+      <button
+        onClick={handleCloseDrawer}
+        type="button"
+        className="btn btn-outline-danger m-3"
+      >Cerrar</button>
     </div>
-  )
+  );
 }
 
-export default DrawerSubtotal
+export default DrawerSubtotal;

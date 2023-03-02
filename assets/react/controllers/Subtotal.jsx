@@ -11,7 +11,7 @@ const Subtotal = () => {
     }
   };
   return (
-    <>
+    <div className="pagar">
       <div className="container d-flex justify-content-between border-bottom border-dark border-top">
         <p className="m-3">SubTotal</p>
         <p className="m-3">300€</p>
@@ -24,9 +24,9 @@ const Subtotal = () => {
         >
           Pagar
         </button>
-        <DrawerSubtotal isOpen={isDrawerOpen} />
+        <DrawerSubtotal isOpen={isDrawerOpen} setIsDrawerOpen={ setIsDrawerOpen } />
       </div>
-    </>
+    </div>
   );
 };
 
