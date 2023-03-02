@@ -21,15 +21,45 @@ class OrdersController extends AbstractController
         ]);
     }
 
+    #[Route('/pay', name: 'app_orders_pay', methods: ['GET'])]
+    public function pay(): Response
+    // Orders $order
+    {
+        return $this->render('orders/pay.html.twig', [
+            // 'order' => $order,
+        ]);
+    }
+
+    #[Route('/completed', name: 'app_orders_completed', methods: ['GET'])]
+    public function completed(): Response
+    // Orders $order
+    {
+        return $this->render('orders/completed.html.twig', [
+            // 'order' => $order,
+        ]);
+    }
+    
+    #[Route('/alter', name: 'app_orders_index_alterada', methods: ['GET'])]
+    public function indexalter(OrdersRepository $ordersRepository): Response
+    {
+        return $this->render('orders/indexalter.html.twig', [
+            'orders' => $ordersRepository->findAll(),
+        ]);
+    }
+
     #[Route('/new', name: 'app_orders_new', methods: ['GET', 'POST'])]
     public function new(Request $request, OrdersRepository $ordersRepository): Response
     {
         $order = new Orders();
+        //MODELO $noticium->setAutor($this->getUser());
+    //    $order-> setOrderDate(new \DateTime('now'));
         $form = $this->createForm(OrdersType::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $ordersRepository->save($order, true);
+            
+
 
             return $this->redirectToRoute('app_orders_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -75,4 +105,6 @@ class OrdersController extends AbstractController
 
         return $this->redirectToRoute('app_orders_index', [], Response::HTTP_SEE_OTHER);
     }
+
+  
 }

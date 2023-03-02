@@ -159,6 +159,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+<<<<<<< HEAD
     public function isHidden(): ?bool
     {
         return $this->hidden;
@@ -170,4 +171,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+=======
+    public function __toString()
+{
+    return  $this->username;
+}
+>>>>>>> 7da2d393f2eb7230638af817c4187d2a34369328
 }

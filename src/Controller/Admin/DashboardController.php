@@ -24,9 +24,14 @@ class DashboardController extends AbstractDashboardController
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
+<<<<<<< HEAD
         
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
         return $this->redirect($adminUrlGenerator->setController(ProductsCrudController::class)->generateUrl());
+=======
+       $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
+    return $this->redirect($adminUrlGenerator->setController(ProductsCrudController::class)->generateUrl());
+>>>>>>> 7da2d393f2eb7230638af817c4187d2a34369328
 
         // Option 2. You can make your dashboard redirect to different pages depending on the user
         //
@@ -37,22 +42,24 @@ class DashboardController extends AbstractDashboardController
         // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
         //
-        // return $this->render('some/path/my-dashboard.html.twig');
+  //       return $this->render('templates/orders/index.html.twig');
+      //   return $this->render('orders/index.html.twig');
     }
 
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
             ->setTitle('Restaurantes');
+            
     }
 
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Products', 'fas fa-list', Products::class);
-        yield MenuItem::linkToCrud('Orders', 'fas fa-list', Orders::class);
-        yield MenuItem::linkToCrud('Restaurants', 'fas fa-list', Restaurant::class);
-        yield MenuItem::linkToCrud('Tables', 'fas fa-list', Table::class);
+        yield MenuItem::linkToCrud('Products', 'fas fa-burger', Products::class);
+        yield MenuItem::linkToCrud('Orders', 'fas fa-sort', Orders::class);
+        yield MenuItem::linkToCrud('Restaurants', 'fas fa-store', Restaurant::class);
+        yield MenuItem::linkToCrud('Tables', 'fas fa-table', Table::class);
         yield MenuItem::linkToCrud('User', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Menu', 'fas fa-list', Menu::class);
     }
