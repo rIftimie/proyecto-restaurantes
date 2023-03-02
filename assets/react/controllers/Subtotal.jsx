@@ -12,15 +12,15 @@ const Subtotal = () => {
   };
   return (
     <div className="pagar">
-      <div className="container d-flex justify-content-between border-bottom border-dark border-top">
-        <p className="m-3">SubTotal</p>
-        <p className="m-3">300€</p>
+      <div className="container d-flex justify-content-between border-bottom border-light border-top">
+        <p className="fw-bold m-3">SubTotal</p>
+        <p className="fw-bold m-3">300€</p>
       </div>
       <div className="container d-flex justify-content-center">
         <button
           onClick={handleOpenDrawer}
           type="button"
-          className="btn btn-outline-success m-3"
+          className="btn btn-outline-success fw-bold m-3"
         >
           Pagar
         </button>
