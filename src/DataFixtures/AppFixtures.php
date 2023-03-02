@@ -168,6 +168,13 @@ class AppFixtures extends Fixture
         $orderProducts1->setOrders($order1);
         $manager->persist($orderProducts1);
 
+        $orderProducts5 = new OrderProducts();
+        $orderProducts5->setQuantity(5);
+        $orderProducts5->setProducts($products[1]);
+        $orderProducts5->setTotalPrice(($orderProducts5->getProducts()->getPrice())*($orderProducts5->getQuantity()));
+        $orderProducts5->setOrders($order1);
+        $manager->persist($orderProducts5);
+
         $orderProducts2 = new OrderProducts();
         $orderProducts2->setQuantity(3);
         $orderProducts2->setProducts($products[1]);
@@ -180,7 +187,7 @@ class AppFixtures extends Fixture
         $orderProducts3->setProducts($products[2]);
         $orderProducts3->setTotalPrice(($orderProducts3->getProducts()->getPrice())*($orderProducts3->getQuantity()));
         $orderProducts3->setOrders($order3);
-        $manager->persist($orderProducts2);
+        $manager->persist($orderProducts3);
 
         $orderProducts4 = new OrderProducts();
         $orderProducts4->setQuantity(3);

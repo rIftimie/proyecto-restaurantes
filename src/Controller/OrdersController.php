@@ -51,6 +51,27 @@ class OrdersController extends AbstractController
     }
 
 
+
+
+
+
+    #[Route('/kitchen', name: 'app_orders_kitchen', methods: ['GET', 'POST'])]
+    public function kitchen(Request $request, OrdersRepository $ordersRepository): Response
+    {
+        return $this->render('kitchen/index.html.twig', [
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
+
     #[Route('/{id}', name: 'app_orders_show', methods: ['GET'])]
     public function show(Orders $order): Response
     {
