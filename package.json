@@ -26,5 +26,9 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "@stripe/react-stripe-js": "^1.16.5",
+        "@stripe/stripe-js": "^1.47.0"
     }
 }

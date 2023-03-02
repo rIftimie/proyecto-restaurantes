@@ -25,14 +25,17 @@ class Products
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $allergens = [];
 
-    #[ORM\Column]
-    private ?int $stock = null;
-
     #[ORM\OneToMany(mappedBy: 'products', targetEntity: OrderProducts::class)]
     private Collection $orderProducts;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Menu::class)]
     private Collection $menus;
+
+    #[ORM\Column]
+    private ?bool $hidden = false;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 4)]
+    private ?string $price = null;
 
     public function __construct()
     {
@@ -77,18 +80,6 @@ class Products
     public function setAllergens(?array $allergens): self
     {
         $this->allergens = $allergens;
-
-        return $this;
-    }
-
-    public function getStock(): ?int
-    {
-        return $this->stock;
-    }
-
-    public function setStock(int $stock): self
-    {
-        $this->stock = $stock;
 
         return $this;
     }
@@ -149,6 +140,31 @@ class Products
                 $menu->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+
+    public function isHidden(): ?bool
+    {
+        return $this->hidden;
+    }
+
+    public function setHidden(bool $hidden): self
+    {
+        $this->hidden = $hidden;
+
+        return $this;
+    }
+
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
+
+    public function setPrice(string $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }
