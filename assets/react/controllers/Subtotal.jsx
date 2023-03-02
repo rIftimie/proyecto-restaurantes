@@ -1,15 +1,15 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import DrawerSubtotal from "./DrawerSubtotal";
 const Subtotal = () => {
-
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleOpenDrawer = () => {
-    setIsDrawerOpen(true);
+    if (isDrawerOpen) {
+      setIsDrawerOpen(false);
+    } else {
+      setIsDrawerOpen(true);
+    }
   };
-  const handleCloseDrawer = () =>{
-    setIsDrawerOpen(false);
-  }
   return (
     <>
       <div className="container d-flex justify-content-between border-bottom border-dark border-top">
@@ -17,8 +17,14 @@ const Subtotal = () => {
         <p className="m-3">300€</p>
       </div>
       <div className="container d-flex justify-content-center">
-        <button onClick={handleOpenDrawer} type="button" className="btn btn-outline-success m-3">Pagar</button>
-        <DrawerSubtotal isOpen={isDrawerOpen}/>
+        <button
+          onClick={handleOpenDrawer}
+          type="button"
+          className="btn btn-outline-success m-3"
+        >
+          Pagar
+        </button>
+        <DrawerSubtotal isOpen={isDrawerOpen} />
       </div>
     </>
   );

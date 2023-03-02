@@ -3,5 +3,9 @@
 {% block title %}Pay{% endblock %}
 
 {% block body %}
-  <div {{ react_component('Productos', {}) }}></div>
+  <div class='container d-flex flex-colum flex-wrap align-content-center'>
+    <div class="align-self-start m-5"{{ react_component('Productos', {}) }}></div>
+    <div class='align-self-end m-5' {{ react_component('Subtotal', {}) }}></div>
+  </div>
+
 {% endblock %}

@@ -1,3 +1,20 @@
 body {
 	background-color: lightgray;
 }
+.drawer {
+	position: fixed;
+	top: 900px; /* Ocultamos el drawer debajo de la pantalla */
+	left: 0;
+	width: 100%;
+	height: 500px;
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	transition: transform 0.3s ease-in-out, bottom 0s ease-in-out 0.3s; /* Agregamos una transición de transformación y de bottom para animar el drawer */
+  }
+  
+  .drawer.open {
+	bottom: 0; /* Mostramos el drawer en la pantalla */
+	transform: translate3d(0, -100%, 0); /* Movemos el drawer hacia arriba para que se muestre desde abajo de la pantalla */
+	transition: transform 0.3s ease-in-out, bottom 0s ease-in-out 0s; /* Agregamos una transición de transformación y de bottom para animar el drawer */
+  }
+  
