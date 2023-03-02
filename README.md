@@ -10,5 +10,5 @@
 | Daulin   | Israel  | Fran    |
 | Jorge    | Jose    | Hugo    |
 | Jonathan | Antonio | Juanto  |
-| Chema    | Juanmi  | Alvaro  |
+| Chema    | Juan  | Alvaro  |
 | Rafa     |         |         |
