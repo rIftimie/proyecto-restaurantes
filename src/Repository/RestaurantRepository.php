@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Restaurant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @extends ServiceEntityRepository<Restaurant>
@@ -16,9 +17,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class RestaurantRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $security;
+
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, Restaurant::class);
+        $this->security = $security;
     }
 
     public function save(Restaurant $entity, bool $flush = false): void
@@ -37,6 +41,27 @@ class RestaurantRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+    public function getRestaurant(): array 
+    {
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+        if (in_array('ROLE_SUPER_ADMIN', $roles)) {
+            $restaurantes = $this->findAll();
+        } else {
+            $idUsuario = $user->getId();
+            $restaurantes = $this->createQueryBuilder('r')
+                ->innerJoin('r.users', 'u')
+                ->where('u.id = :idUsuario')
+                ->setParameter('idUsuario', $idUsuario)
+                ->getQuery()
+                ->getResult();
+        }
+        $choices = [];
+        foreach ($restaurantes as $restaurante) {
+            $choices[$restaurante->getName()] = $restaurante;
+        }
+        return $choices;
     }
 
 //    /**
