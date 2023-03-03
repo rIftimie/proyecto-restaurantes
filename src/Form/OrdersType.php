@@ -13,11 +13,8 @@ class OrdersType extends AbstractType
     {
         $builder
             ->add('status')
-            ->add('orderDate')
-            ->add('deliverDate')
             ->add('note')
             ->add('waiter')
-            ->add('restaurant')
         ;
     }
 

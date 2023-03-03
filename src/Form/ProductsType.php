@@ -15,7 +15,7 @@ class ProductsType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('allergens')
-            ->add('stock')
+            
         ;
     }
 
