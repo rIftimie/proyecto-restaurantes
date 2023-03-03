@@ -17,7 +17,7 @@ class ApiController extends AbstractController
     #[Route('/orders', name: 'app_api_orders')]
     public function indexOrders(OrdersRepository $orderRepository): Response
     {
-        $orders = $orderRepository->findAll();
+        $orders = $orderRepository->findBy(['restaurant' => $this->getUser()->getRestaurant()->getId()]);
         
         $ordersJSON = [];
 
@@ -40,7 +40,8 @@ class ApiController extends AbstractController
                 'products'=> $products,
                 'waiter' => $order->getWaiter()->getUserName(),
                 'orderDate' => $order->getOrderDate(),
-
+                'deliverDate' => $order->getDeliverDate(),
+                'table' => $order->getTableOrder()->getNumber(),
             );
         }
 
@@ -69,6 +70,10 @@ class ApiController extends AbstractController
             'note' => $order->getNote(),
             'status' => $order->getStatus(),
             'products'=> $products,
+            'waiter' => $order->getWaiter()->getUserName(),
+            'orderDate' => $order->getOrderDate(),
+            'deliverDate' => $order->getDeliverDate(),
+            'table' => $order->getTableOrder()->getNumber(),
         );
 
 

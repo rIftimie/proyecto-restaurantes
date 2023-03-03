@@ -44,33 +44,18 @@ class OrdersController extends AbstractController
     #[Route('/waiter', name: 'app_orders_waiter', methods: ['GET', 'POST'])]
     public function apiWaiter(Request $request, OrdersRepository $ordersRepository): Response
     {
-       
+    
         return $this->render('waiter/index.html.twig', [
             'allOrders' =>  $ordersRepository->findAll(),
         ]);
     }
 
-
-
-
-
-
     #[Route('/kitchen', name: 'app_orders_kitchen', methods: ['GET', 'POST'])]
-    public function kitchen(Request $request, OrdersRepository $ordersRepository): Response
+    public function kitchen(): Response
     {
         return $this->render('kitchen/index.html.twig', [
         ]);
     }
-
-
-
-
-
-
-
-
-
-
 
     #[Route('/{id}', name: 'app_orders_show', methods: ['GET'])]
     public function show(Orders $order): Response
@@ -109,10 +94,11 @@ class OrdersController extends AbstractController
     }
     
 }
-//  0 -> pending    
-//  1 -> payed    
-//  2 -> ready    
-//  3 -> delivered    
+//  0 -> pending
+//  1 -> payed
+//  2 -> working
+//  3 -> done
+//  4 -> delivered
 
 /*    #[Route('/waiter/pending_orders', name: 'app_pending_orders', methods: ['POST'])]
     public function pendingOrders(Request $request, Orders $order, OrdersRepository $ordersRepository): Response
