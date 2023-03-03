@@ -87,24 +87,6 @@ class RestaurantRepository extends ServiceEntityRepository
         return $restaurants;
     }
 
-    /**
-     * Returns the most successful table
-     * @return Restaurant[] Returns an array of Restaurant objects
-     */
-    public function getMostSuccessfulTable(): array
-    {
-        $restaurants = $this->createQueryBuilder('r')
-            ->select('r.name, t.name, SUM(o.total) as total')
-            ->innerJoin('r.orders', 'o')
-            ->innerJoin('o.table', 't')
-            ->groupBy('r.name, t.name')
-            ->orderBy('total', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult();
-        return $restaurants;
-    }
-
 //    /**
 //     * @return Restaurant[] Returns an array of Restaurant objects
 //     */
