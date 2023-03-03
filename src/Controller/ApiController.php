@@ -17,6 +17,7 @@ class ApiController extends AbstractController
     #[Route('/orders', name: 'app_api_orders')]
     public function indexOrders(OrdersRepository $orderRepository): Response
     {
+      
         $orders = $orderRepository->findAll();
         
         $ordersJSON = [];
@@ -38,9 +39,8 @@ class ApiController extends AbstractController
                 'note' => $order->getNote(),
                 'status'=> $order->getStatus(),
                 'products'=> $products,
-                'waiter' => $order->getWaiter()->getUserName(),
-                'orderDate' => $order->getOrderDate(),
-
+                // 'products' => $orders[0]->getOrderProducts()->toArray()->getProducts(),
+                // 'products' => $order->getOrderProducts()->getProducts()->getName(),
             );
         }
 
