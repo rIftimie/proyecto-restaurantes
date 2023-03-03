@@ -39,6 +39,13 @@ class Orders
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $note = null;
 
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Table $tableOrder = null;
+
+    #[ORM\Column]
+    private ?bool $hidden = false;
+
     public function __construct()
     {
         $this->orderProducts = new ArrayCollection();
@@ -147,6 +154,30 @@ class Orders
     public function setNote(?string $note): self
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getTableOrder(): ?Table
+    {
+        return $this->tableOrder;
+    }
+
+    public function setTableOrder(?Table $tableOrder): self
+    {
+        $this->tableOrder = $tableOrder;
+
+        return $this;
+    }
+
+    public function isHidden(): ?bool
+    {
+        return $this->hidden;
+    }
+
+    public function setHidden(bool $hidden): self
+    {
+        $this->hidden = $hidden;
 
         return $this;
     }

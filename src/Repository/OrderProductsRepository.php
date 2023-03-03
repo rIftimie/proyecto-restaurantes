@@ -25,7 +25,8 @@ class OrderProductsRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->persist($entity);
 
-        if ($flush) {
+        if ($flush)
+        {
             $this->getEntityManager()->flush();
         }
     }
@@ -34,9 +35,72 @@ class OrderProductsRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->remove($entity);
 
-        if ($flush) {
+        if ($flush)
+        {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Returns the products of an order
+     * @param int $idOrder
+     * @return array
+     */
+    public function getProductsByOrder($idOrder): array
+    {
+        $products = $this->createQueryBuilder('op')
+            ->innerJoin('op.product', 'p')
+            ->innerJoin('op.order', 'o')
+            ->where('o.id = :idOrder')
+            ->setParameter('idOrder', $idOrder)
+            ->getQuery()
+            ->getResult();
+
+        return $products;
+    }
+
+    /**
+     * Returns the money earned by a restaurant
+     * 
+     * TODO: Separate the query in two parts to get the total money earned by the restaurant and the total orders
+     * @param int $idRestaurant
+     * @param string $startDate
+     * @param string $endDate
+     * @return array
+     */
+    public function getMoneyEarnedByRestaurant($idRestaurant, $startDate, $endDate): array
+    {
+        $money = $this->createQueryBuilder('op')
+            ->innerJoin('op.product', 'p')
+            ->innerJoin('p.restaurant', 'r')
+            ->innerJoin('op.order', 'o')
+            ->where('r.id = :idRestaurant')
+            ->andWhere('o.date BETWEEN :startDate AND :endDate')
+            ->setParameter('idRestaurant', $idRestaurant)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getResult();
+
+        return $money;
+    }
+
+    //Most requested products for a given period of time
+    public function getMostRequestedProducts($idRestaurant, $startDate, $endDate): array
+    {
+        $products = $this->createQueryBuilder('op')
+            ->innerJoin('op.product', 'p')
+            ->innerJoin('p.restaurant', 'r')
+            ->innerJoin('op.order', 'o')
+            ->where('r.id = :idRestaurant')
+            ->andWhere('o.date BETWEEN :startDate AND :endDate')
+            ->setParameter('idRestaurant', $idRestaurant)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getResult();
+
+        return $products;
     }
 
 //    /**

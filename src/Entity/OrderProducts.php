@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OrderProductsRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderProductsRepository::class)]
@@ -28,7 +29,10 @@ class OrderProducts
     private ?string $information = null;
 
     #[ORM\Column]
-    private ?int $totalPrice = null;
+    private ?bool $hidden = false;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 4)]
+    private ?string $totalPrice = null;
 
     public function getId(): ?int
     {
@@ -83,12 +87,24 @@ class OrderProducts
         return $this;
     }
 
-    public function getTotalPrice(): ?int
+    public function isHidden(): ?bool
+    {
+        return $this->hidden;
+    }
+
+    public function setHidden(bool $hidden): self
+    {
+        $this->hidden = $hidden;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?string
     {
         return $this->totalPrice;
     }
 
-    public function setTotalPrice(int $totalPrice): self
+    public function setTotalPrice(string $totalPrice): self
     {
         $this->totalPrice = $totalPrice;
 

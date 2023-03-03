@@ -24,6 +24,7 @@ class DashboardController extends AbstractDashboardController
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
+        
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
         return $this->redirect($adminUrlGenerator->setController(ProductsCrudController::class)->generateUrl());
 
@@ -52,7 +53,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Orders', 'fas fa-list', Orders::class);
         yield MenuItem::linkToCrud('Restaurants', 'fas fa-list', Restaurant::class);
         yield MenuItem::linkToCrud('Tables', 'fas fa-list', Table::class);
-        yield MenuItem::linkToCrud('User', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Menu', 'fas fa-list', Menu::class);
     }
 }
