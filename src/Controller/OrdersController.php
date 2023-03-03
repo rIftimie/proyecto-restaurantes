@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Stripe;
 #[Route('/orders')]
 class OrdersController extends AbstractController
 {
@@ -28,6 +28,38 @@ class OrdersController extends AbstractController
     {
         return $this->render('orders/pay.html.twig', [
             // 'order' => $order,
+            'stripe_key' => $_ENV["STRIPE_KEY"],
+        ]);
+    }
+    #[Route('/paid', name: 'app_orders_paid', methods: ['POST'])]
+    public function paid(Request $request): Response
+    // Orders $order
+    {
+      // Stripe\Stripe::setApiKey($_ENV["STRIPE_SECRET"]);
+      //   Stripe\Charge::create ([
+      //           "amount" => $request->toArray()['amount'],
+      //           "currency" => "eur",
+      //           "source" => $request->toArray()['id'],
+      //           "description" => $request->toArray()['description'],
+      //   ]);
+      $stripe = new \Stripe\StripeClient(
+        $_ENV["STRIPE_SECRET"],
+      );
+      $stripe->paymentIntents->create([
+        "amount" => $request->toArray()['amount'],
+        "currency" => "eur",
+        "description" => $request->toArray()['description'],
+        "payment_method"=>$request->toArray()['id'],
+        "confirm" => true
+      ]);
+        $this->addFlash(
+            'success',
+            'Payment Successful!'
+        );
+        return $this->render('orders/prueba.html.twig', [
+            // 'order' => $order,
+            'stripe_key' => $_ENV["STRIPE_KEY"],
+            
         ]);
     }
 

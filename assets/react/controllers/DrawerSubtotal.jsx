@@ -1,7 +1,7 @@
 import React from 'react'
 import Stripe from './Stripe'
 
-function DrawerSubtotal({ isOpen, setIsDrawerOpen }) {
+function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey }) {
   const handleCloseDrawer = () => {
     if (isOpen) {
       setIsDrawerOpen(false);
@@ -10,7 +10,7 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen }) {
   return (
     <div className={`drawer ${isOpen ? "open" : ""}`}>
       <div className=" d-flex flex-column col-8 mt-5 m-4">
-        <Stripe></Stripe>
+        <Stripe stripeKey={ stripeKey } ></Stripe>
       </div>
       <div className='m-0'>
         <button
