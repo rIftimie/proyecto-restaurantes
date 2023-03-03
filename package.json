@@ -26,5 +26,9 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "classnames": "^2.3.2",
+        "proptypes": "^1.1.0"
     }
 }

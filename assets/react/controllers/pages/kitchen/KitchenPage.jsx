@@ -33,4 +33,4 @@ const KitchenPage = () => {
   )
 }
 
-export default KitchenPage
+export default KitchenPage;
