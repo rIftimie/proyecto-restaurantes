@@ -62,6 +62,60 @@ class OrdersRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    //Get the money earned by the restaurant for a given period of time
+    public function getMoneyEarned(Restaurant $restaurant, \DateTime $startDate, \DateTime $endDate): float
+    {
+        $query = $this->createQueryBuilder('o')
+            ->innerJoin('o.orderProducts', 'op')
+            ->andWhere('o.restaurant = :restaurant')
+            ->andWhere('o.createdAt BETWEEN :startDate AND :endDate')
+            ->setParameter('restaurant', $restaurant)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->select('SUM(op.totalPrice * op.quantity) as total')
+            ->getQuery();
+
+        $result = $query->getOneOrNullResult();
+
+        return $result['total'] ?? 0;
+    }
+
+    //Get the money per order for a given period of time
+    public function getMoneyPerOrder(Restaurant $restaurant, \DateTime $startDate, \DateTime $endDate): float
+    {
+        $query = $this->createQueryBuilder('o')
+            ->innerJoin('o.orderProducts', 'op')
+            ->andWhere('o.restaurant = :restaurant')
+            ->andWhere('o.createdAt BETWEEN :startDate AND :endDate')
+            ->setParameter('restaurant', $restaurant)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->select('SUM(op.totalPrice * op.quantity) as total')
+            ->getQuery();
+
+        $result = $query->getResult();
+
+        return count($result) > 0 ? array_sum(array_column($result, 'total')) / count($result) : 0;
+    }
+
+    //Number of orders by waiter for a given period of time
+    public function getOrdersByWaiter(Restaurant $restaurant, \DateTime $startDate, \DateTime $endDate): array
+    {
+        $query = $this->createQueryBuilder('o')
+            ->innerJoin('o.waiter', 'w')
+            ->andWhere('o.restaurant = :restaurant')
+            ->andWhere('o.createdAt BETWEEN :startDate AND :endDate')
+            ->setParameter('restaurant', $restaurant)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->select('w.id as waiterId, w.firstName as waiterFirstName, w.lastName as waiterLastName, COUNT(o.id) as total')
+            ->groupBy('w.id')
+            ->orderBy('total', 'DESC')
+            ->getQuery();
+
+        return $query->getResult();
+    }
     
 
 //    /**

@@ -59,30 +59,25 @@ class OrderProductsRepository extends ServiceEntityRepository
         return $products;
     }
 
-    /**
-     * Returns the money earned by a restaurant
-     * 
-     * TODO: Separate the query in two parts to get the total money earned by the restaurant and the total orders
-     * @param int $idRestaurant
-     * @param string $startDate
-     * @param string $endDate
-     * @return array
-     */
-    public function getMoneyEarnedByRestaurant($idRestaurant, $startDate, $endDate): array
+    //Get the total number of products sold in a given period of time
+    public function getTotalProductsSold($idRestaurant, $startDate, $endDate): int
     {
-        $money = $this->createQueryBuilder('op')
+        $totalProductsSold = $this->createQueryBuilder('op')
             ->innerJoin('op.product', 'p')
-            ->innerJoin('p.restaurant', 'r')
+            ->innerJoin('p.menus', 'm')
+            ->innerJoin('m.restaurant', 'r')
             ->innerJoin('op.order', 'o')
             ->where('r.id = :idRestaurant')
+            ->andWhere('o.status = 3')
             ->andWhere('o.date BETWEEN :startDate AND :endDate')
             ->setParameter('idRestaurant', $idRestaurant)
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
+            ->select('SUM(op.quantity) as totalProductsSold')
             ->getQuery()
-            ->getResult();
+            ->getSingleScalarResult();
 
-        return $money;
+        return $totalProductsSold;
     }
 
     //Most requested products for a given period of time
