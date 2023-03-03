@@ -5,6 +5,9 @@ namespace App\Repository;
 use App\Entity\Orders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
+use App\Entity\Restaurant;
+use App\Entity\User;
 
 /**
  * @extends ServiceEntityRepository<Orders>
@@ -16,9 +19,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class OrdersRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $security;
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, Orders::class);
+        $this->security = $security;
     }
 
     public function save(Orders $entity, bool $flush = false): void
@@ -38,6 +43,26 @@ class OrdersRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findOrdersByCurrentUser(): array
+    {
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+        
+        if (in_array('ROLE_SUPER_ADMIN', $roles)) {
+            return $this->findAll();
+        }
+
+        $restaurant = $user->getRestaurant();
+        $restaurantId = $restaurant->getId();
+
+        $query = $this->createQueryBuilder('o')
+            ->andWhere('o.restaurant = :restaurant')
+            ->setParameter('restaurant', $restaurantId)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+    
 
 //    /**
 //     * @return Orders[] Returns an array of Orders objects
