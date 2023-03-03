@@ -1,17 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-function OrderCard({ order }) {
+function OrderCard({order}) {
   return (
-    <div>
-      <p>Order ID: {order.id}</p>
-      <p>Items:</p>
-      <ul>
-        {order.orderProducts.map(orderProduct => (
-          <li key={orderProduct.id}>{orderProduct.productName}</li>
-        ))}
-      </ul>
-    </div>
-  );
+    <div>{order} Order Card</div>
+  )
 }
 
-export default OrderCard;
+export default OrderCard

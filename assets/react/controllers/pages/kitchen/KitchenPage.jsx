@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import OrderCard from './OrderCard';
+import OrderCard from '../../OrderCard';
 
 function KitchenPage({ paidOrders }) {
   const [orders, setOrders] = useState(paidOrders);
