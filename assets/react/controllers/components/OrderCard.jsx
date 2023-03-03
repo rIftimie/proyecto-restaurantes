@@ -1,6 +1,7 @@
 import React from "react";
+import { acceptOrder } from "../api/orders";
 
-function OrderCard({ order }) {
+function OrderCard({ order, onHandleAccept, onHandleFinish, onHandleDecline }) {
   const orderStatus = order.status;
   console.log(orderStatus);
   const classes = ["card text-light d-flex"];
@@ -15,9 +16,16 @@ function OrderCard({ order }) {
     classes.push("bg-primary");
   }
 
-  function handleAccept(e) {
-    
-  }
+  // async function handleAccept(e){
+  //   try {
+  //     await acceptOrder(order);
+  //     setOrder(orders.filter(od => od.id == order.id));
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+  function handleFinish(e){}
+  function handleDecline(e){}
 
   return (
     <section className={classes.join(" ")} style={{ textAlign: "center" }}>
@@ -30,15 +38,12 @@ function OrderCard({ order }) {
         <h6>Fecha:{order.orderDate.date}</h6>
 
         {order.status == 1 ? ( // Pagado
-          <button onClick={handleAccept} className="btn btn-primary"></button>
+          <button onClick={()=>onHandleAccept(order)} className="btn btn-primary">Aceptar orden</button>
         ) : (
           // En Proceso
           <>
-            <button onClick={handleFinish} className="btn btn-primary"></button>
-            <button
-              onClick={handleDecline}
-              className="btn btn-primary"
-            ></button>
+            <button onClick={()=>onHandleFinish(order)} className="btn btn-primary">Terminar orden</button>
+            <button onClick={()=>onHandleDecline(order)} className="btn btn-primary">Cancelar orden</button>
           </>
         )}
       </div>

@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Menu;
 use App\Entity\Orders;
 use App\Form\OrdersType;
+use App\Repository\MenuRepository;
 use App\Repository\OrdersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +67,45 @@ class OrdersController extends AbstractController
     {
         return $this->render('kitchen/index.html.twig', [
         ]);
+    }
+
+    #[Route('/kitchen/{id}/accept', name: 'app_orders_kitchen_accept', methods: ['PUT'])]
+    public function kitchenAccept(Request $request, Orders $order, OrdersRepository $ordersRepository, MenuRepository $menuRepository) : Response
+    {
+        if($order->getStatus()==1){
+            $order->setStatus(2);
+            foreach($order->getOrderProducts() as $orderProduct){
+                foreach($menuRepository->findByRestaurantANDProduct($order->getRestaurant(),$orderProduct->getProducts()->getId()) as $menuFound){
+                    $menuFound->setStock($menuFound->getStock()-$orderProduct->getQuantity());
+                    $menuRepository->save($menuFound, true);
+                }
+            }
+            $ordersRepository->save($order, true);
+        }
+        
+        return $this->render('kitchen/index.html.twig',[]);
+    }
+
+    #[Route('/kitchen/{id}/finish', name: 'app_orders_kitchen_finish', methods: ['PUT'])]
+    public function kitchenFinish(Request $request, Orders $order, OrdersRepository $ordersRepository) : Response
+    {
+        $order->setStatus(3);
+        $ordersRepository->save($order,true);
+    }
+
+    #[Route('/kitchen/{id}/decline', name: 'app_orders_kitchen_decline', methods: ['PUT'])]
+    public function kitchenDecline(Request $request, Orders $order, OrdersRepository $ordersRepository, MenuRepository $menuRepository) : Response
+    {
+        if($order->getStatus()==2){
+            $order->setStatus(5);
+            foreach($order->getOrderProducts() as $orderProduct){
+                foreach($menuRepository->findByRestaurantANDProduct($order->getRestaurant(),$orderProduct->getProducts()->getId()) as $menuFound){
+                    $menuFound->setStock($menuFound->getStock()+$orderProduct->getQuantity());
+                    $menuRepository->save($menuFound, true);
+                }
+            }
+            $ordersRepository->save($order, true);
+        }
     }
 
     #[Route('/{id}', name: 'app_orders_show', methods: ['GET'])]
