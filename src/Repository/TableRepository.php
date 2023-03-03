@@ -39,6 +39,24 @@ class TableRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Returns the most profitable table of a restaurant
+     * The first result should be the most profitable table
+     * @return Table[] Returns an array of Table objects
+     */
+    public function getMostProfitableTable($idRestaurant)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.id, t.name, SUM(o.total) as total')
+            ->innerJoin('t.orders', 'o')
+            ->where('t.restaurant = :idRestaurant')
+            ->setParameter('idRestaurant', $idRestaurant)
+            ->groupBy('t.id')
+            ->orderBy('total', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Table[] Returns an array of Table objects
 //     */
