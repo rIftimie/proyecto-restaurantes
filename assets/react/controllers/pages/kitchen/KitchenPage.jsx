@@ -26,7 +26,7 @@ const KitchenPage = () => {
    
   return (
     <div>
-    {orders.length > 0  ?  <OrderContainer orders={orders}/> : <h1>Loading ...</h1>}  
+    {orders.length > 0  ?  <OrderContainer data={orders}/> : <h1>Loading ...</h1>}  
     </div>
   
 
