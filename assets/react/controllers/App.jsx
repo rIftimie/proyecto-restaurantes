@@ -1,7 +1,8 @@
 import React from 'react';
+import AdminPages from '../pages/admin/AdminPages';
 
 function App() {
-	return <div className="container-fluid bg-primary eeeeeeeeeee">App</div>;
+	return <AdminPages></AdminPages>;
 }
 
 export default App;
