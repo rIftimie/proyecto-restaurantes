@@ -1,8 +1,7 @@
 {% extends 'base.html.twig' %}
-{% block title %}Orders kitchen {% endblock %}
 {% block body %}
 <div
- {{ react_component('KitchenPage', { 'paidOrders': paidOrders }) }}>
+ {{ react_component('pages/kitchen/KitchenPage', { }) }}>
 </div>
 
 {% endblock %}

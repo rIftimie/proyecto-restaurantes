@@ -25,7 +25,7 @@ class Menu
     private ?int $stock = null;
 
     #[ORM\Column]
-    private ?bool $hidden = null;
+    private ?bool $hidden = false;
 
     public function getId(): ?int
     {

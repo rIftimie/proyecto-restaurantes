@@ -1,16 +1,36 @@
-import React, { useState } from 'react';
-import OrderCard from '../../OrderCard';
+import React, { useEffect, useState } from 'react'
+import { getOrders } from '../../api/orders'
+import OrderContainer from '../../components/OrderContainer'
 
-function KitchenPage({ paidOrders }) {
-  const [orders, setOrders] = useState(paidOrders);
+const KitchenPage = () => {
 
+    const [orders, setOrder] = useState([])
+
+    const fetchGetOrders = async () =>{
+     try {
+       const response = await getOrders();
+       setOrder(response);
+      
+       console.log(response);
+     } catch (error) {
+       console.log(error);
+     }
+ 
+   }
+ 
+   useEffect(() => {
+ 
+     fetchGetOrders()
+     
+   }, [])
+   
   return (
-    <>
-      {orders.map(order => (
-        <OrderCard key={order.id} order={order} />
-      ))}
-    </>
-  );
+    <div>
+    {orders.length > 0  ?  <OrderContainer orders={orders}/> : <h1>Loading ...</h1>}  
+    </div>
+  
+
+  )
 }
 
 export default KitchenPage;
