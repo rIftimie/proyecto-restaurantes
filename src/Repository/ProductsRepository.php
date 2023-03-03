@@ -39,6 +39,17 @@ class ProductsRepository extends ServiceEntityRepository
         }
     }
 
+    //Get products with no stock
+    public function getProductsNoStock(): array
+    {
+        $products = $this->createQueryBuilder('p')
+            ->where('p.stock = 0')
+            ->getQuery()
+            ->getResult();
+
+        return $products;
+    }
+
 //    /**
 //     * @return Products[] Returns an array of Products objects
 //     */

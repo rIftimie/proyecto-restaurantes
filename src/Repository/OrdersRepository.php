@@ -116,7 +116,53 @@ class OrdersRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    //Get orders with notes
+    public function getOrdersWithNotes(Restaurant $restaurant, \DateTime $startDate, \DateTime $endDate): array
+    {
+        $query = $this->createQueryBuilder('o')
+            ->andWhere('o.restaurant = :restaurant')
+            ->andWhere('o.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('o.note IS NOT NULL')
+            ->setParameter('restaurant', $restaurant)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    //Get orders paid by waiter
+    public function getOrdersPaidByWaiter(Restaurant $restaurant, \DateTime $startDate, \DateTime $endDate): array
+    {
+        $query = $this->createQueryBuilder('o')
+            ->andWhere('o.restaurant = :restaurant')
+            ->andWhere('o.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('o.paidByWaiter = 1')
+            ->setParameter('restaurant', $restaurant)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    //Get orders paid by card
+    public function getOrdersPaidByCard(Restaurant $restaurant, \DateTime $startDate, \DateTime $endDate): array
+    {
+        $query = $this->createQueryBuilder('o')
+            ->andWhere('o.restaurant = :restaurant')
+            ->andWhere('o.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('o.paidByWaiter = 0')
+            ->setParameter('restaurant', $restaurant)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery();
+
+        return $query->getResult();
+    }
     
+
 
 //    /**
 //     * @return Orders[] Returns an array of Orders objects
