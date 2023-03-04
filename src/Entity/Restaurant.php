@@ -36,6 +36,9 @@ class Restaurant
     #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Menu::class)]
     private Collection $menus;
 
+    #[ORM\Column]
+    private ?bool $hidden = false;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -203,5 +206,21 @@ class Restaurant
         }
 
         return $this;
+    }
+
+    public function isHidden(): ?bool
+    {
+        return $this->hidden;
+    }
+
+    public function setHidden(bool $hidden): self
+    {
+        $this->hidden = $hidden;
+
+        return $this;
+    }
+    public function __toString()
+    {
+      return  $this->name;
     }
 }

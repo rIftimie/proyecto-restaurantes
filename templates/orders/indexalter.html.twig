@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Orders index{% endblock %}
+
+{% block body %}
+
+ <style>
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap');
+    *{
+
+         background:#ff6347;
+    }
+        .orderstyles{
+
+            background:#ff6347;
+            with:100%;
+         
+            padding:50px;
+            font-family: 'Tilt Warp', cursive;
+            color:white;
+           
+        }
+        .ohmybuttons{
+
+            margin:8px;
+              color:white;
+        }
+       th{
+
+              color:white;
+        }
+        h1{
+            font-family: 'Tilt Warp', cursive;
+             color:#ffff00;
+
+        }
+        td{
+            color:white;
+
+        }
+        a{
+            text-decoration:none;
+        }
+
+        </style>
+<div class="orderstyles">
+    <h1>Pedidos</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Status</th>
+                <th>OrderDate</th>
+                <th>DeliverDate</th>
+                <th>Note</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.orderDate ? order.orderDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ order.deliverDate ? order.deliverDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ order.note }}</td>
+                <td>
+                    <a class="btn btn-warning ohmybuttons" href="{{ path('app_orders_show', {'id': order.id}) }}">show</a>
+                    <a class="btn btn-warning ohmybuttons" href="{{ path('app_orders_edit', {'id': order.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<div>
+    <a class="btn btn-warning ohmybuttons" href="{{ path('app_orders_new') }}">Create new</a>
+{% endblock %}
