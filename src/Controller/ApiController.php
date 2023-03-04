@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\OrdersRepository;
 use App\Entity\Orders;
+use App\Repository\ProductsRepository;
 use App\Repository\RestaurantRepository;
 
 
@@ -31,8 +32,8 @@ class ApiController extends AbstractController
         return new JsonResponse($ordersJSON);
     }
 
- #[Route('/ordersjsoncrontroller2', name: 'app_ordersjsoncrontroller2')]   
-    public function ordersjsoncrontroller2(OrdersRepository $orderRepository): Response
+ #[Route('/ordersComplete', name: 'app_ordersComplete')]   
+    public function ordersComplete(OrdersRepository $orderRepository): Response
     {
         $orders = $orderRepository->findAll();
         $ordersJSON = [];
@@ -54,22 +55,26 @@ class ApiController extends AbstractController
     }
 
   #[Route('/restjson', name: 'app_restjson')]
-    public function restjson(RestaurantRepository $restrepo): Response
+    public function restjson(RestaurantRepository $restrepo, ProductsRepository $prodrep): Response
     {
         $allmyrestaurants  = $restrepo->findAll();
         $restaurantsJSON = [];
         foreach($allmyrestaurants  as $myrestaurant) {
-            $menus = [];
+            $menu = [];
             $orders = [];
             $users = [];
 
             foreach ($myrestaurant->getMenus()as $restaurantMenu) {
                 //Restaurant Menu Productos
-                $obj1 = new \stdClass();
-                $obj1 -> menuproducts = $restaurantMenu->getProduct()->getName();
-                $menus[]=($obj1);
-
-                
+                $product= $prodrep->findById($restaurantMenu->getProduct());
+                $menu[]=array(
+                  'id'=>$product[0]->getId(),
+                  'name' => $product[0]->getName(),
+                  'description' => $product[0]->getDescription(),
+                  'allergens' =>    $product[0]->getAllergens(),
+                  'hidden'=>   $product[0]->isHidden(),
+                  'price'=>$product[0]->getPrice()
+                );
             }
             //Restaurant-Orders
 
@@ -86,7 +91,6 @@ class ApiController extends AbstractController
         //Restaurant Menu Productos
         $obj3 = new \stdClass();
         $obj3 -> user = $restaurantUsers->getUsername();
-       
         $users[]=($obj3);
         }
             $restaurantsJSON[] = array(
@@ -96,7 +100,7 @@ class ApiController extends AbstractController
             'postal code '=>$myrestaurant->getPostalCode(),
             'users'=>$users,
             'orders '=>$orders,
-            'menus'=> $menus
+            'menu'=> $menu
                 
                 
             );

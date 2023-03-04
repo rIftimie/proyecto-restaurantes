@@ -21,15 +21,15 @@ const StripeForm = () => {
       .then((response) => {
         window.location.href = 'http://localhost:8000/orders/completed'
       })
-      .catch(() => {
-
+      .catch((error) => {
+        console.log(error);
       })
     }
   }
   return (
     <form onSubmit={handleSubmit}>
       <div className='form-group'>
-        <CardElement className='form-control'/>
+        <CardElement className='form-control text-black'/>
       </div>
       <button
           onClick={handleSubmit}
