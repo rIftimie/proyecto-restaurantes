@@ -24,7 +24,7 @@ const Subtotal = ( { stripeKey } ) => {
         >
           Pagar
         </button>
-        <DrawerSubtotal isOpen={isDrawerOpen} setIsDrawerOpen={ setIsDrawerOpen } stripeKey={ stripeKey } />
+        <DrawerSubtotal isOpen={isDrawerOpen} setIsDrawerOpen={ setIsDrawerOpen } stripeKey={ stripeKey }/>
       </div>
     </div>
   );

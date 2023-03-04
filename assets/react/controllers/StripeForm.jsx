@@ -17,9 +17,9 @@ const StripeForm = () => {
       const id= paymentMethod.id;
       const amount = 800;
       const description = "Pago del pedido 1";
-      await payOrder2({ amount, description, id  }) 
+      await payOrder2({ amount , description , id  }) 
       .then((response) => {
-        
+        window.location.href = 'http://localhost:8000/orders/completed'
       })
       .catch(() => {
 
