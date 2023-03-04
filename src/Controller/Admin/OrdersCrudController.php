@@ -20,7 +20,8 @@ class OrdersCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-//https://symfony.com/bundles/EasyAdminBundle/current/fields.html
+            //Referencia. https://symfony.com/bundles/EasyAdminBundle/current/fields.html
+            //rama de 1-client
             Field::new('note'),
             Field::new('status'),
             AssociationField::new('waiter'), //ok
