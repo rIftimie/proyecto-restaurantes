@@ -35,13 +35,6 @@ class OrdersController extends AbstractController
     public function paid(Request $request): Response
     // Orders $order
     {
-      // Stripe\Stripe::setApiKey($_ENV["STRIPE_SECRET"]);
-      //   Stripe\Charge::create ([
-      //           "amount" => $request->toArray()['amount'],
-      //           "currency" => "eur",
-      //           "source" => $request->toArray()['id'],
-      //           "description" => $request->toArray()['description'],
-      //   ]);
       $stripe = new \Stripe\StripeClient(
         $_ENV["STRIPE_SECRET"],
       );
@@ -56,11 +49,7 @@ class OrdersController extends AbstractController
             'success',
             'Payment Successful!'
         );
-        return $this->render('orders/prueba.html.twig', [
-            // 'order' => $order,
-            'stripe_key' => $_ENV["STRIPE_KEY"],
-            
-        ]);
+        return new Response(true);
     }
 
     #[Route('/completed', name: 'app_orders_completed', methods: ['GET'])]

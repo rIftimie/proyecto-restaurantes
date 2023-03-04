@@ -4,8 +4,6 @@ import '../../styles/DrawerSubtotal.css'
 function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey }) {
   const [stripe, setStripe] = useState(false);
   const [efectivo, setEfectivo] = useState(false);
-  const [paypal, setPaypal] = useState(false);
-
   const handleCloseDrawer = () => {
     if (isOpen) {
       setIsDrawerOpen(false);
@@ -16,7 +14,6 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey }) {
 
   const handleEfectivo = () => setEfectivo(!efectivo);
 
-  const handlePaypal = () => setPaypal(!paypal);
 
   return (
     <div className={`drawer ${isOpen ? "open" : ""}`}>
@@ -36,12 +33,6 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey }) {
             Pago en efectivo
           </button>
           {efectivo && <p className="fw-bold m-1">Llame a un camarero para finalizar el pedido.</p>}
-        </div>
-        <div>
-          <button onClick={handlePaypal} type="button" class="btn btn-info fw-bold m-1">
-            Paypal
-          </button>
-          {paypal && <p className="fw-bold m-1">Insertar Paypal...</p>}
         </div>
       </div>
       <div>
