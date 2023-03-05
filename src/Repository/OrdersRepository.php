@@ -52,16 +52,6 @@ class OrdersRepository extends ServiceEntityRepository
            ->getResult()
        ;
    }
-   public function findOneByID($value): ?Orders
-   {
-       return $this->createQueryBuilder('o')
-           ->andWhere('o.id = :val')
-           ->setParameter('val', $value)
-           ->getQuery()
-           ->getOneOrNullResult()
-       ;
-   }
-
 
 //    /**
 //     * @return Orders[] Returns an array of Orders objects

@@ -22,15 +22,17 @@ class OrdersController extends AbstractController
         ]);
     }
 
-    #[Route('/kitchen', name: 'app_orders_kitchen', methods: ['GET'])]
-        public function showPaidOrders(OrdersRepository $ordersRepository): Response
+    #[Route('/waiter', name: 'app_orders_waiter', methods: ['GET'])]
+    public function waiter(): Response
     {
-
-
-        return $this->render('kitchen/index.html.twig', [
-        ]);
+        return $this->render('waiter/index.html.twig');
     }
-    
+
+    #[Route('/kitchen', name: 'app_orders_kitchen', methods: ['GET'])]
+        public function kitchen(): Response
+    {
+        return $this->render('kitchen/index.html.twig');
+    }
 
     #[Route('/new', name: 'app_orders_new', methods: ['GET', 'POST'])]
     public function new(Request $request, OrdersRepository $ordersRepository): Response
@@ -48,22 +50,6 @@ class OrdersController extends AbstractController
         return $this->renderForm('orders/new.html.twig', [
             'order' => $order,
             'form' => $form,
-        ]);
-    }
-    
-    #[Route('/waiter', name: 'app_orders_waiter', methods: ['GET', 'POST'])]
-    public function apiWaiter(Request $request, OrdersRepository $ordersRepository): Response
-    {
-    
-        return $this->render('waiter/index.html.twig', [
-            'allOrders' =>  $ordersRepository->findAll(),
-        ]);
-    }
-
-    #[Route('/kitchen', name: 'app_orders_kitchen', methods: ['GET', 'POST'])]
-    public function kitchen(): Response
-    {
-        return $this->render('kitchen/index.html.twig', [
         ]);
     }
 
