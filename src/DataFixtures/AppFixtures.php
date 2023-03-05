@@ -42,7 +42,9 @@ class AppFixtures extends Fixture
 
          // Waiter 1
         $waiter1 = new User();
-        $waiter1 -> setUsername("Jorge");
+        $waiter1 -> setUsername("jorgecre175");
+        $waiter1 -> setFirstName("Jorge");
+        $waiter1 -> setLastName("Cremades");
         $waiter1 -> setRoles(["ROLE_WAITER"]);
         // hash the password (based on the security.yaml config for the $user class)
         $hashedPassword = $this->passwordHasher->hashPassword(
@@ -55,7 +57,9 @@ class AppFixtures extends Fixture
 
         // Waiter 2
         $waiter2 = new User();
-        $waiter2 -> setUsername("Carmen");
+        $waiter2 -> setUsername("carmenroma142");
+        $waiter2 -> setFirstName("Carmen");
+        $waiter2 -> setLastName("Rodriguez Martin");
         $waiter2 -> setRoles(["ROLE_WAITER"]);
         // hash the password (based on the security.yaml config for the $user class)
         $hashedPassword = $this->passwordHasher->hashPassword(
