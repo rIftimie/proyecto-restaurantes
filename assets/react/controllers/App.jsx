@@ -1,7 +1,18 @@
-import React from 'react';
+import React from 'react'
+import WaiterPage from './pages/waiter/WaiterPage'
+// import OrderCard from './components/OrderCard'
+// import Waiter from './pages/waiter/WaiterPage'
+// import Kitchen from './pages/kitchen/KitchenPage'
+function App({fullName}) {
+  return (
+	<div>
+    
+    {/* <OrderCard fullName={fullName}/> */}
+    <WaiterPage/>
+    adadaad
+  </div>
 
-function App() {
-	return <div className="container-fluid bg-primary eeeeeeeeeee">App</div>;
+  )
 }
 
-export default App;
+export default App

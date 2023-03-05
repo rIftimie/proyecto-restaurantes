@@ -17,4 +17,6 @@
 
 localhost:3000
 
+`sudo setcap cap_net_bind_service=+ep literal_path_to_binary`
+
 `MERCURE_PUBLISHER_JWT_KEY='!ChangeThisMercureHubJWTSecretKey!' MERCURE_SUBSCRIBER_JWT_KEY='!ChangeThisMercureHubJWTSecretKey!' ./bin/mercure run --config Caddyfile.dev`

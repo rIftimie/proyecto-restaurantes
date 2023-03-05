@@ -18,7 +18,20 @@ class OrdersController extends AbstractController
     {
         return $this->render('orders/index.html.twig', [
             'orders' => $ordersRepository->findAll(),
+            
         ]);
+    }
+
+    #[Route('/waiter', name: 'app_orders_waiter', methods: ['GET'])]
+    public function waiter(): Response
+    {
+        return $this->render('waiter/index.html.twig');
+    }
+
+    #[Route('/kitchen', name: 'app_orders_kitchen', methods: ['GET'])]
+        public function kitchen(): Response
+    {
+        return $this->render('kitchen/index.html.twig');
     }
 
     #[Route('/new', name: 'app_orders_new', methods: ['GET', 'POST'])]
@@ -75,4 +88,33 @@ class OrdersController extends AbstractController
 
         return $this->redirectToRoute('app_orders_index', [], Response::HTTP_SEE_OTHER);
     }
+    
 }
+//  0 -> pending
+//  1 -> payed
+//  2 -> working
+//  3 -> done
+//  4 -> delivered
+
+/*    #[Route('/waiter/pending_orders', name: 'app_pending_orders', methods: ['POST'])]
+    public function pendingOrders(Request $request, Orders $order, OrdersRepository $ordersRepository): Response
+    {
+        return $this->redirectToRoute('app_orders_index', ['pending-orders' => $ordersRepository->findOneByStatus(0), ], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/waiter/payed_orders', name: 'app_payed_orders', methods: ['POST'])]
+    public function payedOrders(Request $request, Orders $order, OrdersRepository $ordersRepository): Response
+    {
+        return $this->redirectToRoute('app_orders_index', ['pending-orders' => $ordersRepository->findOneByStatus(1), ], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/waiter/ready_orders', name: 'app_ready_orders', methods: ['POST'])]
+    public function readyOrders(Request $request, Orders $order, OrdersRepository $ordersRepository): Response
+    {
+        return $this->redirectToRoute('app_orders_index', ['pending-orders' => $ordersRepository->findOneByStatus(2), ], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/waiter/delivered_orders', name: 'app_delivered_orders', methods: ['POST'])]
+    public function deliveredOrders(Request $request, Orders $order, OrdersRepository $ordersRepository): Response
+    {
+        return $this->redirectToRoute('app_orders_index', ['pending-orders' => $ordersRepository->findOneByStatus(3), ], Response::HTTP_SEE_OTHER);
+    } */
