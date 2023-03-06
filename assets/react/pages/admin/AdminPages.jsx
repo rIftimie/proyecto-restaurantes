@@ -1,20 +1,17 @@
-import React, { useState } from "react";
-import './adminPage.css';
-import Prueba from "../../components/Prueba";
-import User from "../../components/User";
-import Product from "../../components/Product";
-import Order from "../../components/Order";
-import Table from "../../components/Table";
-
-const components = {
-  Prueba: <Prueba />,
-  User: <User />,
-  Product: <Product />,
-  Order: <Order />,
-  Table: <Table />,
-};
+import React, { useState } from 'react';
+import Header from '../../components/Header';
+import NavButton from '../../components/Buttons/NavButton';
 
 const AdminPages = () => {
-}
+  <>
+    <Header />
+    <nav className='mainMenu'>
+      <NavButton name='Trabajadores' onClick={() => {}} />
+      <NavButton name='Pedidos' onClick={() => {}} />
+      <NavButton name='Productos' onClick={() => {}} />
+      <NavButton name='Mesas' onClick={() => {}} />
+    </nav>
+  </>;
+};
 
 export default AdminPages;
