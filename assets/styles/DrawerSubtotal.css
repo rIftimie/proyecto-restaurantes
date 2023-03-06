@@ -4,6 +4,7 @@
   top: 900px; /* Ocultamos el drawer debajo de la pantalla */
   left: 0;
   width: 100%;
+  justify-content:center;
   height: 500px;
   background-color: #f14b42;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -22,8 +23,9 @@
   background-color: #9ce070;
   color: #313131;
   border: none;
+  width: 100px;
 }
-.btn.btn-outline-dark.m-3 {
+.btn.btn-outline-dark.m-4 {
   background-color: #313131;
   color: #fafad2;
 }
@@ -31,4 +33,10 @@
   background-color: #313131;
   color: #fafad2;
   border: none;
+  margin-top: 1%;
+  width: 270px;
+}
+
+.opciones-drawer{
+  width: 100%;
 }

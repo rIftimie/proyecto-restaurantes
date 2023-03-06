@@ -3,9 +3,8 @@
 {% block title %}Pay{% endblock %}
 
 {% block body %}
-  <div class='container d-flex justify-content-center'>
+  <div class='container d-flex justify-content-center flex-column'>
     <div {{ react_component('Productos', {}) }}></div>
-    <div class='position-absolute bottom-0 m-5' {{ react_component('Subtotal', { 'stripeKey': stripe_key } ) }}></div>
+    <div {{ react_component('Subtotal', { 'stripeKey': stripe_key } ) }}></div>
   </div>
-
 {% endblock %}
