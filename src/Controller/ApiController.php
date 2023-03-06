@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\OrdersRepository;
 use App\Entity\Orders;
+use App\Repository\MenuRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\RestaurantRepository;
 
@@ -68,8 +69,8 @@ class ApiController extends AbstractController
     }
 
 
-  #[Route('/restjson', name: 'app_restjson')]
-    public function restjson(RestaurantRepository $restrepo, ProductsRepository $prodrep): Response
+  #[Route('/restaurant/', name: 'app_api_restaurant')]
+    public function restaurant(RestaurantRepository $restrepo, ProductsRepository $prodrep): Response
     {
         $allmyrestaurants  = $restrepo->findAll();
         $restaurantsJSON = [];
@@ -130,6 +131,29 @@ class ApiController extends AbstractController
         */
     }
 
+    #[Route('/restaurant/{id}/products', name: 'app_api_products')]
+    public function products(MenuRepository $menuRepository, ProductsRepository $prodrep, $id): JsonResponse
+    {
+        $menu = $menuRepository->findBy(['restaurant' => $id]);
+        $productsJSON = [];
+        foreach($menu as $menuItem){
+          $obj = new \stdClass();
+          $obj->id=$prodrep->findById($menu[0]->getProduct())[0]->getId();
+          $obj->name=$prodrep->findById($menu[0]->getProduct())[0]->getName();
+          $obj->description=$prodrep->findById($menu[0]->getProduct())[0]->getDescription();
+          $obj->allergens=$prodrep->findById($menu[0]->getProduct())[0]->getAllergens();
+          $obj->hidden=$prodrep->findById($menu[0]->getProduct())[0]->isHidden();
+          $obj->price=$prodrep->findById($menu[0]->getProduct())[0]->getPrice();
+          $productsJSON[]= array(
+            'id'  => $menuItem->getId(),
+            'product' => $obj,
+            'stock' => $menuItem->getStock(),
+            'hidden' => $menuItem->isHidden(),
+
+          );
+        }
+        return new JsonResponse($productsJSON);
+    }
     
 
 
