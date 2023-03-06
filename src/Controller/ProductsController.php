@@ -81,6 +81,7 @@ class ProductsController extends AbstractController
         ]);
     }
 
+    // Cloudinary API: Crea una url publica para la imagen seleccionada y la relaciona con la propiedad img
     #[Route('/{id}/edit', name: 'app_products_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Products $product, ProductsRepository $productsRepository, SluggerInterface $slugger): Response
     {
@@ -90,11 +91,12 @@ class ProductsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $image = $form->get('img')->getData();
             $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+
             // this is needed to safely include the file name as part of the URL
             $safeFilename = $slugger->slug($originalFilename);
             $newFilename = $safeFilename . '-' . uniqid();
-            // Move the file to the directory where brochures are stored
-            //Cloudinary Api
+
+            // move the file to the directory where brochures are stored
             try {
                 $image->move(
                     $this->getParameter('img_path'),
@@ -105,7 +107,9 @@ class ProductsController extends AbstractController
             } catch (FileException $e) {
                 dd($e);
             }
+
             $productsRepository->save($product, true);
+
             $cloudinary = new Cloudinary(
                 [
                     'cloud' => [
@@ -120,6 +124,7 @@ class ProductsController extends AbstractController
                 ['public_id' => $newFilename]
             );
             $cloudinary->image($image)->resize(Resize::fill(100, 150))->toUrl();
+
             return $this->redirectToRoute('app_products_index', [], Response::HTTP_SEE_OTHER);
         }
 

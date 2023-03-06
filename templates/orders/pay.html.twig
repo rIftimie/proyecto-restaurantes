@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pay{% endblock %}
+
+{% block body %}
+  <div class='container d-flex justify-content-center'  {{ react_component('pages/client/PayPage', {'stripeKey': stripe_key}) }}></div>
+
+{% endblock %}

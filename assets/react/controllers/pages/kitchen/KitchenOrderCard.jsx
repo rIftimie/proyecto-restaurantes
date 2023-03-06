@@ -1,5 +1,5 @@
 import React from 'react';
-import { acceptOrder, declineOrder, finishOrder } from '../../api/orders';
+import { acceptOrder, declineOrder, finishOrder } from '../../helpers/kitchen';
 
 function KitchenOrderCard({ order, useStateOrder }) {
 	const orderStatus = order.status;
@@ -17,12 +17,12 @@ function KitchenOrderCard({ order, useStateOrder }) {
 
 	async function handleAccept(order) {
 		try {
-			await acceptOrder(order);
+			await acceptOrder(order); // actualiza el estado en el servidor
 			useStateOrder.setOrders(
 				useStateOrder.orders.map((item) =>
 					order.id == item.id ? { ...item, status: 2 } : item
 				)
-			);
+			); // actualiza el estado en el cliente
 		} catch (error) {
 			console.error(error);
 		}
@@ -30,10 +30,10 @@ function KitchenOrderCard({ order, useStateOrder }) {
 
 	async function handleFinish(order) {
 		try {
-			await finishOrder(order);
+			await finishOrder(order); // actualiza el estado en el servidor
 			useStateOrder.setOrders(
 				useStateOrder.orders.filter((item) => order != item)
-			);
+			); // actualiza el estado en el cliente
 		} catch (error) {
 			console.error(error);
 		}
@@ -41,10 +41,10 @@ function KitchenOrderCard({ order, useStateOrder }) {
 
 	async function handleDecline(order) {
 		try {
-			await declineOrder(order);
+			await declineOrder(order); // actualiza el estado en el servidor
 			useStateOrder.setOrders(
 				useStateOrder.orders.filter((item) => order != item)
-			);
+			); // actualiza el estado en el cliente
 		} catch (error) {
 			console.error(error);
 		}

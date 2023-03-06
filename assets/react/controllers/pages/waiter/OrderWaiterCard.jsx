@@ -1,9 +1,9 @@
 import React from 'react';
-import { paidWaiter, delivered } from '../../api/waiter';
+import { payWaiter, deliver } from '../../helpers/waiter';
 
 function OrderWaiterCard({ order, useStateOrder }) {
 	const orderStatus = order.status;
-	let status;
+	let msgStatus;
 	const classes = ['card text-light d-flex'];
 
 	if (orderStatus == 0) {
@@ -20,39 +20,41 @@ function OrderWaiterCard({ order, useStateOrder }) {
 
 	switch (order.status) {
 		case 0:
-			status = 'Pendiente de pago';
+			msgStatus = 'Pendiente de pago';
 			break;
 		case 3:
-			status = 'Listo';
+			msgStatus = 'Listo';
 			break;
 		default:
-			status = 'Estado desconocido';
+			msgStatus = 'Estado desconocido';
 			break;
 	}
 
 	const handlePay = (orderId) => {
-		paidWaiter(order);
+		payWaiter(order); // actualiza el estado en el servidor
+
 		const updatedOrders = useStateOrder.orders.map((order) =>
 			order.id === orderId ? { ...order, status: 1 } : order
 		);
 
-		useStateOrder.setOrders(updatedOrders); // actualiza el estado en la aplicación
+		useStateOrder.setOrders(updatedOrders); // actualiza el estado en el cliente
 	};
 
 	const handleDeliver = (orderId) => {
-		delivered(order);
+		deliver(order); // actualiza el estado en el servidor
+
 		const updatedOrders = useStateOrder.orders.map((order) =>
 			order.id === orderId ? { ...order, status: 4 } : order
 		);
 
-		useStateOrder.setOrders(updatedOrders); // actualiza el estado en la aplicación
+		useStateOrder.setOrders(updatedOrders); // actualiza el estado en el cliente
 	};
 
 	return (
 		<section className={classes.join(' ')} style={{ textAlign: 'center' }}>
 			<div className="card-body">
 				<p>Camarero:{order.waiter}</p>
-				<h5 className="card-title">Estado del pedido:{status}</h5>
+				<h5 className="card-title">Estado del pedido:{msgStatus}</h5>
 
 				{orderStatus == 0 && (
 					<button

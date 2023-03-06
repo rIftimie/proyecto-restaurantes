@@ -1,4 +1,5 @@
 import React from 'react'
+import OrderCard from './components/OrderCard'
 import WaiterPage from './pages/waiter/WaiterPage'
 // import OrderCard from './components/OrderCard'
 // import Waiter from './pages/waiter/WaiterPage'

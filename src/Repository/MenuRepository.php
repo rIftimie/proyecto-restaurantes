@@ -39,7 +39,7 @@ class MenuRepository extends ServiceEntityRepository
         }
     }
 
-      /**
+    /**
     * @return Menu[] Returns an array of Menu objects
     */
    public function findByRestaurantANDProduct($value, $value2): array

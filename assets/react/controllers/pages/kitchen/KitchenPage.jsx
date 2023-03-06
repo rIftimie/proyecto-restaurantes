@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { getOrders } from '../../api/orders';
+import { getOrders } from '../../helpers/orders';
 import KitchenOrderContainer from './KitchenOrderContainer';
 
-const KitchenPage = () => {
+function KitchenPage() {
 	const [orders, setOrders] = useState([]);
 	const fetchGetOrders = async () => {
-		try {
-			const response = await getOrders();
-			setOrders(
-				response.filter(
-					(order) => order.status == 1 || order.status == 2
-				)
-			);
-		} catch (error) {
-			console.log(error);
-		}
+		const response = await getOrders();
+		setOrders(
+			response.filter((order) => order.status == 1 || order.status == 2)
+		);
 	};
 
 	useEffect(() => {
@@ -31,6 +25,6 @@ const KitchenPage = () => {
 			)}
 		</main>
 	);
-};
+}
 
 export default KitchenPage;
