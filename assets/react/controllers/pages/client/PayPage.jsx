@@ -1,6 +1,6 @@
 import React from 'react'
-import Subtotal from '../../components/Subtotal'
-import Productos from '../../components/Productos'
+import Subtotal from '../../components/subtotal/Subtotal'
+import Productos from '../../components/products'
 
 const PayPage = ({ stripeKey }) => {
   return (

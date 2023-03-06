@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-import BotonAgregar from "./BotonAgregar";
-import BotonQuitar from "./BotonQuitar";
+import BotonAgregar from "./AddButon";
+import BotonQuitar from "./DeleteButton";
 
    
 const Productos = (props) => {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Stripe from "./Stripe";
+import Stripe from "../stripe/Stripe";
 import '../../../styles/DrawerSubtotal.css'
 function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey }) {
   const [stripe, setStripe] = useState(false);
