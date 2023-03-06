@@ -19,7 +19,11 @@ const StripeForm = () => {
       const description = "Pago del pedido 1";
       await payOrder2({ amount , description , id  }) 
       .then((response) => {
-        window.location.href = 'http://localhost:8000/orders/completed'
+        console.log(response.ok);
+        if(response.ok){
+          
+          window.location.href = 'http://localhost:8000/orders/completed';
+        }
       })
       .catch((error) => {
         console.log(error);
