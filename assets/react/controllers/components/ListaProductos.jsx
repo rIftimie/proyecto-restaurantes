@@ -4,7 +4,7 @@ import BotonPago from "./BotonPago";
 import BotonQuitar from "./BotonQuitar";
 import Cabecera from "./Cabecera";
 import Productos from "./Productos";
-import "./App.css";
+import "../App.css";
 
 
 const ListaProductos = () => {

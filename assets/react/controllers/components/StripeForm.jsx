@@ -1,7 +1,6 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
-import axios from 'axios';
 import React from 'react'
-import { payOrder2 } from './api/pay';
+import { payOrder2 } from '../api/pay';
 
 const StripeForm = () => {
   const stripe = useStripe();
