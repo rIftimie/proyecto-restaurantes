@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-
-const BotonAgregar = () => {
+const AddButton = () => {
     const [quitarVisible, setQuitarVisible] = useState(false);
     const [contador, setContador] = useState(0);
 
@@ -29,4 +28,4 @@ const BotonAgregar = () => {
     );
 };
 
-export default BotonAgregar;
+export default AddButton;

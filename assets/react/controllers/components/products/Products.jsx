@@ -1,11 +1,10 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-import BotonAgregar from "./AddButon";
-import BotonQuitar from "./DeleteButton";
-
+import AddButton from "./AddButton";
+import DeleteButton from "./DeleteButton";
    
-const Productos = (props) => {
+const Products = (props) => {
   const { texto, descripcion } = props;
 
   const imagenes = Array.from({ length: 4 }, (_, index) => (
@@ -13,22 +12,22 @@ const Productos = (props) => {
       <img src='' alt="Nachos con queso" width={200}/>
       <h5> {texto} </h5>
       <h6> {descripcion} </h6>
-      <BotonAgregar/>
-      <BotonQuitar/>
+      <AddButton/>
+      <DeleteButton/>
     </div>
   ));
 
   return <>{imagenes}</>;
 }
 
-Productos.propTypes = {
+Products.propTypes = {
   texto: PropTypes.string.isRequired,
   descripcion: PropTypes.string.isRequired,
 }
 
-Productos.defaultProps = {
+Products.defaultProps = {
   texto: 'Nachos con queso.........................................3$',
   descripcion: 'Tortitas de trigo en forma de triangulo con carne picada y queso fresco',
 }
 
-export default Productos;
+export default Products;

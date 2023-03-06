@@ -1,21 +1,17 @@
-import React, { useState } from 'react';
-import BotonAgregar from "../../components/products/AddButon";
-import BotonPago from "../../components/stripe/PayButton";
-import BotonQuitar from "../../components/DeleteButton";
-import Cabecera from "../../components/products/Header";
-import Productos from "../../components/products";
-import "../App.css";
+import React, { useState } from "react";
+import PayButton from "../../components/stripe/PayButton";
+import Header from "../../components/products/Header";
+import Products from "../../components/products/Products";
+import "../../App.css"
 
+const ClientPage = () => {
+  return (
+    <div>
+      <Header />
+      <Products />
+      <PayButton />
+    </div>
+  );
+};
 
-const ListaProductos = () => {
-    return (
-        <div>
-            <Cabecera/>
-            <Productos/>
-            <BotonPago/>
-        </div>
-    )
-
-}
-
-export default ListaProductos;
+export default ClientPage;

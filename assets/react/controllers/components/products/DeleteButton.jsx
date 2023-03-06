@@ -1,8 +1,8 @@
 import React from 'react';
 
-const BotonQuitar = () => {
+const DeleteButton = () => {
     return (
         <><button class="botonQuitar" type="button">-</button></>
     );
 }
-export default BotonQuitar;
+export default DeleteButton;
