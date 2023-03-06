@@ -121,12 +121,44 @@ class OrdersController extends AbstractController
 
         return $this->redirectToRoute('app_orders_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/paidWaiter', name: 'app_orders_paidWaiter')]
+    public function payCash(OrdersRepository $orderRepository, Orders $order): Response
+    {
+
+        if (!$order) {
+            // El recurso no existe
+            return new Response('El pedido no existe', Response::HTTP_NOT_FOUND);
+        }
+    
+        $order->setStatus(1);
+        $orderRepository->save($order, true);
+    
+        return new Response('Pedido pagado en efectivo', Response::HTTP_OK);
+    }
+
+    #[Route('/{id}/delivered', name: 'delivered')]
+    public function delivered(OrdersRepository $orderRepository, Orders $order): Response
+    {
+
+        if (!$order) {
+            // El recurso no existe
+            return new Response('El pedido no existe', Response::HTTP_NOT_FOUND);
+        }
+    
+        $order->setStatus(4);
+        $orderRepository->save($order, true);
+    
+        return new Response('Pedido entregado', Response::HTTP_OK);
+    }
     
 }
 //  0 -> pending    
 //  1 -> payed    
-//  2 -> ready    
-//  3 -> delivered    
+//  2 -> process    
+//  3 -> ready 
+//  4 -> delivered
+//  5 -> cancelled
 
 /*    #[Route('/waiter/pending_orders', name: 'app_pending_orders', methods: ['POST'])]
     public function pendingOrders(Request $request, Orders $order, OrdersRepository $ordersRepository): Response
