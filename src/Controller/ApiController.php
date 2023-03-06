@@ -138,12 +138,12 @@ class ApiController extends AbstractController
         $productsJSON = [];
         foreach($menu as $menuItem){
           $obj = new \stdClass();
-          $obj->id=$prodrep->findById($menu[0]->getProduct())[0]->getId();
-          $obj->name=$prodrep->findById($menu[0]->getProduct())[0]->getName();
-          $obj->description=$prodrep->findById($menu[0]->getProduct())[0]->getDescription();
-          $obj->allergens=$prodrep->findById($menu[0]->getProduct())[0]->getAllergens();
-          $obj->hidden=$prodrep->findById($menu[0]->getProduct())[0]->isHidden();
-          $obj->price=$prodrep->findById($menu[0]->getProduct())[0]->getPrice();
+          $obj->id=$prodrep->findById($menuItem->getProduct())[0]->getId();
+          $obj->name=$prodrep->findById($menuItem->getProduct())[0]->getName();
+          $obj->description=$prodrep->findById($menuItem->getProduct())[0]->getDescription();
+          $obj->allergens=$prodrep->findById($menuItem->getProduct())[0]->getAllergens();
+          $obj->hidden=$prodrep->findById($menuItem->getProduct())[0]->isHidden();
+          $obj->price=$prodrep->findById($menuItem->getProduct())[0]->getPrice();
           $productsJSON[]= array(
             'id'  => $menuItem->getId(),
             'product' => $obj,
