@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Menu;
 use App\Entity\Orders;
 use App\Form\OrdersType;
+use App\Repository\MenuRepository;
 use App\Repository\OrdersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,19 +24,17 @@ class OrdersController extends AbstractController
         ]);
     }
 
-    #[Route('/kitchen', name: 'app_orders_index', methods: ['GET'])]
-        public function showPaidOrders(Orders $order): Response
+    #[Route('/waiter', name: 'app_orders_waiter', methods: ['GET'])]
+    public function waiter(): Response
     {
-
-        $paidOrders = $ordersRepository->findbyOrder([
-            'status'=>1,
-        ]);
-
-        return $this->render('kitchen/index.html.twig', [
-            'paidOrders' => $paidOrders,
-        ]);
+        return $this->render('waiter/index.html.twig');
     }
-    
+
+    #[Route('/kitchen', name: 'app_orders_kitchen', methods: ['GET'])]
+        public function kitchen(): Response
+    {
+        return $this->render('kitchen/index.html.twig');
+    }
 
     #[Route('/new', name: 'app_orders_new', methods: ['GET', 'POST'])]
     public function new(Request $request, OrdersRepository $ordersRepository): Response
@@ -54,37 +54,47 @@ class OrdersController extends AbstractController
             'form' => $form,
         ]);
     }
-    
-    #[Route('/waiter', name: 'app_orders_waiter', methods: ['GET', 'POST'])]
-    public function apiWaiter(Request $request, OrdersRepository $ordersRepository): Response
+
+    #[Route('/kitchen/{id}/accept', name: 'app_orders_kitchen_accept', methods: ['PUT'])]
+    public function kitchenAccept(Request $request, Orders $order, OrdersRepository $ordersRepository, MenuRepository $menuRepository) : Response
     {
-       
-        return $this->render('waiter/index.html.twig', [
-            'allOrders' =>  $ordersRepository->findAll(),
-        ]);
+        if($order->getStatus()==1){
+            $order->setStatus(2);
+            foreach($order->getOrderProducts() as $orderProduct){
+                foreach($menuRepository->findByRestaurantANDProduct($order->getRestaurant(),$orderProduct->getProducts()->getId()) as $menuFound){
+                    $menuFound->setStock($menuFound->getStock()-$orderProduct->getQuantity());
+                    $menuRepository->save($menuFound, true);
+                }
+            }
+            $ordersRepository->save($order, true);
+        }
+        
+        return $this->render('kitchen/index.html.twig',[]);
     }
 
-
-
-
-
-
-    #[Route('/kitchen', name: 'app_orders_kitchen', methods: ['GET', 'POST'])]
-    public function kitchen(Request $request, OrdersRepository $ordersRepository): Response
+    #[Route('/kitchen/{id}/finish', name: 'app_orders_kitchen_finish', methods: ['PUT'])]
+    public function kitchenFinish(Request $request, Orders $order, OrdersRepository $ordersRepository) : Response
     {
-        return $this->render('kitchen/index.html.twig', [
-        ]);
+        $order->setStatus(3);
+        $ordersRepository->save($order,true);
+        return $this->render('kitchen/index.html.twig',[]);
     }
 
-
-
-
-
-
-
-
-
-
+    #[Route('/kitchen/{id}/decline', name: 'app_orders_kitchen_decline', methods: ['PUT'])]
+    public function kitchenDecline(Request $request, Orders $order, OrdersRepository $ordersRepository, MenuRepository $menuRepository) : Response
+    {
+        if($order->getStatus()==2){
+            $order->setStatus(5);
+            foreach($order->getOrderProducts() as $orderProduct){
+                foreach($menuRepository->findByRestaurantANDProduct($order->getRestaurant(),$orderProduct->getProducts()->getId()) as $menuFound){
+                    $menuFound->setStock($menuFound->getStock()+$orderProduct->getQuantity());
+                    $menuRepository->save($menuFound, true);
+                }
+            }
+            $ordersRepository->save($order, true);
+        }
+        return $this->render('kitchen/index.html.twig',[]);
+    }
 
     #[Route('/{id}', name: 'app_orders_show', methods: ['GET'])]
     public function show(Orders $order): Response
@@ -137,7 +147,7 @@ class OrdersController extends AbstractController
         return new Response('Pedido pagado en efectivo', Response::HTTP_OK);
     }
 
-    #[Route('/{id}/delivered', name: 'delivered')]
+    #[Route('/{id}/delivered', name: 'app_orders_delivered')]
     public function delivered(OrdersRepository $orderRepository, Orders $order): Response
     {
 
@@ -153,12 +163,20 @@ class OrdersController extends AbstractController
     }
     
 }
+<<<<<<< HEAD
 //  0 -> pending    
 //  1 -> payed    
 //  2 -> process    
 //  3 -> ready 
 //  4 -> delivered
 //  5 -> cancelled
+=======
+//  0 -> pending
+//  1 -> payed
+//  2 -> working
+//  3 -> done
+//  4 -> delivered
+>>>>>>> 0cf1de9f0890416feb217001d8d84ca04120d4b9
 
 /*    #[Route('/waiter/pending_orders', name: 'app_pending_orders', methods: ['POST'])]
     public function pendingOrders(Request $request, Orders $order, OrdersRepository $ordersRepository): Response
