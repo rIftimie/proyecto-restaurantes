@@ -1,10 +1,7 @@
-import React from "react"; 
-import OrderCard from "./OrderCard";
+import React from 'react';
 
-function OrderContainer({ data }) {
-  const orders = data;
-  const renderOrders = orders?.map((order) => <OrderCard order={order} />);
-  return <main className="d-flex justify-content-between">{renderOrders}</main>;
+function OrderContainer() {
+	return <main>"OrderContainer</main>;
 }
 
 export default OrderContainer;

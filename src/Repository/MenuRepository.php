@@ -39,6 +39,21 @@ class MenuRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+    * @return Menu[] Returns an array of Menu objects
+    */
+   public function findByRestaurantANDProduct($value, $value2): array
+   {
+       return $this->createQueryBuilder('m')
+           ->andWhere('m.restaurant = :val AND m.product = :val2')
+           ->setParameter('val', $value)
+           ->setParameter('val2', $value2)
+           ->orderBy('m.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
 //    /**
 //     * @return Menu[] Returns an array of Menu objects
 //     */

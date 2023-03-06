@@ -1,36 +1,30 @@
-import React, { useEffect, useState } from 'react'
-import { getOrders } from '../../api/orders'
-import OrderContainer from '../../components/OrderContainer'
+import React, { useEffect, useState } from 'react';
+import { getOrders } from '../../helpers/orders';
+import KitchenOrderContainer from './KitchenOrderContainer';
 
-const KitchenPage = () => {
+function KitchenPage() {
+	const [orders, setOrders] = useState([]);
+	const fetchGetOrders = async () => {
+		const response = await getOrders();
+		setOrders(
+			response.filter((order) => order.status == 1 || order.status == 2)
+		);
+	};
 
-    const [orders, setOrder] = useState([])
+	useEffect(() => {
+		fetchGetOrders();
+	}, []);
 
-    const fetchGetOrders = async () =>{
-     try {
-       const response = await getOrders();
-       setOrder(response.filter(order => order.status == 1 || order.status == 2));
-      
-       console.log(response.filter(order => order.status == 1 || order.status == 2));
-     } catch (error) {
-       console.log(error);
-     }
- 
-   }
- 
-   useEffect(() => {
- 
-     fetchGetOrders()
-     
-   }, [])
-   
-  return (
-    <div>
-    {orders.length > 0  ?  <OrderContainer data={orders}/> : <h1>Loading ...</h1>}
-    </div>
-  
-
-  )
+	return (
+		<main>
+			<h1 className="text-center">COCINA</h1>
+			{orders.length > 0 ? (
+				<KitchenOrderContainer useStateOrder={{ orders, setOrders }} />
+			) : (
+				<h1>Loading ...</h1>
+			)}
+		</main>
+	);
 }
 
 export default KitchenPage;
