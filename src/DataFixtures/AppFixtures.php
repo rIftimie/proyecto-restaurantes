@@ -42,7 +42,9 @@ class AppFixtures extends Fixture
 
          // Waiter 1
         $waiter1 = new User();
-        $waiter1 -> setUsername("Jorge");
+        $waiter1 -> setUsername("jorgecre175");
+        $waiter1 -> setFirstName("Jorge");
+        $waiter1 -> setLastName("Cremades");
         $waiter1 -> setRoles(["ROLE_WAITER"]);
         // hash the password (based on the security.yaml config for the $user class)
         $hashedPassword = $this->passwordHasher->hashPassword(
@@ -55,7 +57,9 @@ class AppFixtures extends Fixture
 
         // Waiter 2
         $waiter2 = new User();
-        $waiter2 -> setUsername("Carmen");
+        $waiter2 -> setUsername("carmenroma142");
+        $waiter2 -> setFirstName("Carmen");
+        $waiter2 -> setLastName("Rodriguez Martin");
         $waiter2 -> setRoles(["ROLE_WAITER"]);
         // hash the password (based on the security.yaml config for the $user class)
         $hashedPassword = $this->passwordHasher->hashPassword(
@@ -168,6 +172,13 @@ class AppFixtures extends Fixture
         $orderProducts1->setOrders($order1);
         $manager->persist($orderProducts1);
 
+        $orderProducts5 = new OrderProducts();
+        $orderProducts5->setQuantity(5);
+        $orderProducts5->setProducts($products[1]);
+        $orderProducts5->setTotalPrice(($orderProducts5->getProducts()->getPrice())*($orderProducts5->getQuantity()));
+        $orderProducts5->setOrders($order1);
+        $manager->persist($orderProducts5);
+
         $orderProducts2 = new OrderProducts();
         $orderProducts2->setQuantity(3);
         $orderProducts2->setProducts($products[1]);
@@ -180,7 +191,7 @@ class AppFixtures extends Fixture
         $orderProducts3->setProducts($products[2]);
         $orderProducts3->setTotalPrice(($orderProducts3->getProducts()->getPrice())*($orderProducts3->getQuantity()));
         $orderProducts3->setOrders($order3);
-        $manager->persist($orderProducts2);
+        $manager->persist($orderProducts3);
 
         $orderProducts4 = new OrderProducts();
         $orderProducts4->setQuantity(3);
