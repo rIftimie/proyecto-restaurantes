@@ -1,0 +1,71 @@
+* {
+    box-sizing: border-box;
+    font-family: sans-serif;
+  }
+  
+  body,
+  html {
+    padding: 0;
+    margin: 0;
+  }
+  
+  p{
+    color: #fafad2;
+  }
+  
+  h4{
+    color:#fafad2;
+    text-align: right;
+    font-style: italic;
+  }
+  
+  h5{
+    color:#fafad2;
+    text-align: left;
+  }
+  
+  h6{
+    color:#fafad2;
+    font-style: italic;
+  }
+  
+  .app {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    width: 400px;
+    margin: auto;
+    max-width: 400px;
+    border: 1px solid;
+    padding: 0 2rem 2rem 2rem;
+    margin-top: 2rem;
+    background-color: #313131;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .boton, .botonAgregar, .botonQuitar {
+    display: flex;
+    width: 100%;
+    padding: 0.5rem;
+    margin: 5px;
+    font-size: 1rem;
+    border-radius: 3px;
+    background-color: #9ce070;
+    font-weight: bold;
+  }
+  
+  .botonQuitar {
+    background-color: #f14b42;
+    visibility: hidden;
+  }
+  
+  .botonAgregar, .botonQuitar{
+    width: 10%;
+    border-radius: 50px;
+    margin-left: auto;
+  }
+  
+  img {
+    border-radius: 500px;
+  }
