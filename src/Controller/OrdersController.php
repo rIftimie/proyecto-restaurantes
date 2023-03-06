@@ -77,6 +77,7 @@ class OrdersController extends AbstractController
     {
         $order->setStatus(3);
         $ordersRepository->save($order,true);
+        return $this->render('kitchen/index.html.twig',[]);
     }
 
     #[Route('/kitchen/{id}/decline', name: 'app_orders_kitchen_decline', methods: ['PUT'])]
@@ -92,6 +93,7 @@ class OrdersController extends AbstractController
             }
             $ordersRepository->save($order, true);
         }
+        return $this->render('kitchen/index.html.twig',[]);
     }
 
     #[Route('/{id}', name: 'app_orders_show', methods: ['GET'])]

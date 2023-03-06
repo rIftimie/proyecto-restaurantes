@@ -1,8 +1,7 @@
 import React from "react";
 
-function OrderCard({ order, onHandleAccept, onHandleFinish, onHandleDecline }) {
+function KitchenOrderCard({ order, onHandleAccept, onHandleFinish, onHandleDecline }) {
   const orderStatus = order.status;
-  console.log(orderStatus);
   const classes = ["card text-light d-flex"];
 
   if (orderStatus == 0) {
@@ -15,19 +14,9 @@ function OrderCard({ order, onHandleAccept, onHandleFinish, onHandleDecline }) {
     classes.push("bg-primary");
   }
 
-  // async function handleAccept(e){
-  //   try {
-  //     await acceptOrder(order);
-  //     setOrder(orders.filter(od => od.id == order.id));
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-  function handleFinish(e){}
-  function handleDecline(e){}
-
   return (
-    <section className={classes.join(" ")} style={{ textAlign: "center" }}>
+    <>
+   <section className={classes.join(" ")} style={{ textAlign: "center" }}>
       <div className="card-body">
         <p>Camarero:{order.waiter}</p>
         <h5 className="card-title">
@@ -47,7 +36,9 @@ function OrderCard({ order, onHandleAccept, onHandleFinish, onHandleDecline }) {
         )}
       </div>
     </section>
+    </>
+
   );
 }
 
-export default OrderCard;
+export default KitchenOrderCard;
