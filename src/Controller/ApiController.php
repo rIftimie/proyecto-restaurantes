@@ -14,45 +14,32 @@ use App\Entity\Orders;
 #[Route('/api')]
 class ApiController extends AbstractController
 {
-    #[Route('/orders', name: 'app_api_orders')]
-    public function indexOrders(OrdersRepository $orderRepository): Response
+    #[Route('/orders', name: 'app_api_orders_index')]
+    public function index(OrdersRepository $orderRepository): JsonResponse
     {
         $orders = $orderRepository->findBy(['restaurant' => $this->getUser()->getRestaurant()->getId()]);
         
         $ordersJSON = [];
 
         foreach($orders as $order) {
-            $products = [];
-
-            foreach ($order->getOrderProducts() as $orderProduct) {
-
-                $obj = new \stdClass();
-                $obj -> name = $orderProduct->getProducts()->getName();
-                $obj -> quantity = $orderProduct->getQuantity();
-
-                $products[]=($obj);
-            }
-
-            $ordersJSON[] = array(
-                'id'=> $order->getId(),
-                'note' => $order->getNote(),
-                'status'=> $order->getStatus(),
-                'products'=> $products,
-                'waiter' => $order->getWaiter()->getUserName(),
-                'orderDate' => $order->getOrderDate(),
-                'deliverDate' => $order->getDeliverDate(),
-                'table' => $order->getTableOrder()->getNumber(),
-            );
+            $ordersJSON[] = $this->toJSON($order);
         }
-
         return new JsonResponse($ordersJSON);
     }
 
-    #[Route('/orders/{id}', name: 'app_api_order_individual')]
-    public function indexOrder(OrdersRepository $orderRepository, Request $request): Response
+    #[Route('/orders/{id}', name: 'app_api_order_show')]
+    public function show(OrdersRepository $orderRepository, Orders $order): JsonResponse
     {
-        $order = $orderRepository->findOneByID($request->get('id'));
+        if($order){
+            $orderJSON = $this->toJSON($order);
+        }
 
+        return new JsonResponse($orderJSON);
+    }
+
+    public function toJSON($order): array
+    {
+        $orderJSON;
         $products = [];
 
         foreach ($order->getOrderProducts() as $orderProduct) {
@@ -64,8 +51,7 @@ class ApiController extends AbstractController
             $products[]=($obj);
         }
 
-        $orderJSON = [];
-        $orderJSON[] = array(
+        $orderJSON = array(
             'id'=> $order->getId(),
             'note' => $order->getNote(),
             'status' => $order->getStatus(),
@@ -76,7 +62,6 @@ class ApiController extends AbstractController
             'table' => $order->getTableOrder()->getNumber(),
         );
 
-
-        return new JsonResponse($orderJSON);
+        return $orderJSON;
     }
 }
