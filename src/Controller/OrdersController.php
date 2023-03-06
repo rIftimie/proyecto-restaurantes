@@ -163,20 +163,12 @@ class OrdersController extends AbstractController
     }
     
 }
-<<<<<<< HEAD
 //  0 -> pending    
 //  1 -> payed    
 //  2 -> process    
 //  3 -> ready 
 //  4 -> delivered
 //  5 -> cancelled
-=======
-//  0 -> pending
-//  1 -> payed
-//  2 -> working
-//  3 -> done
-//  4 -> delivered
->>>>>>> 0cf1de9f0890416feb217001d8d84ca04120d4b9
 
 /*    #[Route('/waiter/pending_orders', name: 'app_pending_orders', methods: ['POST'])]
     public function pendingOrders(Request $request, Orders $order, OrdersRepository $ordersRepository): Response

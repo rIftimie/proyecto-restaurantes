@@ -1,44 +1,97 @@
-import React from "react";
+import React from 'react';
+import { acceptOrder, declineOrder, finishOrder } from '../../api/orders';
 
-function KitchenOrderCard({ order, onHandleAccept, onHandleFinish, onHandleDecline }) {
-  const orderStatus = order.status;
-  const classes = ["card text-light d-flex"];
+function KitchenOrderCard({ order, useStateOrder }) {
+	const orderStatus = order.status;
+	const classes = ['card text-light d-flex'];
 
-  if (orderStatus == 0) {
-    classes.push("bg-warning");
-  } else if (orderStatus == 1) {
-    classes.push("bg-success");
-  } else if (orderStatus == 2) {
-    classes.push("bg-warning");
-  } else if (orderStatus == 3) {
-    classes.push("bg-primary");
-  }
+	if (orderStatus == 0) {
+		classes.push('bg-warning');
+	} else if (orderStatus == 1) {
+		classes.push('bg-success');
+	} else if (orderStatus == 2) {
+		classes.push('bg-warning');
+	} else if (orderStatus == 3) {
+		classes.push('bg-primary');
+	}
 
-  return (
-    <>
-   <section className={classes.join(" ")} style={{ textAlign: "center" }}>
-      <div className="card-body">
-        <p>Camarero:{order.waiter}</p>
-        <h5 className="card-title">
-          Estado del pedido:
-          {order.status == 1 ? "En confirmación" : "Trabajando"}
-        </h5>
-        <h6>Fecha:{order.orderDate.date}</h6>
+	async function handleAccept(order) {
+		try {
+			await acceptOrder(order);
+			useStateOrder.setOrders(
+				useStateOrder.orders.map((item) =>
+					order.id == item.id ? { ...item, status: 2 } : item
+				)
+			);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-        {order.status == 1 ? ( // Pagado
-          <button onClick={()=>onHandleAccept(order)} className="btn btn-primary">Aceptar orden</button>
-        ) : (
-          // En Proceso
-          <>
-            <button onClick={()=>onHandleFinish(order)} className="btn btn-primary">Terminar orden</button>
-            <button onClick={()=>onHandleDecline(order)} className="btn btn-primary">Cancelar orden</button>
-          </>
-        )}
-      </div>
-    </section>
-    </>
+	async function handleFinish(order) {
+		try {
+			await finishOrder(order);
+			useStateOrder.setOrders(
+				useStateOrder.orders.filter((item) => order != item)
+			);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-  );
+	async function handleDecline(order) {
+		try {
+			await declineOrder(order);
+			useStateOrder.setOrders(
+				useStateOrder.orders.filter((item) => order != item)
+			);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	return (
+		<>
+			<section
+				className={classes.join(' ')}
+				style={{ textAlign: 'center' }}
+			>
+				<div className="card-body">
+					<p>Camarero:{order.waiter}</p>
+					<h5 className="card-title">
+						Estado del pedido:
+						{order.status == 1 ? 'En confirmación' : 'Trabajando'}
+					</h5>
+					<h6>Fecha:{order.orderDate.date}</h6>
+
+					{order.status == 1 ? ( // Pagado
+						<button
+							onClick={() => handleAccept(order)}
+							className="btn btn-primary"
+						>
+							Aceptar orden
+						</button>
+					) : (
+						// En Proceso
+						<>
+							<button
+								onClick={() => handleFinish(order)}
+								className="btn btn-primary"
+							>
+								Terminar orden
+							</button>
+							<button
+								onClick={() => handleDecline(order)}
+								className="btn btn-primary"
+							>
+								Cancelar orden
+							</button>
+						</>
+					)}
+				</div>
+			</section>
+		</>
+	);
 }
 
 export default KitchenOrderCard;

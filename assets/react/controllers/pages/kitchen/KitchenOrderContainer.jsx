@@ -1,10 +1,18 @@
-import React from "react"; 
-import KitchenOrderCard from "./KitchenOrderCard";
+import React from 'react';
+import KitchenOrderCard from './KitchenOrderCard';
 
-function KitchenOrderContainer({ data, onHandleAccept, onHandleFinish, onHandleDecline }) {
-  const orders = data;
-  const renderOrders = orders?.map((order) => <KitchenOrderCard order={order} key={order.id} onHandleAccept={onHandleAccept} onHandleFinish={onHandleFinish} onHandleDecline={onHandleDecline}/>);
-  return <main className="d-flex justify-content-between">{renderOrders}</main>;
+function KitchenOrderContainer({ useStateOrder }) {
+	const orders = useStateOrder.orders;
+	const renderOrders = orders?.map((order) => (
+		<KitchenOrderCard
+			order={order}
+			useStateOrder={useStateOrder}
+			key={order.id}
+		/>
+	));
+	return (
+		<main className="d-flex justify-content-between">{renderOrders}</main>
+	);
 }
 
 export default KitchenOrderContainer;
