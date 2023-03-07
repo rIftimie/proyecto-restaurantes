@@ -26,7 +26,7 @@ class ApiController extends AbstractController
         foreach($orders as $order) {
             $ordersJSON[] = $this->orderToArray($order);
         }
-        return new JsonResponse($ordersJSON,Response::HTTP_OK,);
+        return new JsonResponse(array_reverse($ordersJSON),Response::HTTP_OK,);
     }
 
     // Devuelve un pedido en formato JSON

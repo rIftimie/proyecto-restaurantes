@@ -1,0 +1,45 @@
+/* Kitchen */
+* {
+    font-family: 'Poppins' !important;
+}
+
+.title {
+    font-size: 88pt;
+}
+
+.btn-primary {
+    background: #313131 !important;
+    border-color: #313131 !important;
+    color: #9ce070 !important;
+}
+
+.bg-success{
+    background: #74b62e !important;
+}
+
+.bg-warning{
+    background: #ff9800 !important;
+}
+
+.card-body *{
+    font-size: 30pt;
+}
+
+.card-body .orderImportant{
+    font-size: 48pt;
+    font-weight: bold;
+    color: #fafad2 !important;
+}
+
+.card-body .orderMesa{
+    font-size: 34pt;
+    color: #fafad2 !important;
+}
+
+.card-body .btn{
+    font-size: 26pt;
+}
+
+.w-80{
+    width: 80% !important;
+}

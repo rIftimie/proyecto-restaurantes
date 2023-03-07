@@ -13,7 +13,7 @@ function KitchenOrderContainer({ useStateOrder }) {
 	));
 
 	return (
-		<main className="d-flex justify-content-between">{renderOrders}</main>
+		<main className="d-flex flex-column flex-lg-row">{renderOrders}</main>
 	);
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getOrders } from '../../helpers/orders';
 import KitchenOrderContainer from './KitchenOrderContainer';
+import './kitchen.css';
 
 function KitchenPage() {
 	const [orders, setOrders] = useState([]);
@@ -17,7 +18,7 @@ function KitchenPage() {
 
 	return (
 		<main>
-			<h1 className="text-center">COCINA</h1>
+			<h1 className="text-center title m-4 fw-bolder">COCINA</h1>
 			{orders.length > 0 ? (
 				<KitchenOrderContainer useStateOrder={{ orders, setOrders }} />
 			) : (
