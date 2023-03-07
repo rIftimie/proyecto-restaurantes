@@ -83,26 +83,12 @@ class OrdersController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_orders_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, OrdersRepository $ordersRepository): Response
+    #[Route('/new/{idres}/{idtable}', name: 'app_orders_new', methods: ['GET', 'POST'])]
+    public function new($idres, $idtable): Response
     {
-        // $order = new Orders();
-        // MODELO $noticium->setAutor($this->getUser());
-        //    $order-> setOrderDate(new \DateTime('now'));
-        // $form = $this->createForm(OrdersType::class, $order);
-        // $form->handleRequest($request);
-
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     $ordersRepository->save($order, true);
-            
-
-
-        //     return $this->redirectToRoute('app_orders_index', [], Response::HTTP_SEE_OTHER);
-        // }
-
         return $this->render('orders/new.html.twig', [
-            // 'order' => $order,
-            // 'form' => $form,
+            'idres' => $idres,
+            'idtable' => $idtable,
         ]);
     }
 

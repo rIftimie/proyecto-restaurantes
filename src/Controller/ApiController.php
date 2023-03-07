@@ -108,6 +108,8 @@ class ApiController extends AbstractController
           $obj->allergens=$prodrep->findById($menuItem->getProduct())[0]->getAllergens();
           $obj->hidden=$prodrep->findById($menuItem->getProduct())[0]->isHidden();
           $obj->price=$prodrep->findById($menuItem->getProduct())[0]->getPrice();
+          $obj->img=$prodrep->findById($menuItem->getProduct())[0]->getImg();
+
           $productsJSON[]= array(
             'id'  => $menuItem->getId(),
             'product' => $obj,
