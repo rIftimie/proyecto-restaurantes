@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./App.css";
-import DeseoInput from './DeseoInput';
+import DeseoInput from './Productos';
 import Cabecera from './Cabecera';
-import Boton from './Boton';
+import Boton from './BotonPago';
 
 const deseosIniciales = [
    

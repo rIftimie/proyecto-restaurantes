@@ -9,109 +9,63 @@ html {
   margin: 0;
 }
 
+p{
+  color: #fafad2;
+}
+
 h4{
-  color:rgb(236, 225, 196);
+  color:#fafad2;
   text-align: right;
   font-style: italic;
 }
 
 h5{
-  color:rgb(236, 225, 196);
+  color:#fafad2;
   text-align: left;
 }
 
 h6{
-  color:rgb(236, 225, 196);
+  color:#fafad2;
   font-style: italic;
 }
 
 .app {
   display: flex;
   flex-direction: column;
+  justify-content: space-between; 
   width: 400px;
   margin: auto;
   max-width: 400px;
   border: 1px solid;
   padding: 0 2rem 2rem 2rem;
   margin-top: 2rem;
-  background-color: rgb(45, 47, 48);
+  background-color: #313131;
   font-weight: bold;
   font-size: 18px;
 }
 
-.deseo-input {
-  border: 0;
-  border-bottom: 3px dashed rgb(254, 254, 254);
-  padding: 0;
-}
-
-.deseo-input__label {
-  font-weight: 700;
-}
-
-.deseo-input__field {
-  width: 100%;
-  border: 0;
-  padding: 1rem;
-  font-size: 1.2rem;
-  background-color: transparent;
-}
-
-.lista-deseos {
-  list-style-type: none;
-  padding: 0;
-}
-
-.lista-deseos__item {
+.boton, .botonAgregar, .botonQuitar {
   display: flex;
-  font-size: 1.2rem;
-  align-items: center;
-}
-
-.lista-deseos__item>*+* {
-  margin-left: 1rem;
-}
-
-.lista-deseos__item input {
-  width: 2rem;
-  height: 2rem;
-}
-
-.lista-deseos__item--cumplido label {
-  text-decoration: line-through;
-  color: black;
-}
-
-.lista-deseos__item--warning {
-  color: orange;
-}
-
-.lista-deseos__item--danger {
-  color: rgb(255, 34, 0);
-}
-
-.deseos-clear, .deseos-clear-cantidad, .deseos-clear-cantidadmenos {
   width: 100%;
   padding: 0.5rem;
   margin: 5px;
   font-size: 1rem;
   border-radius: 3px;
-  background-color: rgb(7, 242, 117);
+  background-color: #9ce070;
   font-weight: bold;
 }
 
-.deseos-clear-cantidadmenos {
-  background-color: rgb(242, 7, 7);
+.botonQuitar {
+  background-color: #f14b42;
+  visibility: hidden;
 }
 
-.deseos-clear-cantidad, .deseos-clear-cantidadmenos{
+.botonAgregar, .botonQuitar{
   width: 10%;
   border-radius: 50px;
-  align-items: flex-end;
-  align-self: right;
-  align-content: right;
+  margin-left: auto;
 }
 
-img{
+img {
   border-radius: 500px;
 }
