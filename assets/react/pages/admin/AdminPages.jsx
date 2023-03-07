@@ -5,7 +5,7 @@ import NavButton from '../../controllers/components/Buttons/NavButton';
 const AdminPages = () => {
   return(
     <div>
-      
+      <h1>Admin Panel</h1>
       {/* <Header /> */}
       
       {/* <nav className='mainMenu'>
