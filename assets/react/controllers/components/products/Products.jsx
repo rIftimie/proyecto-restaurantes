@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 
-import AddButton from "./AddButton";
-import DeleteButton from "./DeleteButton";
 import { getProducts } from "../../helpers/products";
+import ProductsButtons from './ProductsButtons';
    
 const Products = ({ idres , idtable , orderProducts , setOrderProducts}) => {
   const [prods, setProds] = useState([])
@@ -17,15 +16,6 @@ const Products = ({ idres , idtable , orderProducts , setOrderProducts}) => {
     setProds(prt);
   }
   console.log(prods);
-  // const prods = Array.from({ length: 4 }, (_, index) => (
-  //   <div key={index}>
-  //     <img src='' alt="Nachos con queso" width={200}/>
-  //     <h5> {texto} </h5>
-  //     <h6> {descripcion} </h6>
-  //     <AddButton/>
-  //     <DeleteButton/>
-  //   </div>
-  // ));
 
   return (
           <>
