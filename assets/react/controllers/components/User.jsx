@@ -1,6 +1,6 @@
 import React from "react";
 import { getUsers } from "../../Api/Users";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const User = () => {
 
