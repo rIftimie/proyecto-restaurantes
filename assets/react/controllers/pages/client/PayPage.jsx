@@ -9,7 +9,7 @@ const PayPage = ({ stripeKey }) => {
         {" "}
         <Products />{" "}
       </div>
-      <div class="position-absolute bottom-0 m-5">
+      <div>
         {" "}
         <Subtotal stripeKey={stripeKey} />{" "}
       </div>
