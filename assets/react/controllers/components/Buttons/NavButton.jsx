@@ -7,4 +7,5 @@ const NavButton = ({ name, onClick }) => {
       {name}
     </button>
   );
-};
+}
+export default NavButton;
