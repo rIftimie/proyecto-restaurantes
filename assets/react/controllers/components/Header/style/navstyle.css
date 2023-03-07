@@ -1,0 +1,9 @@
+.mainMenu{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+}
+.navButton{
+    padding: 5%;
+    margin: 5%;
+}
