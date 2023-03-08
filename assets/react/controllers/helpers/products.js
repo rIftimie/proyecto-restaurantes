@@ -8,7 +8,6 @@ export const getProducts = async (idres) => {
     throw new Error(response.status + ' ' + response.statusText);
     
 		const data = await response.json();
-    console.log(data);
 		return data;
 	} catch (error) {
 		console.log(error);

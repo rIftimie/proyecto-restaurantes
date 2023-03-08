@@ -38,6 +38,15 @@ class RestaurantRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findOneById($value): ?Restaurant
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 
 //    /**
 //     * @return Restaurant[] Returns an array of Restaurant objects

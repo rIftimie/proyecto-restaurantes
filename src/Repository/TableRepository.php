@@ -39,6 +39,15 @@ class TableRepository extends ServiceEntityRepository
         }
     }
 
+    public function findOneById($value): ?Table
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 //    /**
 //     * @return Table[] Returns an array of Table objects
 //     */

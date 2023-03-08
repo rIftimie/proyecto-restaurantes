@@ -39,7 +39,7 @@ class ProductsRepository extends ServiceEntityRepository
         }
     }
 
-    public function findOneBySomeField($value): ?Products
+    public function findOneById($value): ?Products
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.id = :val')

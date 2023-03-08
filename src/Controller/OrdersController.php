@@ -3,10 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Menu;
+use App\Entity\OrderProducts;
 use App\Entity\Orders;
 use App\Form\OrdersType;
 use App\Repository\MenuRepository;
 use App\Repository\OrdersRepository;
+use App\Repository\ProductsRepository;
+use App\Repository\RestaurantRepository;
+use App\Repository\TableRepository;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +31,56 @@ class OrdersController extends AbstractController
         ]);
     }
 
+    #[Route('/add', name: 'app_orders_add', methods: ['POST', 'GET'])]
+    public function add(Request $request, RestaurantRepository $resRep, TableRepository $tabRep , OrdersRepository $ordersRepository, ProductsRepository $prodRep, EntityManagerInterface $entityManager): Response
+    {
+      $miOrder= new Orders();
+      $miOrder->setRestaurant($resRep->findOneById($request->toArray()[0]['restaurant_id']));
+      $miOrder->setTableOrder($tabRep->findOneById($request->toArray()[0]['table_order_id']));
+      $miOrder->setStatus(0);
+      $miOrder->setOrderDate(new DateTime());
+      $orderProds= $request->toArray();
+      foreach($orderProds as $prod){
+        $orderProduct= new OrderProducts();
+        $orderProduct->setProducts($prodRep->findOneById($prod['products_id']));
+        $orderProduct->setQuantity($prod['quantity']);
+        $orderProduct->setTotalPrice($prodRep->findOneById($prod['products_id'])->getPrice()*$prod['quantity']);
+        $miOrder->addOrderProduct($orderProduct);
+        $entityManager->persist($orderProduct);
+      }
+      
+      $entityManager->persist($miOrder);
+      $entityManager->flush();
+      $resp = new Response();
+      $productJson=[];
+      $allProducts=[];
+
+      foreach($miOrder->getOrderProducts() as $prod){
+        $allProducts[]=array(
+          'id' => $prod->getId(),
+          'products_id'=>$prod->getProducts()->getId(),
+          'quantity' => $prod->getQuantity(),
+          'information' => $prod->getInformation(),
+          'hidden' => $prod->isHidden(),
+          'totalPrice' => $prod->getTotalPrice(),
+        );
+      }
+
+      $productJson[]=array(
+        'id'=>$miOrder->getId(),
+        'restaurant_id'=>$miOrder->getRestaurant()->getId(),
+        'table_order_id'=>$miOrder->getTableOrder()->getId(),
+        'status'=>$miOrder->getStatus(),
+        'order_date'=>$miOrder->getOrderDate(),
+        'deliver_date'=>$miOrder->getDeliverDate(),
+        'note'=>$miOrder->getNote(),
+        'hidden'=>$miOrder->isHidden(),
+        'products'=> $allProducts
+      );
+      $resp->setContent(json_encode($productJson));
+      return $resp;
+      
+    }
     #[Route('/waiter', name: 'app_orders_waiter', methods: ['GET'])]
     public function waiter(): Response
     {
@@ -36,12 +92,27 @@ class OrdersController extends AbstractController
     {
         return $this->render('kitchen/index.html.twig');
     }
-    #[Route('/pay', name: 'app_orders_pay', methods: ['GET'])]
-    public function pay(): Response
+    #[Route('/pay/{id}', name: 'app_orders_pay', methods: ['GET'])]
+    public function pay(OrdersRepository $orderRepository, ProductsRepository $prodRep ,$id): Response
     // Orders $order
     {
+      $order = $orderRepository->findOneById($id);
+      $products=[];
+      foreach ($order->getOrderProducts() as $prod){
+        $product= $prodRep->findOneById($prod->getProducts()->getId());
+        $products[]=array(
+          'id'=> $product->getId(),
+          'name'=>$product->getName(),
+          'description'=>$product->getDescription(),
+          'allergens'=>$product->getAllergens(),
+          'hidden'=>$product->isHidden(),
+          'price'=>$product->getPrice(),
+        );
+      }
         return $this->render('orders/pay.html.twig', [
             // 'order' => $order,
+            'order_id' => $id,
+            'orderProds'=>$products,
             'stripe_key' => $_ENV["STRIPE_KEY"],
         ]);
     }
@@ -86,10 +157,12 @@ class OrdersController extends AbstractController
     #[Route('/new/{idres}/{idtable}', name: 'app_orders_new', methods: ['GET', 'POST'])]
     public function new($idres, $idtable): Response
     {
-        return $this->render('orders/new.html.twig', [
-            'idres' => $idres,
-            'idtable' => $idtable,
-        ]);
+
+
+      return $this->render('orders/new.html.twig', [
+          'idres' => $idres,
+          'idtable' => $idtable,
+      ]);
     }
 
     // Cocina: acepta un pedido.

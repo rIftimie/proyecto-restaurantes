@@ -2,12 +2,13 @@ import React from "react";
 import Subtotal from "../../components/subtotal/Subtotal";
 import Products from "../../components/products/Products";
 
-const PayPage = ({ stripeKey }) => {
+const PayPage = ({ stripeKey , orderId, orderProducts }) => {
+  console.log(orderProducts);
   return (
     <>
       <div>
         {" "}
-        <Products />{" "}
+        <Products  />{" "}
       </div>
       <div>
         {" "}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/products/Header";
 import Products from "../../components/products/Products";
 import "../../App.css"
+import { postOrder } from "../../helpers/orders";
 
 const initialStateOrder={
   waiter_id: 1,
@@ -13,6 +14,8 @@ const ClientPage = ( {idres, idtable }) => {
 
   const [order, setOrder] = useState({})
   const [orderProducts, setOrderProducts] = useState([]);
+  const [charge, setCharge] = useState(true);
+  const [show, setShow] = useState(false);
   useEffect(() => {
     const orderCopy= { ...order };
     orderCopy.restaurant_id=idres;
@@ -20,17 +23,32 @@ const ClientPage = ( {idres, idtable }) => {
     setOrder(orderCopy);
   }, [])
   
+  const handleClickPay = async()=>{
+    if(orderProducts.length){
+      setCharge(false);
+      await postOrder(orderProducts)
+      .then((res)=>{
+        window.location.href ='http://localhost:8000/orders/pay/'+res[0].id;
+      })
+      .catch((error)=>{
+        setCharge(true);
+        console.log(error);
+      })
+    }
+  }
 
   return (
     <div>
-      <Header />
-      <Products idres={ idres } idtable={ idtable } orderProducts={ orderProducts } setOrderProducts={ setOrderProducts }/>
-      <button
-          type="button"
-          className="btn btn-outline-success fw-bold m-3"
-        >
-          Pagar
-      </button>
+      { charge && show && <Header />}
+      { charge && <Products idres={ idres } idtable={ idtable } orderProducts={ orderProducts } setOrderProducts={ setOrderProducts } setShow={ setShow } />}
+      { charge && show && <button
+            type="button"
+            className="btn btn-outline-success fw-bold m-3"
+            onClick={handleClickPay}
+          >
+            Pagar
+        </button>}  
+      {!show && charge && <p>Loading...</p>}
     </div>
   );
 };
