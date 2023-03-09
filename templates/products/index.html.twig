@@ -27,6 +27,7 @@
                     <a href="{{ path('app_products_show', {'id': product.id}) }}">show</a>
                     <a href="{{ path('app_products_edit', {'id': product.id}) }}">edit</a>
                 </td>
+                <td><img width="50px" src={{product.img}}> </td>
             </tr>
         {% else %}
             <tr>

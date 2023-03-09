@@ -85,6 +85,14 @@ class RestaurantRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
         return $restaurants;
+    public function findOneById($value): ?Restaurant
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
 //    /**
