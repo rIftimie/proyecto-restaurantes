@@ -1,16 +1,18 @@
 import React from 'react';
 import Header from '../../controllers/components/Header/Header';
+import { useState } from 'react';
+import User from '../../controllers/components/User';
 
 const AdminPages = () => {
-  return(
+  const [componente, setComponente] = useState(null);
+
+  return (
     <div>
       <h1>Admin Panel</h1>
-      <Header />
-      
-      
+      <Header setcomponente={setComponente}  />
+      {componente === "User" && <User />}
     </div>
   );
-
 };
 
 export default AdminPages;
