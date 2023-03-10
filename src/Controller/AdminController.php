@@ -24,7 +24,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/user', name: 'app_user')]
-    public function getUser(UserRepository $userRepository): Response
+    public function getUsers(UserRepository $userRepository): Response
     {
       
         $users = $userRepository->findAll();

@@ -10,7 +10,7 @@ const Nav = ({setcomponente})=>{
         <nav className='mainMenu'>
             <NavButton name='User' onClick={() => {setcomponente('User')}} />
             <NavButton name='Trabajadores' onClick={() => {}} />
-            <NavButton name='Pedidos' onClick={() => {}} />
+            <NavButton name='Pedidos' onClick={() => {setcomponente('Orders')}} />
             <NavButton name='Productos' onClick={() => {}} />
             <NavButton name='Mesas' onClick={() => {}} />
         </nav>
