@@ -5,7 +5,7 @@ function OrderWaiterContainer({ useStateOrder }) {
 	const orders = useStateOrder.orders.filter(
 		(order) => order.status === 0 || order.status === 3
 	);
-
+		console.log(orders)
 	const renderOrders = orders.map((order) => (
 		<OrderWaiterCard
 			key={order.id}
@@ -15,7 +15,7 @@ function OrderWaiterContainer({ useStateOrder }) {
 	));
 
 	return (
-		<main className="d-flex justify-content-between">{renderOrders}</main>
+		<main className="container-fluid d-flex justify-content-between flex-column text-center">{renderOrders}</main>
 	);
 }
 

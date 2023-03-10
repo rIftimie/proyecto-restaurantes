@@ -1,19 +1,22 @@
-import React from 'react'
-import OrderCard from './components/OrderCard'
-import WaiterPage from './pages/waiter/WaiterPage'
+import React from "react";
+
+import OrderCard from "./components/OrderCard";
+import WaiterPage from "./pages/waiter/WaiterPage";
+import Header from "../controllers/components/Header";
 // import OrderCard from './components/OrderCard'
 // import Waiter from './pages/waiter/WaiterPage'
 // import Kitchen from './pages/kitchen/KitchenPage'
-function App({fullName}) {
+function App({ fullName }) {
   return (
-	<div>
-    
-    {/* <OrderCard fullName={fullName}/> */}
-    <WaiterPage/>
-    adadaad
-  </div>
-
-  )
+    <div>
+      {/* <OrderCard fullName={fullName}/> */}
+       
+      
+        <WaiterPage />
+      
+      adadaad
+    </div>
+  );
 }
 
-export default App
+export default App;

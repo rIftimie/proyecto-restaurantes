@@ -17,6 +17,13 @@
         {% endblock %}
     </head>
     <body>
+        <div
+        {{ react_component('components/Header', {  }) }}>
+        </div>
         {% block body %}{% endblock %}
+        <div
+        {{ react_component('components/Footer', {  }) }}>
+        </div>
+
     </body>
 </html>

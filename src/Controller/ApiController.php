@@ -21,7 +21,7 @@ class ApiController extends AbstractController
     #[Route('/orders', name: 'app_api_orders_index', methods:["GET"])]
     public function index(ApiFormatter $formatter, OrdersRepository $orderRepository): JsonResponse
     {
-        $orders = $orderRepository->findBy(['restaurant' => 7]);
+        $orders = $orderRepository->findBy(['restaurant' => $this->getUser()->getRestaurant()->getId()]);
         $ordersJSON = [];
 
         foreach($orders as $order) {

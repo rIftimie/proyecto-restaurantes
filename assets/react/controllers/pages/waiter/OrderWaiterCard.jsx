@@ -1,5 +1,6 @@
 import React from 'react';
 import { payWaiter, deliver } from '../../helpers/waiter';
+import classNames from "classnames";
 
 function OrderWaiterCard({ order, useStateOrder }) {
 	const orderStatus = order.status;
@@ -39,8 +40,15 @@ function OrderWaiterCard({ order, useStateOrder }) {
 	};
 
 	return (
-		<section className={classes.join(' ')} style={{ textAlign: 'center' }}>
+		
+		<section className={classNames("card",  "d-flex",  " m-1",{
+			"bg-red": order.status == 0,
+			"bg-green": order.status == 1,
+			"bg-black": order.status == 2,
+			"bg-beige": order.status == 3,
+		  })}>
 			<div className="card-body">
+			
 				<p>Camarero:{order.waiter}</p>
 				<h5 className="card-title">Estado del pedido:{msgStatus}</h5>
 
