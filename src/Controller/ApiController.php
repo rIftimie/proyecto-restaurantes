@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\ApiFormatter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,23 +19,23 @@ class ApiController extends AbstractController
 {
     // Devuelve todos los pedidos asociados con el restaurante del usuario en formato JSON
     #[Route('/orders', name: 'app_api_orders_index', methods:["GET"])]
-    public function index(OrdersRepository $orderRepository): JsonResponse
+    public function index(ApiFormatter $formatter, OrdersRepository $orderRepository): JsonResponse
     {
-        $orders = $orderRepository->findBy(['restaurant' => $this->getUser()->getRestaurant()->getId()]);
+        $orders = $orderRepository->findBy(['restaurant' => 5]);
         $ordersJSON = [];
 
         foreach($orders as $order) {
-            $ordersJSON[] = $this->orderToArray($order);
+            $ordersJSON[] = $formatter->orderToArray($order);
         }
-        return new JsonResponse($ordersJSON,Response::HTTP_OK,);
+        return new JsonResponse(array_reverse($ordersJSON),Response::HTTP_OK,);
     }
 
     // Devuelve un pedido en formato JSON
     #[Route('/orders/{id}', name: 'app_api_order_show', methods:["GET"])]
-    public function show(OrdersRepository $orderRepository, Orders $order): JsonResponse
+    public function show(ApiFormatter $formatter, OrdersRepository $orderRepository, Orders $order): JsonResponse
     {
         if($order){
-            $orderJSON = $this->orderToArray($order);
+            $orderJSON = $formatter->orderToArray($order);
         }
 
         return new JsonResponse($orderJSON,Response::HTTP_OK,);
@@ -119,34 +120,5 @@ class ApiController extends AbstractController
           );
         }
         return new JsonResponse($productsJSON);
-    }
-    
-    // Convierte un Orders a un array associativo
-    public function orderToArray($order): array
-    {
-        $orderJSON=[];
-        $products = [];
-
-        foreach ($order->getOrderProducts() as $orderProduct) {
-
-            $obj = new \stdClass();
-            $obj -> name = $orderProduct->getProducts()->getName();
-            $obj -> quantity = $orderProduct->getQuantity();
-
-            $products[]=($obj);
-        }
-
-        $orderJSON = array(
-            'id'=> $order->getId(),
-            'note' => $order->getNote(),
-            'status' => $order->getStatus(),
-            'products'=> $products,
-            'waiter' => $order->getWaiter()->getUserName(),
-            'orderDate' => $order->getOrderDate(),
-            'deliverDate' => $order->getDeliverDate(),
-            'table' => $order->getTableOrder()->getNumber(),
-        );
-
-        return $orderJSON;
     }
 }
