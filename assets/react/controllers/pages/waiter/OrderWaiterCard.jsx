@@ -32,22 +32,10 @@ function OrderWaiterCard({ order, useStateOrder }) {
 
 	const handlePay = (orderId) => {
 		payWaiter(order); // actualiza el estado en el servidor
-
-		const updatedOrders = useStateOrder.orders.map((order) =>
-			order.id === orderId ? { ...order, status: 1 } : order
-		);
-
-		useStateOrder.setOrders(updatedOrders); // actualiza el estado en el cliente
 	};
 
 	const handleDeliver = (orderId) => {
 		deliver(order); // actualiza el estado en el servidor
-
-		const updatedOrders = useStateOrder.orders.map((order) =>
-			order.id === orderId ? { ...order, status: 4 } : order
-		);
-
-		useStateOrder.setOrders(updatedOrders); // actualiza el estado en el cliente
 	};
 
 	return (

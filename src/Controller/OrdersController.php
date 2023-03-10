@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
+use Stripe;
 use App\Entity\Menu;
 use App\Entity\Orders;
 use App\Form\OrdersType;
 use App\Repository\MenuRepository;
 use App\Repository\OrdersRepository;
+use App\Controller\ApiController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Stripe;
+use App\Service\MercureGenerator;
 
 #[Route('/orders')]
 class OrdersController extends AbstractController
@@ -94,7 +96,7 @@ class OrdersController extends AbstractController
 
     // Cocina: acepta un pedido.
     #[Route('/kitchen/{id}/accept', name: 'app_orders_kitchen_accept', methods: ['PUT'])]
-    public function kitchenAccept(Request $request, Orders $order, OrdersRepository $ordersRepository, MenuRepository $menuRepository) : Response
+    public function kitchenAccept(MercureGenerator $mercure, Request $request, Orders $order, OrdersRepository $ordersRepository, MenuRepository $menuRepository) : Response
     {
         if($order->getStatus()==1){
             $order->setStatus(2);
@@ -105,40 +107,58 @@ class OrdersController extends AbstractController
                 }
             }
             $ordersRepository->save($order, true);
+
+            // Llama a Mercure
+            $mercure->publish($order);
+
+            return new Response('Pedido aceptado', Response::HTTP_OK);
         }
-        
-        return $this->render('kitchen/index.html.twig',[]);
+
+        return new Response(null, 500);
     }
+
+    
 
     // Cocina: termina un pedido.
     #[Route('/kitchen/{id}/finish', name: 'app_orders_kitchen_finish', methods: ['PUT'])]
-    public function kitchenFinish(Request $request, Orders $order, OrdersRepository $ordersRepository) : Response
+    public function kitchenFinish(MercureGenerator $mercure, Request $request, Orders $order, OrdersRepository $ordersRepository) : Response
     {
-        $order->setStatus(3);
-        $ordersRepository->save($order,true);
-        return $this->render('kitchen/index.html.twig',[]);
+        if($order->getStatus()==2){
+            $order->setStatus(3);
+            $ordersRepository->save($order,true);
+    
+            // Llama a Mercure
+            $mercure->publish($order);
+
+            return new Response('Pedido terminado', Response::HTTP_OK);
+        }
+       
+        return new Response(null, 500);
     }
 
     // Cocina: cancela un pedido
     #[Route('/kitchen/{id}/decline', name: 'app_orders_kitchen_decline', methods: ['PUT'])]
-    public function kitchenDecline(Request $request, Orders $order, OrdersRepository $ordersRepository, MenuRepository $menuRepository) : Response
+    public function kitchenDecline(MercureGenerator $mercure, Request $request, Orders $order, OrdersRepository $ordersRepository, MenuRepository $menuRepository) : Response
     {
-        if($order->getStatus()==2){
-            $order->setStatus(5);
-            foreach($order->getOrderProducts() as $orderProduct){
-                foreach($menuRepository->findByRestaurantANDProduct($order->getRestaurant(),$orderProduct->getProducts()->getId()) as $menuFound){
-                    $menuFound->setStock($menuFound->getStock()+$orderProduct->getQuantity());
-                    $menuRepository->save($menuFound, true);
-                }
+        $order->setStatus(5);
+        foreach($order->getOrderProducts() as $orderProduct){
+            foreach($menuRepository->findByRestaurantANDProduct($order->getRestaurant(),$orderProduct->getProducts()->getId()) as $menuFound){
+                $menuFound->setStock($menuFound->getStock()+$orderProduct->getQuantity());
+                $menuRepository->save($menuFound, true);
             }
-            $ordersRepository->save($order, true);
         }
-        return $this->render('kitchen/index.html.twig',[]);
+        
+        $ordersRepository->save($order, true);
+
+        // Llama a Mercure
+        $mercure->publish($order);
+        
+        return new Response('Pedido cancelado', Response::HTTP_OK);
     }
 
     // Camarero: cobra en efectivo al cliente.
     #[Route('/waiter/{id}/payWaiter', name: 'app_orders_waiter_payWaiter')]
-    public function waiterPay(OrdersRepository $orderRepository, Orders $order): Response
+    public function waiterPay(MercureGenerator $mercure, OrdersRepository $orderRepository, Orders $order): Response
     {
         if (!$order) {
             // El recurso no existe
@@ -147,13 +167,16 @@ class OrdersController extends AbstractController
 
         $order->setStatus(1);
         $orderRepository->save($order, true);
-    
+        
+        // Llama a Mercure
+        $mercure->publish($order);
+
         return new Response('Pedido pagado en efectivo', Response::HTTP_OK);
     }
 
     // Camarero: entrega el pedido al cliente.
     #[Route('/waiter/{id}/deliver', name: 'app_orders_waiter_deliver')]
-    public function waiterDeliver(OrdersRepository $orderRepository, Orders $order): Response
+    public function waiterDeliver(MercureGenerator $mercure, OrdersRepository $orderRepository, Orders $order): Response
     {
         if (!$order) {
             // El recurso no existe
@@ -162,7 +185,10 @@ class OrdersController extends AbstractController
     
         $order->setStatus(4);
         $orderRepository->save($order, true);
-    
+        
+        // Llama a Mercure
+        $mercure->publish($order);
+
         return new Response('Pedido entregado', Response::HTTP_OK);
     }
 
