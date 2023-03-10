@@ -1,75 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { getOrders } from '../../helpers/orders';
-import KitchenOrderContainer from './KitchenOrderContainer';
-import './kitchen.css';
+import React, { useEffect, useState } from "react";
+import { getOrders } from "../../helpers/orders";
+import { getProducts } from "../../helpers/kitchen";
+import KitchenOrderContainer from "./KitchenOrderContainer";
+import "./kitchen.css";
+import SelectProducts from "./SelectProducts";
 
-function KitchenPage() {
-	const url = JSON.parse(document.getElementById('mercure-url').textContent);
-	const eventSource = new EventSource(url);
+function KitchenPage({ restaurant_id }) {
+  const [orders, setOrders] = useState([]);
+  const [products, setProducts] = useState([]);
 
-	const [orders, setOrders] = useState([]);
+  const fetchGetOrders = async () => {
+    // console.log('fetch');
+    const response = await getOrders();
+    setOrders(
+      response.filter((order) => order.status == 1 || order.status == 2)
+    );
+  };
 
-	const fetchGetOrders = async () => {
-		console.log('fetch');
-		const response = await getOrders();
-		setOrders(
-			response.filter((order) => order.status == 1 || order.status == 2)
-		);
-	};
+  const fetchGetProducts = async () => {
+    const response = await getProducts(restaurant_id);
+    // console.log(response);
+    // products.push(response);
+    setProducts(response);
+    // console.log(products);
+  };
 
-	useEffect(() => {
-		fetchGetOrders();
-
-		eventSource.onmessage = (event) => {
-			// Will be called every time an update is published by the server
-			console.log('Orders', orders);
-			if (
-				JSON.parse(event.data).status == 1 ||
-				JSON.parse(event.data).status == 2
-			) {
-				handleEvent(JSON.parse(event.data));
-			} else if (
-				orders
-					.map((item) => item.id)
-					.includes(JSON.parse(event.data).id)
-			) {
-				setOrders(
-					orders.filter(
-						(item) => item.status == 1 || item.status == 2
-					)
-				);
-			}
-		};
-	}, []);
-
-	function handleEvent(order) {
-		if (orders.map((item) => item.id).includes(order.id)) {
-			console.log('update');
-			setOrders(
-				orders.map((item) => {
-					if (item.id == order.id) {
-						item = order;
-					}
-					return item;
-				})
-			);
-		} else {
-			console.log('new');
-			console.log(order.status);
-			setOrders(orders.concat(order));
-		}
-	}
-
-	return (
-		<main>
-			<h1 className="text-center title m-4 fw-bolder">COCINA</h1>
-			{orders.length > 0 ? (
-				<KitchenOrderContainer useStateOrder={{ orders, setOrders }} />
-			) : (
-				<h1>Loading ...</h1>
-			)}
-		</main>
-	);
+  useEffect(() => {
+    fetchGetProducts();
+    fetchGetOrders();
+  }, []);
+  return (
+    <main>
+      <h1 className="text-center title m-4 fw-bolder">COCINA</h1>
+      {orders.length > 0 && products.length > 0 ? (
+        <>
+          <KitchenOrderContainer useStateOrder={{ orders, setOrders }} />
+          <SelectProducts useStateProduct={{ products, setProducts }} />
+        </>
+      ) : (
+        <h1>Loading ...</h1>
+      )}
+    </main>
+  );
 }
 
 export default KitchenPage;

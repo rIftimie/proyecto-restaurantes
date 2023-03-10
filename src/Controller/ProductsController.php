@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Products;
 use App\Form\ProductsType;
 use App\Repository\ProductsRepository;
+use App\Repository\MenuRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Cloudinary\Cloudinary;
 use Cloudinary\Transformation\Resize;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[Route('/products')]
 class ProductsController extends AbstractController
@@ -25,6 +27,25 @@ class ProductsController extends AbstractController
         ]);
     }
 
+
+
+
+
+      // Cocina: cambia stock manualmente.
+      #[Route('/change', name: 'app_orders_change', methods: ['PUT','GET'])]
+      public function kitchenChangeStock(EntityManagerInterface $entityManager,Request $request, ProductsRepository $productsRepository, MenuRepository $menuRepository) : Response
+      {
+
+        $restaurant = $this->getUser()->getRestaurant();
+        $product = json_decode($request->getContent(), true);
+
+        $menu = $menuRepository->findOneByRestaurantANDProduct($restaurant,$product['product']['id']);
+            $menu->setStock($product['stock']);
+
+            $menuRepository->save($menu, true);
+
+            return new Response('Fufa');
+      }
     #[Route('/new', name: 'app_products_new', methods: ['GET', 'POST'])]
     public function new (Request $request, ProductsRepository $productsRepository, SluggerInterface $slugger): Response
     {
@@ -144,5 +165,5 @@ class ProductsController extends AbstractController
 
         return $this->redirectToRoute('app_products_index', [], Response::HTTP_SEE_OTHER);
     }
-
+    
 }
