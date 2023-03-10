@@ -4,42 +4,20 @@ import { getUsers } from "../Api/Users";
 const User = () => {
 
     const [users, setUsers] = useState([]);
-    
-    // useEffect(() => {
-    //     getUsers()
-    //         .then((json) => setUsers(json))
-    // }, []);
-
+    // console.log(getUsers());
     useEffect(() => {
-        fetchDatos();
-    },[]);
-    
-    const fetchDatos = async () => {
-
-    
-        try {
-            const respuesta = await fetch(
-              getUsers()
-            );
-            const data = await respuesta.json();
-            
-            setUsers(data);
-            console.log(users);
-
-
-          } catch (error) {
-            console.log("Error: " + error);
-          }
-
-    };
+        getUsers()
+            .then((json) => setUsers(json))
+    }, []);
 
     
     return (
         <div>
             {users.map((user) => (
                 <div key={user.id}>
-                    <p>{user.name}</p>
-                    <p>{user.email}</p>
+                    
+                    <p>Name: {user.username}</p>
+                    {/* <p>{user.email}</p> */}
                 </div>
             ))}
             {/* <p>{users}</p> */}

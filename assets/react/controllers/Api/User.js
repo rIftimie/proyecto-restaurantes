@@ -1,4 +1,4 @@
-const url = 'http://localhost:8000/admin/user';
+const url = 'http://127.0.0.1:8000/admin/user';
 
 export const getUsers = async () => {
 
