@@ -12,7 +12,6 @@ const AdminPage = () => {
       <Header setcomponente={setComponente}  />
       {componente === "User" && <User />}
       {componente === "Table" && <Table />}
-      <Table />
     </div>
   );
 }

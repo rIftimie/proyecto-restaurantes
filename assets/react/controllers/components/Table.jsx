@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { getTables } from "../Api/Tables";
+// import { getTables } from "../Api/Tables";
 
 const Table = () => {
-
-    const [tables, setTables] = useState([]);
+    const [tables, setTables] = useState();
     useEffect(() => {
-        getTables()
-            .then((json) => setTables(json));
-    }, []);
-
+        fetchDatos();
+    });
+    const fetchDatos = async () => {
+        try {
+            const respuesta = fetch("http://127.0.0.1:8000/admin/tables");
+            const json = await respuesta.json();
+            // console.log("buenas tardes");
+            console.log(json);
+            setTables(json);
+        }
+        catch (error) {
+            console.log("error: " + error);
+        }
+    };
     return (
         <div>
-            {tables.map((table) => (
-                <div key={user.id}>
-                    <p>{table.number}</p>
-                    {/* <p>{user.email}</p> */}
-                </div>
-            ))}
+            {/* {tables.map((ta)=>
+                {ta}
+            )} */}
             {/* <p>{users}</p> */}
         </div>
     );

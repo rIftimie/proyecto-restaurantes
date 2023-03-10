@@ -23,8 +23,8 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/user', name: 'app_user')]
-    public function getUser(UserRepository $userRepository): Response
+    #[Route('/user', name: 'app_userdasdsa')]
+    public function getUsers (UserRepository $userRepository): Response
     {
       
         $users = $userRepository->findAll();
@@ -47,7 +47,7 @@ class AdminController extends AbstractController
     #[Route('/tables', name: 'app_tables')]
     public function indexTables(TableRepository $tableRepository): Response
     {
-      
+        // header('Access-Control-Allow-Origin: https://localhost:8000');
         $tables = $tableRepository->findAll();
         
         $tablesJSON = [];
@@ -58,12 +58,12 @@ class AdminController extends AbstractController
                 'id'=> $table->getId(),
                 'number' => $table->getNumber(),
                 'restaurant' => $table->getRestaurant(),
-                'hidden'=> $table->getHidden(),
+                // 'hidden'=> $table->getHidden(),
             );
         
         }
         return new JsonResponse($tablesJSON);
-
+    }
     #[Route('/orders', name: 'app_orders')]
     public function getOrders(OrdersRepository $ordersRepository): Response
     {
