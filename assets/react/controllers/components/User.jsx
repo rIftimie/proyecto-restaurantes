@@ -4,20 +4,23 @@ import { getUsers } from "../Api/Users";
 const User = () => {
 
     const [users, setUsers] = useState([]);
+    // console.log(getUsers());
     useEffect(() => {
         getUsers()
-            .then((json) => setUsers(json));
+            .then((json) => setUsers(json))
     }, []);
 
+    
     return (
         <div>
             {users.map((user) => (
                 <div key={user.id}>
-                    <p>{user.name}</p>
-                    <p>{user.email}</p>
+                    
+                    <p>Name: {user.username}</p>
+                    {/* <p>{user.email}</p> */}
                 </div>
             ))}
-            <p>{users}</p>
+            {/* <p>{users}</p> */}
         </div>
     );
 };
