@@ -2,14 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\OrderProducts;
 use App\Entity\Orders;
 use App\Form\OrdersType;
 use App\Repository\OrdersRepository;
+use App\Repository\ProductsRepository;
+use App\Repository\RestaurantRepository;
+use App\Repository\TableRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Stripe;
+use App\Service\MercureGenerator;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+
 #[Route('/orders')]
 class OrdersController extends AbstractController
 {
@@ -22,6 +29,56 @@ class OrdersController extends AbstractController
         ]);
     }
 
+    #[Route('/add', name: 'app_orders_add', methods: ['POST', 'GET'])]
+    public function add(Request $request, RestaurantRepository $resRep, TableRepository $tabRep , OrdersRepository $ordersRepository, ProductsRepository $prodRep, EntityManagerInterface $entityManager): Response
+    {
+      $miOrder= new Orders();
+      $miOrder->setRestaurant($resRep->findOneById($request->toArray()[0]['restaurant_id']));
+      $miOrder->setTableOrder($tabRep->findOneById($request->toArray()[0]['table_order_id']));
+      $miOrder->setStatus(null);
+      $miOrder->setOrderDate(new DateTime());
+      $orderProds= $request->toArray();
+      foreach($orderProds as $prod){
+        $orderProduct= new OrderProducts();
+        $orderProduct->setProducts($prodRep->findOneById($prod['products_id']));
+        $orderProduct->setQuantity($prod['quantity']);
+        $orderProduct->setTotalPrice($prodRep->findOneById($prod['products_id'])->getPrice()*$prod['quantity']);
+        $miOrder->addOrderProduct($orderProduct);
+        $entityManager->persist($orderProduct);
+      }
+      
+      $entityManager->persist($miOrder);
+      $entityManager->flush();
+      $resp = new Response();
+      $productJson=[];
+      $allProducts=[];
+
+      foreach($miOrder->getOrderProducts() as $prod){
+        $allProducts[]=array(
+          'id' => $prod->getId(),
+          'products_id'=>$prod->getProducts()->getId(),
+          'quantity' => $prod->getQuantity(),
+          'information' => $prod->getInformation(),
+          'hidden' => $prod->isHidden(),
+          'totalPrice' => $prod->getTotalPrice(),
+        );
+      }
+
+      $productJson[]=array(
+        'id'=>$miOrder->getId(),
+        'restaurant_id'=>$miOrder->getRestaurant()->getId(),
+        'table_order_id'=>$miOrder->getTableOrder()->getId(),
+        'status'=>$miOrder->getStatus(),
+        'order_date'=>$miOrder->getOrderDate(),
+        'deliver_date'=>$miOrder->getDeliverDate(),
+        'note'=>$miOrder->getNote(),
+        'hidden'=>$miOrder->isHidden(),
+        'products'=> $allProducts
+      );
+      $resp->setContent(json_encode($productJson));
+      return $resp;
+      
+    }
     #[Route('/waiter', name: 'app_orders_waiter', methods: ['GET'])]
     public function waiter(): Response
     {
@@ -63,10 +120,26 @@ class OrdersController extends AbstractController
         return new Response(true);
     }
 
-    #[Route('/completed', name: 'app_orders_completed', methods: ['GET'])]
-    public function completed(): Response
+    #[Route('/{id}/waiting', name: 'app_orders_waiting', methods: ['GET'])]
+    public function waiting( MercureGenerator $mercure, Orders $order, EntityManagerInterface $entityManager): Response
     // Orders $order
     {
+      // $order->setStatus(0);
+      // $entityManager->persist($order);
+      // $entityManager->flush();
+      // $mercure->publish($order);
+        return $this->render('orders/waiting.html.twig', [
+            'orderId' => $order->getId(),
+        ]);
+    }
+    #[Route('/{id}/completed', name: 'app_orders_completed', methods: ['GET'])]
+    public function completed( MercureGenerator $mercure, Orders $order, EntityManagerInterface $entityManager): Response
+    // Orders $order
+    {
+      $order->setStatus(1);
+      $entityManager->persist($order);
+      $entityManager->flush();
+      $mercure->publish($order);
         return $this->render('orders/completed.html.twig', [
             // 'order' => $order,
         ]);

@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-
-import AddButton from "./AddButton";
-import DeleteButton from "./DeleteButton";
+import ProductsButtons from './ProductsButtons';
    
 const Products = (props) => {
   const { texto, descripcion } = props;
@@ -12,8 +10,7 @@ const Products = (props) => {
       <img src='' alt="Nachos con queso" width={200}/>
       <h5> {texto} </h5>
       <h6> {descripcion} </h6>
-      <AddButton/>
-      <DeleteButton/>
+      <ProductsButtons/>
     </div>
   ));
 

@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Waiting{% endblock %}
+
+{% block body %}
+  <div {{ react_component('pages/client/WaitingPage', { 'orderId' : orderId }) }}></div>
+{% endblock %}

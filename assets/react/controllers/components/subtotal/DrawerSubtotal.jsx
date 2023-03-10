@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import Stripe from "../stripe/Stripe";
 import '../../../../styles/DrawerSubtotal.css'
-function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey }) {
+function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey, orderId }) {
   const [stripe, setStripe] = useState(false);
-  const [efectivo, setEfectivo] = useState(false);
   const handleCloseDrawer = () => {
     if (isOpen) {
       setIsDrawerOpen(false);
@@ -12,7 +11,7 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey }) {
 
   const handleStripe = () => setStripe(!stripe);
 
-  const handleEfectivo = () => setEfectivo(!efectivo);
+  const handleEfectivo = () => { window.location.href =`http://http://localhost:8000/orders/${orderId}/waiting'}`;
 
 
   return (
@@ -22,7 +21,7 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey }) {
           <button onClick={handleStripe} type="button" className="btn btn-info fw-bold m-1">
             Pago con tarjeta
           </button>
-          {stripe && <p className="fw-bold m-1"><Stripe stripeKey={ stripeKey } /></p>}
+          {stripe && <p className="fw-bold m-1"><Stripe orderId={ orderId } stripeKey={ stripeKey } /></p>}
         </div>
         <div className="container-lg">
           <button
@@ -32,7 +31,7 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey }) {
           >
             Pago en efectivo
           </button>
-          {efectivo && <p className="fw-bold m-1">Llame a un camarero para finalizar el pedido.</p>}
+          
         </div>
       </div>
       <div className="col align-self-start justify-content-center">
@@ -46,6 +45,6 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey }) {
       </div>
     </div>
   );
-}
+}}
 
 export default DrawerSubtotal;
