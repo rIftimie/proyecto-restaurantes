@@ -16,7 +16,7 @@ class Orders
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $status = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -60,7 +60,7 @@ class Orders
         return $this->status;
     }
 
-    public function setStatus(int $status): self
+    public function setStatus($status): self
     {
         $this->status = $status;
 

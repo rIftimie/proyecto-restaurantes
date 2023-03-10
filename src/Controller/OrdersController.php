@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Menu;
 use App\Entity\OrderProducts;
 use App\Entity\Orders;
 use App\Form\OrdersType;
@@ -11,13 +10,14 @@ use App\Repository\OrdersRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\RestaurantRepository;
 use App\Repository\TableRepository;
-use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Stripe;
+use App\Service\MercureGenerator;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[Route('/orders')]
 class OrdersController extends AbstractController
@@ -37,7 +37,7 @@ class OrdersController extends AbstractController
       $miOrder= new Orders();
       $miOrder->setRestaurant($resRep->findOneById($request->toArray()[0]['restaurant_id']));
       $miOrder->setTableOrder($tabRep->findOneById($request->toArray()[0]['table_order_id']));
-      $miOrder->setStatus(0);
+      $miOrder->setStatus(null);
       $miOrder->setOrderDate(new DateTime());
       $orderProds= $request->toArray();
       foreach($orderProds as $prod){
@@ -137,10 +137,14 @@ class OrdersController extends AbstractController
         return new Response(true);
     }
 
-    #[Route('/completed', name: 'app_orders_completed', methods: ['GET'])]
-    public function completed(): Response
+    #[Route('/{id}/completed', name: 'app_orders_completed', methods: ['GET'])]
+    public function completed( MercureGenerator $mercure, Orders $order, EntityManagerInterface $entityManager): Response
     // Orders $order
     {
+      $order->setStatus(1);
+      $entityManager->persist($order);
+      $entityManager->flush();
+      $mercure->publish($order);
         return $this->render('orders/completed.html.twig', [
             // 'order' => $order,
         ]);

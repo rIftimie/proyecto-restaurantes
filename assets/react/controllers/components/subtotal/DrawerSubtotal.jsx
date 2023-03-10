@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Stripe from "../stripe/Stripe";
 import '../../../../styles/DrawerSubtotal.css'
-function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey }) {
+function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey, orderId }) {
   const [stripe, setStripe] = useState(false);
   const [efectivo, setEfectivo] = useState(false);
   const handleCloseDrawer = () => {
@@ -22,7 +22,7 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey }) {
           <button onClick={handleStripe} type="button" className="btn btn-info fw-bold m-1">
             Pago con tarjeta
           </button>
-          {stripe && <p className="fw-bold m-1"><Stripe stripeKey={ stripeKey } /></p>}
+          {stripe && <p className="fw-bold m-1"><Stripe orderId={ orderId } stripeKey={ stripeKey } /></p>}
         </div>
         <div className="container-lg">
           <button
