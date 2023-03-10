@@ -1,3 +1,3 @@
-import DeseoInput from './Productos';
+import Productos from './Productos';
 
-export default DeseoInput;
+export default Productos;
