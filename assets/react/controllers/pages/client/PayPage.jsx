@@ -11,7 +11,7 @@ const PayPage = ({ stripeKey }) => {
       </div>
       <div>
         {" "}
-        <Subtotal stripeKey={stripeKey} />{" "}
+        <Subtotal stripeKey={stripeKey} orderId={ orderId } />{" "}
       </div>
     </>
   );
