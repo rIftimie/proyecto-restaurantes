@@ -9,7 +9,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-
+use App\Repository\TableRepository;
 
 #[Route('/admin')]
 class AdminController extends AbstractController
@@ -42,5 +42,25 @@ class AdminController extends AbstractController
         
         }
         return new JsonResponse($usersJSON);
+    }
+    #[Route('/tables', name: 'app_tables')]
+    public function indexTables(TableRepository $tableRepository): Response
+    {
+      
+        $tables = $tableRepository->findAll();
+        
+        $tablesJSON = [];
+
+        foreach ($tables as $table) {
+
+            $tablesJSON[] = array(
+                'id'=> $table->getId(),
+                'number' => $table->getNumber(),
+                'restaurant' => $table->getRestaurant(),
+                'hidden'=> $table->getHidden(),
+            );
+        
+        }
+        return new JsonResponse($tablesJSON);
     }
 }
