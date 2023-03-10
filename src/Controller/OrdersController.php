@@ -13,7 +13,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Stripe;
 use App\Service\MercureGenerator;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -121,6 +120,18 @@ class OrdersController extends AbstractController
         return new Response(true);
     }
 
+    #[Route('/{id}/waiting', name: 'app_orders_waiting', methods: ['GET'])]
+    public function waiting( MercureGenerator $mercure, Orders $order, EntityManagerInterface $entityManager): Response
+    // Orders $order
+    {
+      // $order->setStatus(0);
+      // $entityManager->persist($order);
+      // $entityManager->flush();
+      // $mercure->publish($order);
+        return $this->render('orders/waiting.html.twig', [
+            'orderId' => $order->getId(),
+        ]);
+    }
     #[Route('/{id}/completed', name: 'app_orders_completed', methods: ['GET'])]
     public function completed( MercureGenerator $mercure, Orders $order, EntityManagerInterface $entityManager): Response
     // Orders $order
