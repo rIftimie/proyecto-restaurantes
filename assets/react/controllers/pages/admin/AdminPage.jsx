@@ -1,11 +1,10 @@
 import React from 'react';
-import Header from '../../controllers/components/Header/Header';
+import Header from '../../components/Header/Header';
 import { useState } from 'react';
-import User from '../../controllers/components/User';
+import User from '../../components/User';
 
-const AdminPages = () => {
+const AdminPage = () => {
   const [componente, setComponente] = useState(null);
-
   return (
     <div>
       <h1>Admin Panel</h1>
@@ -13,6 +12,6 @@ const AdminPages = () => {
       {componente === "User" && <User />}
     </div>
   );
-};
+}
 
-export default AdminPages;
+export default AdminPage;
