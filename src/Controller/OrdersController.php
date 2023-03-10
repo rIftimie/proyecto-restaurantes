@@ -2,16 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\OrderProducts;
 use App\Entity\Orders;
 use App\Form\OrdersType;
 use App\Repository\OrdersRepository;
+use App\Repository\ProductsRepository;
+use App\Repository\RestaurantRepository;
+use App\Repository\TableRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Stripe;
 use App\Service\MercureGenerator;
-
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[Route('/orders')]
 class OrdersController extends AbstractController
