@@ -3,6 +3,7 @@ import Header from '../../components/Header/Header';
 import { useState } from 'react';
 import User from '../../components/User';
 import Orders from '../../components/Order';
+import Table from '../../components/Table';
 
 const AdminPage = () => {
   const [componente, setComponente] = useState(null);
@@ -12,6 +13,7 @@ const AdminPage = () => {
       <Header setcomponente={setComponente}  />
       {componente === "User" && <User />}
       {componente === "Orders" && <Orders />}
+      {componente === "Table" && <Table />}
     </div>
   );
 }
