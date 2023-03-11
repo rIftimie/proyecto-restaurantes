@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DrawerSubtotal from "./DrawerSubtotal";
-const Subtotal = ( { stripeKey, orderId } ) => {
+const Subtotal = ({ stripeKey, orderId }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleOpenDrawer = () => {
@@ -24,7 +24,12 @@ const Subtotal = ( { stripeKey, orderId } ) => {
         >
           Pagar
         </button>
-        <DrawerSubtotal isOpen={isDrawerOpen} setIsDrawerOpen={ setIsDrawerOpen } stripeKey={ stripeKey } orderId={ orderId }/>
+        <DrawerSubtotal
+          isOpen={isDrawerOpen}
+          setIsDrawerOpen={setIsDrawerOpen}
+          stripeKey={stripeKey}
+          orderId={orderId}
+        />
       </div>
     </div>
   );

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Stripe from "../stripe/Stripe";
-import '../../../../styles/DrawerSubtotal.css'
+import "../../../../styles/DrawerSubtotal.css";
+
 function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey, orderId }) {
   const [stripe, setStripe] = useState(false);
+
   const handleCloseDrawer = () => {
     if (isOpen) {
       setIsDrawerOpen(false);
@@ -11,27 +13,31 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey, orderId }) {
 
   const handleStripe = () => setStripe(!stripe);
 
-  const handleEfectivo = () => { window.location.href =`http://http://localhost:8000/orders/${orderId}/waiting'}`;
-  console.log('holi')
-
   return (
     <div className={`drawer ${isOpen ? "open" : ""}`}>
       <div className="d-flex flex-column col-8 mt-5 m-4">
         <div className="container-fluid">
-          <button onClick={handleStripe} type="button" className="btn btn-info fw-bold m-1">
+          <button
+            onClick={handleStripe}
+            type="button"
+            className="btn btn-info fw-bold m-1"
+          >
             Pago con tarjeta
           </button>
-          {stripe && <p className="fw-bold m-1"><Stripe orderId={ orderId } stripeKey={ stripeKey } /></p>}
+          {stripe && (
+            <p className="fw-bold m-1">
+              <Stripe orderId={orderId} stripeKey={stripeKey} />
+            </p>
+          )}
         </div>
         <div className="container-lg">
           <button
-            onClick={handleEfectivo}
+            onClick={handleStripe}
             type="button"
             className="btn btn-info fw-bold m-1"
           >
             Pago en efectivo
           </button>
-          
         </div>
       </div>
       <div className="col align-self-start justify-content-center">
@@ -40,11 +46,11 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey, orderId }) {
           type="button"
           className="btn btn-outline-dark fw-bold m-4"
         >
-          <i class="fa-light fa-xmark"></i>
+          <i className="far fa-times-circle"></i>
         </button>
       </div>
     </div>
   );
-}}
+}
 
 export default DrawerSubtotal;
