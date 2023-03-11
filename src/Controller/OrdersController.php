@@ -106,6 +106,8 @@ class OrdersController extends AbstractController
           'allergens'=>$product->getAllergens(),
           'hidden'=>$product->isHidden(),
           'price'=>$product->getPrice(),
+          'img'=>$product->getImg(),
+          'quantity'=>$prod->getQuantity(),
         );
       }
         return $this->render('orders/pay.html.twig', [

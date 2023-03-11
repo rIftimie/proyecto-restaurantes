@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , idprod}) => {
+const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , idprod, quantity}) => {
   const [borrarVisible, setBorrarVisible] = useState(false);
   const [contador, setContador] = useState(0);
+  useEffect(() => {
+    if(quantity){
+      setContador(quantity);
+    }
+  }, [])
   
   const handleAgregarClick = () => {
     if (!borrarVisible) {

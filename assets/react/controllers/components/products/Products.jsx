@@ -9,14 +9,26 @@ const Products = ({
   orderProducts,
   setOrderProducts,
   setShow,
+  order
 }) => {
   const [prods, setProds] = useState([]);
+  console.log(prods)
   useEffect(() => {
-    getProds(idres);
+    if(order){
+      const save= order.map(ord=>{
+        const hidden= ord.hidden;
+        console.log(ord.quantity)
+        return  {product : ord , hidden}
+      })
+      setProds(save);
+    }else{
+      getProds(idres);
+    }
   }, []);
 
   const getProds = async (el) => {
     const prt = await getProducts(el);
+    
     setProds(prt);
     setShow(true);
   };
@@ -33,7 +45,7 @@ const Products = ({
     <>
       {prods.map((prod) => (
         <>
-          {prod.stock && !prod.hidden && (
+          {(order || prod.stock ) && !prod.hidden && (
             <div key={prod.id} className="row my-5">
               <div className="col-2 mx-2">
                 <img
@@ -48,7 +60,7 @@ const Products = ({
                     <h5> {prod.product.name} </h5>
                   </div>
                   <div className="col border-dotted">
-                    <h5 className="text-end"> {prod.product.price}€ </h5>
+                    <h5 className="text-end"> {prod.product.price}€</h5>
                   </div>
                 </div>
                 <h6> {prod.product.description} </h6>
@@ -63,6 +75,7 @@ const Products = ({
                   orderProducts={orderProducts}
                   setOrderProducts={setOrderProducts}
                   idprod={prod.id}
+                  quantity={prod.product.quantity}
                 />
               </div>
             </div>
