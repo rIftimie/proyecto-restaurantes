@@ -1,5 +1,5 @@
-import React from 'react'
-import { loadStripe } from '@stripe/stripe-js'
+import React from 'react';
+import { loadStripe } from '@stripe/stripe-js';
 import StripeForm from './StripeForm';
 import { Elements } from '@stripe/react-stripe-js';
 
@@ -12,5 +12,4 @@ const Stripe = ({ stripeKey, orderId }) => {
 	);
 };
 
-
-export default Stripe
+export default Stripe;

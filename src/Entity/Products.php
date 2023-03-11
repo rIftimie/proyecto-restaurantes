@@ -37,6 +37,9 @@ class Products
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 4)]
     private ?string $price = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $img = null;
+
     public function __construct()
     {
         $this->orderProducts = new ArrayCollection();
@@ -165,6 +168,18 @@ class Products
     public function setPrice(string $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(?string $img): self
+    {
+        $this->img = $img;
 
         return $this;
     }

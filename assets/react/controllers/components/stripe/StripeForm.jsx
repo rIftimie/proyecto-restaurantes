@@ -1,6 +1,6 @@
-import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
-import React from 'react'
-import { payOrder2 } from '../../api/pay';
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import React from 'react';
+import { payOrder2 } from '../../helpers/pay';
 
 const StripeForm = ({ orderId }) => {
 	const stripe = useStripe();
@@ -45,4 +45,4 @@ const StripeForm = ({ orderId }) => {
 	);
 };
 
-export default StripeForm
+export default StripeForm;

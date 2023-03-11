@@ -26,7 +26,6 @@ class Orders
     private ?\DateTimeInterface $deliverDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?User $waiter = null;
 
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: OrderProducts::class)]

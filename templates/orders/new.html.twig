@@ -4,7 +4,6 @@
 
 {% block body %}
     
-    <h1>HOLA COMO </h1>
-    <div {{ react_component('Products', {}) }}></div>
+    <div {{ react_component('pages/client/ClientPage', {'idres' : idres , 'idtable' : idtable }) }}></div>
     
 {% endblock %}

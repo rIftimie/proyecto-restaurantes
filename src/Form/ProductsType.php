@@ -6,6 +6,7 @@ use App\Entity\Products;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ProductsType extends AbstractType
 {
@@ -15,7 +16,11 @@ class ProductsType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('allergens')
-            ->add('stock')
+            ->add('img', FileType::class, [
+                'required' => false,
+                'data_class' => null,
+            ])
+            ->add('price')
         ;
     }
 
