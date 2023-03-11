@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-
 import { getProducts } from "../../helpers/products";
-import React, { useEffect, useState } from "react";
 import "../../pages/client/css/Products.css";
-import { getProducts } from "../../helpers/products";
 import ProductsButtons from "./ProductsButtons";
 
 const Products = ({

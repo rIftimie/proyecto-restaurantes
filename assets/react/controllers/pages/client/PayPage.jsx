@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Subtotal from "../../components/subtotal/Subtotal";
 import Products from "../../components/products/Products";
 
 const PayPage = ({ stripeKey , orderId, orderProducts }) => {
-  console.log(orderProducts);
+  const [show, setShow] = useState(false);
   return (
     <>
       <div>
         {" "}
-        <Products  />{" "}
+        <Products setShow={setShow}/>{" "}
       </div>
       <div>
         {" "}

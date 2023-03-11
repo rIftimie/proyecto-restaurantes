@@ -12,7 +12,7 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey, orderId }) {
   const handleStripe = () => setStripe(!stripe);
 
   const handleEfectivo = () => { window.location.href =`http://http://localhost:8000/orders/${orderId}/waiting'}`;
-
+  console.log('holi')
 
   return (
     <div className={`drawer ${isOpen ? "open" : ""}`}>
