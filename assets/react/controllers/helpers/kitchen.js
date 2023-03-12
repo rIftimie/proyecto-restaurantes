@@ -1,10 +1,11 @@
-const url = 'http://127.0.0.1:8000/orders';
-const url2 = 'http://127.0.0.1:8000/products';
+const ordersUrl = 'http://127.0.0.1:8000/orders';
+const productsUrl = 'http://127.0.0.1:8000/products';
+const menuUrl = 'http://127.0.0.1:8000/api/menu';
 
 // PUT: Termina un pedido: status 1 -> 2
 export const finishOrder = async (order) => {
 	try {
-		const response = await fetch(`${url}/kitchen/${order.id}/finish`, {
+		const response = await fetch(`${ordersUrl}/kitchen/${order.id}/finish`, {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json; charset=utf-8' },
 			body: JSON.stringify(order),
@@ -21,7 +22,7 @@ export const finishOrder = async (order) => {
 // PUT: Cancela un pedido: status -> 4
 export const declineOrder = async (order) => {
 	try {
-		const response = await fetch(`${url}/kitchen/${order.id}/decline`, {
+		const response = await fetch(`${ordersUrl}/kitchen/${order.id}/decline`, {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json; charset=utf-8' },
 			body: JSON.stringify(order),
@@ -38,8 +39,7 @@ export const declineOrder = async (order) => {
 // GET: Trae los productos
 export const getProducts = async () => {
 	try {
-		const urlProducts = `http://127.0.0.1:8000/api/restaurant/products`;
-		const response = await fetch(urlProducts);
+		const response = await fetch(menuUrl);
 
 		if (!response.ok)
 			throw new Error(response.status + ' ' + response.statusText);
@@ -54,7 +54,7 @@ export const getProducts = async () => {
 // PUT: Cambiar Stock producto
 export const changeStockProduct = async (product, quantity) => {
 	const qty = parseInt(quantity);
-	let bool = true;
+
 	if (qty > 0) {
 		product.stock = parseInt(product.stock) + qty;
 	} else if (qty < 0 && Math.abs(qty) <= product.stock) {
@@ -63,8 +63,9 @@ export const changeStockProduct = async (product, quantity) => {
 		// Si hay menos de lo que quieres quitar lo ponemos en 0
 		product.stock = 0;
 	}
+
 	try {
-		const response = await fetch(`${url2}/change`, {
+		const response = await fetch(`${productsUrl}/change`, {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json; charset=utf-8' },
 			body: JSON.stringify(product),

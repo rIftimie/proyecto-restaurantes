@@ -31,16 +31,16 @@ class ProductsController extends AbstractController
     #[Route('/change', name: 'app_orders_change', methods: ['PUT','GET'])]
     public function kitchenChangeStock(EntityManagerInterface $entityManager,Request $request, ProductsRepository $productsRepository, MenuRepository $menuRepository) : Response
     {
-
         $restaurant = $this->getUser()->getRestaurant();
+
         $product = json_decode($request->getContent(), true);
 
         $menu = $menuRepository->findOneByRestaurantANDProduct($restaurant,$product['product']['id']);
         $menu->setStock($product['stock']);
-
+        
         $menuRepository->save($menu, true);
 
-        return new Response('Fufa');
+        return new Response(Response::HTTP_OK);
     }
     #[Route('/new', name: 'app_products_new', methods: ['GET', 'POST'])]
     public function new (Request $request, ProductsRepository $productsRepository, SluggerInterface $slugger): Response

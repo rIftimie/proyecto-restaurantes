@@ -4,15 +4,11 @@ import { changeStockProduct } from '../../helpers/kitchen';
 const SelectProducts = ({ useStateProduct }) => {
 	const [selectedProduct, setSelectedProduct] = useState(null);
 	const [quantity, setQuantity] = useState(0);
+	const { products } = useStateProduct;
 
-	const handleConfirm = async (product, quantity) => {
+	const handleConfirm = async () => {
 		try {
-			await changeStockProduct(product, quantity); // actualiza el estado en el servidor
-			useStateProduct.setProducts(
-				useStateProduct.products.map((item) =>
-					product.id == item.id ? { ...item, status: 2 } : item
-				)
-			); // actualiza el estado en el cliente
+			await changeStockProduct(selectedProduct, quantity); // actualiza el estado en el servidor
 		} catch (error) {
 			console.error(error);
 		}
@@ -49,7 +45,7 @@ const SelectProducts = ({ useStateProduct }) => {
 				<option value="" defaultValue disabled hidden>
 					Please select a product.
 				</option>
-				{useStateProduct.products.map((product) => (
+				{products.map((product) => (
 					<option
 						className="text-center"
 						key={product.product.id}
@@ -83,10 +79,7 @@ const SelectProducts = ({ useStateProduct }) => {
 					>
 						-
 					</button>
-					<button
-						className="btn btn-dark"
-						onClick={() => handleConfirm(selectedProduct, quantity)}
-					>
+					<button className="btn btn-dark" onClick={() => handleConfirm()}>
 						Confirmar
 					</button>
 				</>
