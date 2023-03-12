@@ -163,13 +163,19 @@ class OrdersController extends AbstractController
         ]);
     }
     
-    #[Route('/alter', name: 'app_orders_index_alterada', methods: ['GET'])]
-    public function indexalter(OrdersRepository $ordersRepository): Response
+    #[Route('/{id}/update', name: 'app_orders_update', methods: ['PUT'])]
+    public function update( MercureGenerator $mercure, Orders $order, EntityManagerInterface $entityManager, Request $request): Response
+    // Orders $order
     {
-        return $this->render('orders/indexalter.html.twig', [
-            'orders' => $ordersRepository->findAll(),
+      dd($request->toArray());
+      $entityManager->persist($order);
+      $entityManager->flush();
+      $mercure->publish($order);
+        return $this->render('orders/completed.html.twig', [
+            // 'order' => $order,
         ]);
     }
+
 
     #[Route('/new/{idres}/{idtable}', name: 'app_orders_new', methods: ['GET', 'POST'])]
     public function new(RestaurantRepository $restaurantRepository, TableRepository $tableRepository, $idres, $idtable): Response

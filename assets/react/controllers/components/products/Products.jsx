@@ -9,10 +9,12 @@ const Products = ({
   orderProducts,
   setOrderProducts,
   setShow,
-  order
+  order,
+  paying,
+  orderId
 }) => {
   const [prods, setProds] = useState([]);
-  console.log(prods)
+  const [ordId, setOrdId] = useState(0);
   useEffect(() => {
     if(order){
       const save= order.map(ord=>{
@@ -20,6 +22,7 @@ const Products = ({
         console.log(ord.quantity)
         return  {product : ord , hidden}
       })
+      setOrdId(orderId);
       setProds(save);
     }else{
       getProds(idres);
@@ -74,8 +77,11 @@ const Products = ({
                   idtable={idtable}
                   orderProducts={orderProducts}
                   setOrderProducts={setOrderProducts}
-                  idprod={prod.id}
+                  idprod={prod.product.id}
                   quantity={prod.product.quantity}
+                  paying={ paying }
+                  prods= { prods }
+                  orderId= { orderId }
                 />
               </div>
             </div>

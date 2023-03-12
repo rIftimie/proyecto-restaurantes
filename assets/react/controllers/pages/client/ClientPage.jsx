@@ -47,6 +47,7 @@ const ClientPage = ({ idres, idtable }) => {
           orderProducts={orderProducts}
           setOrderProducts={setOrderProducts}
           setShow={setShow}
+          paying={ false }
         />
       )}
       {charge && show && (
