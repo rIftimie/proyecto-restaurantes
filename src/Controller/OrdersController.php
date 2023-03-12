@@ -24,7 +24,7 @@ class OrdersController extends AbstractController
 {
     #[Route('/', name: 'app_orders_index', methods: ['GET'])]
     public function index(OrdersRepository $ordersRepository): Response
-    {
+    {   
         return $this->render('orders/index.html.twig', [
             'orders' => $ordersRepository->findAll(),
         ]);
@@ -278,6 +278,7 @@ class OrdersController extends AbstractController
     #[Route('/{id}/edit', name: 'app_orders_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Orders $order, OrdersRepository $ordersRepository): Response
     {
+        
         $form = $this->createForm(OrdersType::class, $order);
         $form->handleRequest($request);
 

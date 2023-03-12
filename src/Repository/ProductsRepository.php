@@ -39,6 +39,17 @@ class ProductsRepository extends ServiceEntityRepository
         }
     }
 
+    //Get products with no stock
+    public function getProductsNoStock(): array
+    {
+        $products = $this->createQueryBuilder('p')
+            ->where('p.stock = 0')
+            ->getQuery()
+            ->getResult();
+
+        return $products;
+    }
+
     public function findOneById($value): ?Products
     {
         return $this->createQueryBuilder('p')
@@ -74,3 +85,4 @@ class ProductsRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+

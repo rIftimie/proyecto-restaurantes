@@ -25,7 +25,8 @@ class OrderProductsRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->persist($entity);
 
-        if ($flush) {
+        if ($flush)
+        {
             $this->getEntityManager()->flush();
         }
     }
@@ -34,9 +35,67 @@ class OrderProductsRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->remove($entity);
 
-        if ($flush) {
+        if ($flush)
+        {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Returns the products of an order
+     * @param int $idOrder
+     * @return array
+     */
+    public function getProductsByOrder($idOrder): array
+    {
+        $products = $this->createQueryBuilder('op')
+            ->innerJoin('op.product', 'p')
+            ->innerJoin('op.order', 'o')
+            ->where('o.id = :idOrder')
+            ->setParameter('idOrder', $idOrder)
+            ->getQuery()
+            ->getResult();
+
+        return $products;
+    }
+
+    //Get the total number of products sold in a given period of time
+    public function getTotalProductsSold($idRestaurant, $startDate, $endDate): int
+    {
+        $totalProductsSold = $this->createQueryBuilder('op')
+            ->innerJoin('op.product', 'p')
+            ->innerJoin('p.menus', 'm')
+            ->innerJoin('m.restaurant', 'r')
+            ->innerJoin('op.order', 'o')
+            ->where('r.id = :idRestaurant')
+            ->andWhere('o.status = 3')
+            ->andWhere('o.date BETWEEN :startDate AND :endDate')
+            ->setParameter('idRestaurant', $idRestaurant)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->select('SUM(op.quantity) as totalProductsSold')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $totalProductsSold;
+    }
+
+    //Most requested products for a given period of time
+    public function getMostRequestedProducts($idRestaurant, $startDate, $endDate): array
+    {
+        $products = $this->createQueryBuilder('op')
+            ->innerJoin('op.product', 'p')
+            ->innerJoin('p.restaurant', 'r')
+            ->innerJoin('op.order', 'o')
+            ->where('r.id = :idRestaurant')
+            ->andWhere('o.date BETWEEN :startDate AND :endDate')
+            ->setParameter('idRestaurant', $idRestaurant)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getResult();
+
+        return $products;
     }
 
 //    /**

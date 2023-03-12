@@ -53,7 +53,8 @@
 			"symfony/flex": true,
 			"symfony/runtime": true
 		},
-		"sort-packages": true
+		"sort-packages": true,
+		"platform-check": false
 	},
 	"autoload": {
 		"psr-4": {

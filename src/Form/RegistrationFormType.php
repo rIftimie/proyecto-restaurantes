@@ -11,11 +11,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use App\Repository\RestaurantRepository;
+use App\Repository\UserRepository;
 
 class RegistrationFormType extends AbstractType
 {
+    private $restaurantRepository;
+    private $userRepository;
+
+    public function __construct(RestaurantRepository $restaurantRepository,UserRepository $userRepository){
+        $this->restaurantRepository = $restaurantRepository;
+        $this->userRepository = $userRepository;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $restaurants = $this->restaurantRepository->getRestaurant();
+        $roles = $this->userRepository->getRolesbyId();
+
         $builder
             ->add('username')
             ->add('agreeTerms', CheckboxType::class, [
@@ -42,6 +55,18 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+            ])
+            ->add('roles', ChoiceType::class, [
+                'label' => 'Roles',
+                'choices' => $roles,
+                'expanded' => true,
+                'multiple' => true,
+            ])
+            ->add('restaurant', ChoiceType::class, [
+                'label' => 'restaurant',
+                'choices' => $restaurants,
+                'expanded' => true,
+                'multiple' => false,
             ])
         ;
     }
