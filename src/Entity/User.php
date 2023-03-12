@@ -42,15 +42,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Restaurant $restaurant = null;
 
-    #[ORM\OneToMany(mappedBy: 'waiter', targetEntity: Orders::class)]
-    private Collection $orders;
-
     #[ORM\Column]
     private ?bool $hidden = false;
 
+    #[ORM\OneToMany(mappedBy: 'madeBy', targetEntity: Orders::class)]
+    private Collection $ordersMade;
+
+    #[ORM\OneToMany(mappedBy: 'deliveredBy', targetEntity: Orders::class)]
+    private Collection $ordersDelivered;
+
     public function __construct()
     {
-        $this->orders = new ArrayCollection();
+        $this->ordersMade = new ArrayCollection();
+        $this->ordersDelivered = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,36 +163,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Orders>
-     */
-    public function getOrders(): Collection
-    {
-        return $this->orders;
-    }
-
-    public function addOrder(Orders $order): self
-    {
-        if (!$this->orders->contains($order)) {
-            $this->orders->add($order);
-            $order->setWaiter($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrder(Orders $order): self
-    {
-        if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
-            if ($order->getWaiter() === $this) {
-                $order->setWaiter(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function isHidden(): ?bool
     {
         return $this->hidden;
@@ -203,5 +177,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return  $this->username;
+    }
+
+    /**
+     * @return Collection<int, Orders>
+     */
+    public function getOrdersMade(): Collection
+    {
+        return $this->ordersMade;
+    }
+
+    public function addOrdersMade(Orders $ordersMade): self
+    {
+        if (!$this->ordersMade->contains($ordersMade)) {
+            $this->ordersMade->add($ordersMade);
+            $ordersMade->setMadeBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdersMade(Orders $ordersMade): self
+    {
+        if ($this->ordersMade->removeElement($ordersMade)) {
+            // set the owning side to null (unless already changed)
+            if ($ordersMade->getMadeBy() === $this) {
+                $ordersMade->setMadeBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Orders>
+     */
+    public function getOrdersDelivered(): Collection
+    {
+        return $this->ordersDelivered;
+    }
+
+    public function addOrdersDelivered(Orders $ordersDelivered): self
+    {
+        if (!$this->ordersDelivered->contains($ordersDelivered)) {
+            $this->ordersDelivered->add($ordersDelivered);
+            $ordersDelivered->setDeliveredBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdersDelivered(Orders $ordersDelivered): self
+    {
+        if ($this->ordersDelivered->removeElement($ordersDelivered)) {
+            // set the owning side to null (unless already changed)
+            if ($ordersDelivered->getDeliveredBy() === $this) {
+                $ordersDelivered->setDeliveredBy(null);
+            }
+        }
+
+        return $this;
     }
 }

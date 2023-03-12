@@ -10,15 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MercureGenerator
 {
-    private $formatter;
-    private $hub;
     public function __construct(ApiFormatter $formatter,HubInterface $hub)
     {
         $this->formatter= $formatter;
         $this->hub= $hub;
     }
 
-    
     // Publish order update.
     public function publish(Orders $order): Response
     {
@@ -27,7 +24,9 @@ class MercureGenerator
             'http://localhost:8000/api/orders/'.$order->getId(),
             json_encode($this->formatter->orderToArray($order))
         );
-        $this->hub->publish($update);        
+
+        $this->hub->publish($update);
+        
         return new Response(Response::HTTP_OK);
     }
 }

@@ -1,4 +1,4 @@
-// GET: Cobra un pedido en fisico
+// GET: Cobra un pedido en fisico: status 0 -> 1
 export const payWaiter = async (order) => {
 	try {
 		const response = await fetch(
@@ -13,7 +13,7 @@ export const payWaiter = async (order) => {
 	}
 };
 
-// GET: Entrega pedido al cliente
+// GET: Entrega pedido al cliente: status 2 -> 3
 export const deliver = async (order) => {
 	try {
 		const response = await fetch(

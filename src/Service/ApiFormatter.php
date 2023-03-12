@@ -17,22 +17,59 @@ class ApiFormatter
 
             $products[]=($obj);
         }
-        if($order->getWaiter()){
-          $waiter= $order->getWaiter()->getUserName();
-        }else{
-          $waiter= '';
-        }
         $orderJSON = array(
             'id'=> $order->getId(),
             'note' => $order->getNote(),
             'status' => $order->getStatus(),
             'products'=> $products,
-            'waiter' => $waiter,
+            'deliveredBy' => $order->getDeliveredBy(),
+            'madeBy' => $order->getMadeBy(),
             'orderDate' => $order->getOrderDate(),
             'deliverDate' => $order->getDeliverDate(),
             'table' => $order->getTableOrder()->getNumber(),
         );
 
         return $orderJSON;
+    }
+
+    public function restaurantToArray($restaurant): array
+    {
+      $restaurantJSON = array(
+          'id' => $restaurant->getId(),
+          'name' => $restaurant->getName(),
+          'address' => $restaurant->getAddress(),
+          'postal code' => $restaurant->getPostalCode(),
+          'menu' => "http://localhost:8000/api/restaurant/".$restaurant->getId()."/menu",
+      );
+      return $restaurantJSON;
+    }
+
+    public function productToArray($product): array
+    {
+      $productJSON= array(
+        'id'  => $product->getId(),
+        'name' => $product->getName(),
+        'description' => $product->getDescription(),
+        'allergens' => $product->getAllergens(),
+        'hidden' => $product->isHidden(),
+        'price' => $product->getPrice(),
+        'img' => $product->getImg(),
+      );
+
+      return $productJSON;
+    }
+
+    public function menuToArray($menu): array
+    {
+      $product = $this->productToArray($menu->getProduct());
+
+      $menuJSON = array(
+        'id'  => $menu->getId(),
+        'product' => $product,
+        'stock' => $menu->getStock(),
+        'hidden' => $menu->isHidden(),
+      );
+
+      return $menuJSON;
     }
 }

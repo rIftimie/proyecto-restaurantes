@@ -1,4 +1,89 @@
 body {
-  background: #313131 !important;
-  color: #fafad2 !important;
+  background-color: lightgray;
 }
+section.card.d-flex.bg-black {
+  background-color: #313131 !important;
+  color: white;
+}
+
+section.card.d-flex.bg-green {
+  background-color: #9ce070 !important;
+  color: white;
+}
+
+section.card.d-flex.bg-red {
+  background-color: #f14b42 !important;
+  color: white;
+}
+
+section.card.d-flex.bg-beige {
+  background-color: #fafad2 !important;
+  color: #313131 !important;
+}
+
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #000;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #000 transparent transparent transparent;
+  top: 0px;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+  top: -72px;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+  top: -144px;
+}
+.lds-ring div:nth-child(4) {
+  top: -216px;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slide {
+  0% {
+    left: -200px;
+  }
+
+  100% {
+    left: 0px;
+  }
+}
+
+section.card.d-flex.bg-black {
+  background-color: #313131 !important;
+  color: white;
+}
+
+section.card.d-flex.bg-green {
+  background-color: #9ce070 !important;
+  color: white;
+}
+
+section.card.d-flex.bg-red {
+  background-color: #f14b42 !important;
+  color: white;
+}
+
+section.card.d-flex.bg-beige {
+  background-color: #fafad2 !important;
+  color: #313131;
+}
+

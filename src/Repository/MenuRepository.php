@@ -54,6 +54,18 @@ class MenuRepository extends ServiceEntityRepository
        ;
    }
 
+
+   public function findOneByRestaurantANDProduct($value, $value2): ?Menu
+   {
+       return $this->createQueryBuilder('q')
+            ->andWhere('q.restaurant = :val AND q.product = :val2')
+            ->setParameter('val', $value)
+            ->setParameter('val2', $value2)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+   }
+
 //    /**
 //     * @return Menu[] Returns an array of Menu objects
 //     */
@@ -78,4 +90,6 @@ class MenuRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
 }

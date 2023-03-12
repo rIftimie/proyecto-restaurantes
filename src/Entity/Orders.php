@@ -25,9 +25,6 @@ class Orders
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deliverDate = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders')]
-    private ?User $waiter = null;
-
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: OrderProducts::class)]
     private Collection $orderProducts;
 
@@ -44,6 +41,12 @@ class Orders
 
     #[ORM\Column]
     private ?bool $hidden = false;
+
+    #[ORM\ManyToOne(inversedBy: 'ordersMade')]
+    private ?User $madeBy = null;
+
+    #[ORM\ManyToOne(inversedBy: 'ordersDelivered')]
+    private ?User $deliveredBy = null;
 
     public function __construct()
     {
@@ -87,18 +90,6 @@ class Orders
     public function setDeliverDate(?\DateTimeInterface $deliverDate): self
     {
         $this->deliverDate = $deliverDate;
-
-        return $this;
-    }
-
-    public function getWaiter(): ?User
-    {
-        return $this->waiter;
-    }
-
-    public function setWaiter(?User $waiter): self
-    {
-        $this->waiter = $waiter;
 
         return $this;
     }
@@ -177,6 +168,30 @@ class Orders
     public function setHidden(bool $hidden): self
     {
         $this->hidden = $hidden;
+
+        return $this;
+    }
+
+    public function getMadeBy(): ?User
+    {
+        return $this->madeBy;
+    }
+
+    public function setMadeBy(?User $madeBy): self
+    {
+        $this->madeBy = $madeBy;
+
+        return $this;
+    }
+
+    public function getDeliveredBy(): ?User
+    {
+        return $this->deliveredBy;
+    }
+
+    public function setDeliveredBy(?User $deliveredBy): self
+    {
+        $this->deliveredBy = $deliveredBy;
 
         return $this;
     }
