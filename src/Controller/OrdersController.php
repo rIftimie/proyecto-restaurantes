@@ -61,7 +61,7 @@ class OrdersController extends AbstractController
           'quantity' => $prod->getQuantity(),
           'information' => $prod->getInformation(),
           'hidden' => $prod->isHidden(),
-          'totalPrice' => $prod->getTotalPrice(),
+          'totalPrice' => round($prod->getTotalPrice(),2),
         );
       }
 
@@ -108,7 +108,7 @@ class OrdersController extends AbstractController
           'description'=>$product->getDescription(),
           'allergens'=>$product->getAllergens(),
           'hidden'=>$product->isHidden(),
-          'price'=>$product->getPrice(),
+          'price'=>round($product->getPrice(),2),
           'img'=>$product->getImg(),
           'quantity'=>$prod->getQuantity(),
         );

@@ -49,7 +49,7 @@ const Products = ({
       {prods.map((prod) => (
         <>
           {(order || prod.stock ) && !prod.hidden && (
-            <div key={prod.id} className="row my-5">
+            <div key={prod.id} className="row my-5 prod bg-danger">
               <div className="col-2 mx-2">
                 <img
                   src={prod.product.img}

@@ -34,24 +34,28 @@ const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , 
       setBorrarVisible(true);
     }
     setContador(contador + 1);
-    if(orderProducts.filter((prod)=> prod.products_id==idprod)[0] ){
-      const products = orderProducts.filter((prod)=> prod.products_id!=idprod);
-      console.log(products)
-      const newProduct = orderProducts.filter((prod)=> prod.products_id==idprod)[0];
-      console.log(newProduct);
-      newProduct.quantity++;
-      products.push(newProduct);
-      setOrderProducts(products);
+    if(order){
+      console.log(first)
     }else{
-      const producto={
-        products_id : idprod,
-        quantity:1,
-        restaurant_id: idres,
-        table_order_id: idtable
+      if(orderProducts.filter((prod)=> prod.products_id==idprod)[0] ){
+        const products = orderProducts.filter((prod)=> prod.products_id!=idprod);
+        console.log(products)
+        const newProduct = orderProducts.filter((prod)=> prod.products_id==idprod)[0];
+        console.log(newProduct);
+        newProduct.quantity++;
+        products.push(newProduct);
+        setOrderProducts(products);
+      }else{
+        const producto={
+          products_id : idprod,
+          quantity:1,
+          restaurant_id: idres,
+          table_order_id: idtable
+        }
+        const prods=[ ...orderProducts ];
+        prods.push(producto);
+        setOrderProducts(prods);
       }
-      const prods=[ ...orderProducts ];
-      prods.push(producto);
-      setOrderProducts(prods);
     }
   };
 
@@ -82,7 +86,7 @@ const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , 
     <div className="d-flex">
       <div>
         <button
-          className="btn btn-outline-success m-1 ms-0"
+          className="btn btn-outline-success border border-dark m-1 ms-0"
           type="button"
           onClick={handleAgregarClick}
         >
@@ -93,11 +97,11 @@ const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , 
             visibility: contador > 0 || borrarVisible ? "visible" : "hidden",
             
           }}>
-              <button className="btn btn-outline-light m-1">{contador}</button>
+              <button className="btn btn-outline-light m-1 border border-dark">{contador}</button>
             </div>
       <div>
         <button
-          className="btn btn-outline-danger m-1"
+          className="btn btn-outline-danger border border-dark m-1"
           type="button"
           style={{
             visibility: contador > 0 || borrarVisible ? "visible" : "hidden",

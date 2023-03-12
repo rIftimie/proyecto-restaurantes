@@ -52,7 +52,7 @@ class ApiFormatter
         'description' => $product->getDescription(),
         'allergens' => $product->getAllergens(),
         'hidden' => $product->isHidden(),
-        'price' => $product->getPrice(),
+        'price' => round($product->getPrice(),2),
         'img' => $product->getImg(),
       );
 
