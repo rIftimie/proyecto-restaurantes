@@ -2,8 +2,7 @@ import React from 'react';
 import KitchenOrderCard from './KitchenOrderCard';
 
 function KitchenOrderContainer({ useStateOrder }) {
-	const orders = useStateOrder.orders;
-
+	const { orders } = useStateOrder;
 	const renderOrders = orders?.map((order) => (
 		<KitchenOrderCard
 			key={order.id}
@@ -13,7 +12,9 @@ function KitchenOrderContainer({ useStateOrder }) {
 	));
 
 	return (
-		<main className="d-flex justify-content-between">{renderOrders}</main>
+		<section className="flex-wrap container-fluid d-flex justify-content-center">
+			{renderOrders}
+		</section>
 	);
 }
 

@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<div
- {{ react_component('pages/kitchen/KitchenPage', {}) }}>
-</div>
+	<div
+			{{ react_component('pages/kitchen/KitchenPage') }}>
+	</div>
 
+	<script type="application/json" id="mercure-url">
+			{{ mercure('http://localhost:8000/api/orders/{id}')|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
+	</script>
 {% endblock %}

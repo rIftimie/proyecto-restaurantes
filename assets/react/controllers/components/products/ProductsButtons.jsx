@@ -1,9 +1,34 @@
 import React, { useEffect, useState } from "react";
+import { updateOrderProduct } from "../../helpers/products";
 
-const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , idprod}) => {
+const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , idprod, quantity, paying , orderId, prods}) => {
   const [borrarVisible, setBorrarVisible] = useState(false);
   const [contador, setContador] = useState(0);
+  useEffect(() => {
+    if(quantity){
+      setContador(quantity);
+    }
+    if(orderId){
+      const newProds = prods.map(prod =>( {
+        products_id: prod.product.id, 
+        quantity : prod.product.quantity,
+        restaurant_id : 0,
+        table_order_id : 0
+      })
+      )
+      console.log(newProds)
+      setOrderProducts(newProds);
+    }
+  }, [])
   
+  useEffect(() => {
+    // if(paying){
+    //   updateOrderProduct(orderId,orderProducts);
+    // }
+    console.log(orderProducts)
+  }, [orderProducts])
+  
+
   const handleAgregarClick = () => {
     if (!borrarVisible) {
       setBorrarVisible(true);
@@ -11,7 +36,9 @@ const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , 
     setContador(contador + 1);
     if(orderProducts.filter((prod)=> prod.products_id==idprod)[0] ){
       const products = orderProducts.filter((prod)=> prod.products_id!=idprod);
+      console.log(products)
       const newProduct = orderProducts.filter((prod)=> prod.products_id==idprod)[0];
+      console.log(newProduct);
       newProduct.quantity++;
       products.push(newProduct);
       setOrderProducts(products);

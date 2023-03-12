@@ -129,7 +129,6 @@ class AppFixtures extends Fixture
         $order1 = new Orders();
         $order1->setStatus(0);
         $order1->setOrderDate(date_create("2023-02-22 12:53"), 'Y-m-d H:i');
-        $order1->setWaiter($waiter1);
         $order1->setRestaurant($restaurant1);
         $order1->setTableOrder($table1);
         $manager->persist($order1);
@@ -138,7 +137,6 @@ class AppFixtures extends Fixture
         $order2 = new Orders();
         $order2->setStatus(1);
         $order2->setOrderDate(date_create("2023-02-22 12:37"), 'Y-m-d H:i');
-        $order2->setWaiter($waiter2);
         $order2->setRestaurant($restaurant1);
         $order2->setTableOrder($table1);
         $manager->persist($order2);
@@ -148,7 +146,6 @@ class AppFixtures extends Fixture
         $order3->setStatus(2);
         $order3->setOrderDate(date_create("2023-02-23 11:05"), 'Y-m-d H:i');
         $order3->setNote("Extra Jamon");
-        $order3->setWaiter($waiter1);
         $order3->setRestaurant($restaurant1);
         $order3->setTableOrder($table2);
         $manager->persist($order3);
@@ -158,7 +155,6 @@ class AppFixtures extends Fixture
         $order4->setStatus(3);
         $order4->setOrderDate(date_create("2023-02-23 13:10"), 'Y-m-d H:i');
         $order4->setDeliverDate(date_create("2023-02-23 13:35"), 'Y-m-d H:i');
-        $order4->setWaiter($waiter2);
         $order4->setRestaurant($restaurant1);
         $order4->setTableOrder($table3);
         $manager->persist($order4);

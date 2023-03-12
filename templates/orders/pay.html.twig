@@ -3,6 +3,6 @@
 {% block title %}Pay{% endblock %}
 
 {% block body %}
-  <div class='container d-flex justify-content-center flex-column'  {{ react_component('pages/client/PayPage', {'stripeKey': stripe_key , 'orderId': order_id , 'orderProducts' : orderProds}) }}></div>
+  <div class='container d-flex justify-content-center flex-column'  {{ react_component('pages/client/PayPage', {'stripeKey': stripe_key , 'orderId': order_id , 'order' : orderProds}) }}></div>
 
 {% endblock %}
