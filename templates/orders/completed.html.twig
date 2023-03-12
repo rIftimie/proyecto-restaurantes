@@ -3,5 +3,5 @@
 {% block title %}Pay{% endblock %}
 
 {% block body %}
-  <div {{ react_component('Pedido', {}) }}></div>
+  <div {{ react_component('pages/client/CompletedPage', { order: order }) }}></div>
 {% endblock %}

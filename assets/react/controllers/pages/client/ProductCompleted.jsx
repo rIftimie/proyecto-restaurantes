@@ -1,17 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import uniqid from 'uniqid'
 
 const ProductCompleted = ({data}) => {
 
-  const [subtotal, setSubtotal] = useState(0);
-
-  useEffect(() => {
-    const precio = data.extras.reduce((acc, {precio}) => acc+precio, 0);
-    setSubtotal(precio);
-    return () => {
-
-    };
-  }, []);
 
   return (
       <div key={data.id}>
@@ -22,7 +12,7 @@ const ProductCompleted = ({data}) => {
 
         <div className='d-flex my-1' style={{alignItems: "baseline", borderBottom: "1px solid #fafad2"}}>
           <div className='me-auto'>SubTotal</div>
-          <div className='ms-auto'>{subtotal + data.price} €</div>
+          <div className='ms-auto'>{data.price} €</div>
         </div>
         <br/>
       </div>

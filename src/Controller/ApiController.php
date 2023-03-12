@@ -130,8 +130,10 @@ class ApiController extends AbstractController
         foreach ($order->getOrderProducts() as $orderProduct) {
 
             $obj = new \stdClass();
-            $obj -> name = $orderProduct->getProducts()->getName();
-            $obj -> quantity = $orderProduct->getQuantity();
+            $obj->id = $orderProduct->getProducts()->getId();
+            $obj->name = $orderProduct->getProducts()->getName();
+            $obj->price = $orderProduct->getProducts()->getPrice();
+            $obj->quantity = $orderProduct->getQuantity();
 
             $products[]=($obj);
         }

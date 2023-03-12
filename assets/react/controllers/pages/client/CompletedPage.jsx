@@ -7,44 +7,13 @@ const Completed = ({ order }) => {
   const [productos, setProductos] = useState([]);
 
   const fetchGetOrders = async () => {
-    const response = await getOrderById(1);
+    const response = await getOrderById(order);
     setProductos(response.products);
   };
 
   useEffect(() => {
     fetchGetOrders();
   }, []);
-
-  //   const productos = [
-  //     {
-  //       id: 1,
-  //       nombre: 'Nachos con queso',
-  //       img: 'https://imgpile.com/images/dewPUW.jpg',
-  //       precio: 5,
-  //       extras: [
-  //         {
-  //           nombre: 'Extra limón',
-  //           precio: 0.5
-  //         },
-  //       ]
-  //     },
-  //     {
-  //       id: 2,
-  //       nombre: 'Nachos con guacamole',
-  //       img: 'https://imgpile.com/images/dewPUW.jpg',
-  //       precio: 5.50,
-  //       extras: [
-  //         {
-  //           nombre: 'Extra limón',
-  //           precio: 0.5
-  //         },
-  //         {
-  //           nombre: 'Extra Picante',
-  //           precio: 0.5
-  //         }
-  //       ]
-  //     }
-  //   ]
 
     return (
         <div style={{width: "450px"}} className="m-auto mt-5 p-1 border rounded-2">
