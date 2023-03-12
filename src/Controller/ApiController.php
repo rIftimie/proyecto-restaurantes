@@ -13,15 +13,18 @@ use App\Repository\MenuRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\RestaurantRepository;
 use App\Entity\Orders;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 #[Route('/api')]
 class ApiController extends AbstractController
 {
     // Devuelve todos los pedidos asociados con el restaurante del usuario en formato JSON
     #[Route('/orders', name: 'app_api_orders_index', methods:["GET"])]
-    public function index(ApiFormatter $formatter, OrdersRepository $orderRepository): JsonResponse
+    public function index(ApiFormatter $formatter, OrdersRepository $orderRepository, UserInterface $user): JsonResponse
     {
-        $orders = $orderRepository->findBy(['restaurant' => $this->getUser()->getRestaurant()->getId()]);
+        $orders = $orderRepository->findBy(['restaurant' => $user->getRestaurant()->getId()]);
         $ordersJSON = [];
 
         foreach($orders as $order) {
@@ -96,10 +99,10 @@ class ApiController extends AbstractController
     }
 
     // Devuelve el menu de un restaurante formato JSON
-    #[Route('/restaurant/{id}/products', name: 'app_api_products')]
-    public function products(MenuRepository $menuRepository, ProductsRepository $prodrep, $id): JsonResponse
+    #[Route('/restaurant/products', name: 'app_api_products')]
+    public function products(MenuRepository $menuRepository, ProductsRepository $prodrep, UserInterface $user): JsonResponse
     {
-        $menu = $menuRepository->findBy(['restaurant' => $id]);
+        $menu = $menuRepository->findBy(['restaurant' => $user->getRestaurant()->getId()]);
         $productsJSON = [];
         foreach($menu as $menuItem){
           $obj = new \stdClass();

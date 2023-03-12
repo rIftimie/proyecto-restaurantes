@@ -36,8 +36,9 @@ class OrdersController extends AbstractController
     #[Route('/kitchen', name: 'app_orders_kitchen', methods: ['GET'])]
         public function kitchen(): Response
     {
-        return $this->render('kitchen/index.html.twig');
+        return $this->render('kitchen/index.html.twig' );
     }
+
     #[Route('/pay', name: 'app_orders_pay', methods: ['GET'])]
     public function pay(): Response
     // Orders $order
@@ -72,17 +73,7 @@ class OrdersController extends AbstractController
     public function completed(): Response
     // Orders $order
     {
-        return $this->render('orders/completed.html.twig', [
-            // 'order' => $order,
-        ]);
-    }
-    
-    #[Route('/alter', name: 'app_orders_index_alterada', methods: ['GET'])]
-    public function indexalter(OrdersRepository $ordersRepository): Response
-    {
-        return $this->render('orders/indexalter.html.twig', [
-            'orders' => $ordersRepository->findAll(),
-        ]);
+        return $this->render('orders/completed.html.twig');
     }
 
     #[Route('/new/{idres}/{idtable}', name: 'app_orders_new', methods: ['GET', 'POST'])]
@@ -94,37 +85,12 @@ class OrdersController extends AbstractController
         ]);
     }
 
-    // Cocina: acepta un pedido.
-    #[Route('/kitchen/{id}/accept', name: 'app_orders_kitchen_accept', methods: ['PUT'])]
-    public function kitchenAccept(MercureGenerator $mercure, Request $request, Orders $order, OrdersRepository $ordersRepository, MenuRepository $menuRepository) : Response
-    {
-        if($order->getStatus()==1){
-            $order->setStatus(2);
-            foreach($order->getOrderProducts() as $orderProduct){
-                foreach($menuRepository->findByRestaurantANDProduct($order->getRestaurant(),$orderProduct->getProducts()->getId()) as $menuFound){
-                    $menuFound->setStock($menuFound->getStock()-$orderProduct->getQuantity());
-                    $menuRepository->save($menuFound, true);
-                }
-            }
-            $ordersRepository->save($order, true);
-
-            // Llama a Mercure
-            $mercure->publish($order);
-
-            return new Response('Pedido aceptado', Response::HTTP_OK);
-        }
-
-        return new Response(null, 500);
-    }
-
-    
-
     // Cocina: termina un pedido.
     #[Route('/kitchen/{id}/finish', name: 'app_orders_kitchen_finish', methods: ['PUT'])]
     public function kitchenFinish(MercureGenerator $mercure, Request $request, Orders $order, OrdersRepository $ordersRepository) : Response
     {
-        if($order->getStatus()==2){
-            $order->setStatus(3);
+        if($order->getStatus()==1){
+            $order->setStatus(2);
             $ordersRepository->save($order,true);
     
             // Llama a Mercure
@@ -140,7 +106,7 @@ class OrdersController extends AbstractController
     #[Route('/kitchen/{id}/decline', name: 'app_orders_kitchen_decline', methods: ['PUT'])]
     public function kitchenDecline(MercureGenerator $mercure, Request $request, Orders $order, OrdersRepository $ordersRepository, MenuRepository $menuRepository) : Response
     {
-        $order->setStatus(5);
+        $order->setStatus(4);
         foreach($order->getOrderProducts() as $orderProduct){
             foreach($menuRepository->findByRestaurantANDProduct($order->getRestaurant(),$orderProduct->getProducts()->getId()) as $menuFound){
                 $menuFound->setStock($menuFound->getStock()+$orderProduct->getQuantity());
@@ -183,7 +149,8 @@ class OrdersController extends AbstractController
             return new Response('El pedido no existe', Response::HTTP_NOT_FOUND);
         }
     
-        $order->setStatus(4);
+        $order->setStatus(3);
+        $order->setWaiter($this->getUser());
         $orderRepository->save($order, true);
         
         // Llama a Mercure
@@ -231,7 +198,6 @@ class OrdersController extends AbstractController
 
 //  0 -> pending    
 //  1 -> payed    
-//  2 -> in progress    
-//  3 -> ready 
-//  4 -> delivered
-//  5 -> cancelled
+//  2 -> ready 
+//  3 -> delivered
+//  4 -> cancelled
