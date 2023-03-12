@@ -2,7 +2,7 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import React from 'react';
 import { payOrder2 } from '../../helpers/pay';
 
-const StripeForm = () => {
+const StripeForm = ({ orderId }) => {
 	const stripe = useStripe();
 	const elements = useElements();
 	const handleSubmit = async (e) => {
@@ -21,7 +21,7 @@ const StripeForm = () => {
 					console.log(response.ok);
 					if (response.ok) {
 						window.location.href =
-							'http://localhost:8000/orders/completed';
+							`http://localhost:8000/orders/${orderId}/completed`;
 					}
 				})
 				.catch((error) => {

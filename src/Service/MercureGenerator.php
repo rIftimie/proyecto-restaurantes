@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MercureGenerator
 {
-
     public function __construct(ApiFormatter $formatter,HubInterface $hub)
     {
         $this->formatter= $formatter;
