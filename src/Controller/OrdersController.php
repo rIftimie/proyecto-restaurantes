@@ -160,10 +160,9 @@ class OrdersController extends AbstractController
       $order->setStatus(1);
       $entityManager->persist($order);
       $entityManager->flush();
-      $mercure->publish($order);
-        return $this->render('orders/completed.html.twig', [
-            // 'order' => $order,
-        ]);
+      return $this->render('orders/completed.html.twig', [
+        'order' => $order->getId(),
+      ]);
     }
     
     #[Route('/{id}/update', name: 'app_orders_update', methods: ['PUT'])]
