@@ -75,4 +75,17 @@ class ApiFormatter
 
       return $menuJSON;
     }
+
+    public function userToArray($user): array
+    {
+      $userJSON = array(
+        'id'  => $user->getId(),
+        'username' => $user->getUserName(),
+        'firstName' => $user->getFirstName(),
+        'lastName' => $user->getLastName(),
+        'restaurant' => $user->getRestaurant()->getId(),
+      );
+
+      return $userJSON;
+    }
 }

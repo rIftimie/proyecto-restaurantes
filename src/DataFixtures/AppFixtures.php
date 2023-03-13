@@ -182,6 +182,20 @@ class AppFixtures extends Fixture
         $orderProducts2->setOrders($order2);
         $manager->persist($orderProducts2);
 
+        $orderProd6 = new OrderProducts();
+        $orderProd6->setQuantity(3);
+        $orderProd6->setProducts($products[1]);
+        $orderProd6->setTotalPrice(($orderProd6->getProducts()->getPrice())*($orderProd6->getQuantity()));
+        $orderProd6->setOrders($order2);
+        $manager->persist($orderProd6);
+
+        $orderProd7 = new OrderProducts();
+        $orderProd7->setQuantity(3);
+        $orderProd7->setProducts($products[1]);
+        $orderProd7->setTotalPrice(($orderProd7->getProducts()->getPrice())*($orderProd7->getQuantity()));
+        $orderProd7->setOrders($order2);
+        $manager->persist($orderProd7);
+
         $orderProducts3 = new OrderProducts();
         $orderProducts3->setQuantity(3);
         $orderProducts3->setProducts($products[2]);

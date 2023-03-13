@@ -2,15 +2,18 @@ const url = 'http://127.0.0.1:8000/api/orders';
 const url2 = 'http://127.0.0.1:8000/orders';
 
 // GET: Devuelve todos los pedidos de api/orders
-export const getOrders = async () => {
+export const getOrders = async (restaurant) => {
 	try {
-		const response = await fetch(url);
-
+		const response = await fetch(url, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(restaurant),
+		});
 		if (!response.ok)
 			throw new Error(response.status + ' ' + response.statusText);
+		console.log(response);
 		const data = await response.json();
-		console.log(data);
-    return data;
+		return data;
 	} catch (error) {
 		console.log(error);
 	}
@@ -60,9 +63,11 @@ export const deleteOrder = async (order) => {
 		console.log(error);
 	}
 };
+
+// POST:
 export const postOrder = async (data) => {
 	try {
-		const response = await fetch(url2+'/add', {
+		const response = await fetch(url2 + '/add', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
@@ -70,10 +75,9 @@ export const postOrder = async (data) => {
 			body: JSON.stringify(data),
 		});
 		if (!response.ok)
-    throw new Error(response.status + ' ' + response.statusText);
-    return response.json();
+			throw new Error(response.status + ' ' + response.statusText);
+		return response.json();
 	} catch (error) {
 		console.log(error);
 	}
 };
-

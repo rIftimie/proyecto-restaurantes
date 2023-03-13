@@ -19,7 +19,6 @@ class Orders
     #[ORM\Column(nullable: true)]
     private ?int $status = null;
 
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $orderDate = null;
 
@@ -48,6 +47,9 @@ class Orders
 
     #[ORM\ManyToOne(inversedBy: 'ordersDelivered')]
     private ?User $deliveredBy = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $payment = null;
 
     public function __construct()
     {
@@ -193,6 +195,18 @@ class Orders
     public function setDeliveredBy(?User $deliveredBy): self
     {
         $this->deliveredBy = $deliveredBy;
+
+        return $this;
+    }
+
+    public function getPayment(): ?string
+    {
+        return $this->payment;
+    }
+
+    public function setPayment(?string $payment): self
+    {
+        $this->payment = $payment;
 
         return $this;
     }

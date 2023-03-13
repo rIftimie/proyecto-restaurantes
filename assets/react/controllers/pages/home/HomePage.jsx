@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getProducts } from '../../helpers/kitchen';
+import Menu from './Menu';
 
 function HomePage() {
 	const [products, setProducts] = useState([]);
@@ -9,7 +10,15 @@ function HomePage() {
 		setProducts(response);
 	};
 
-	return <main></main>;
+	useEffect(() => {
+		fetchGetProducts();
+	}, []);
+
+	return (
+		<main>
+			<Menu products={products} />
+		</main>
+	);
 }
 
 export default HomePage;

@@ -1,12 +1,13 @@
 import React from 'react';
 import KitchenOrderCard from './KitchenOrderCard';
 
-function KitchenOrderContainer({ useStateOrder }) {
+function KitchenOrderContainer({ user, useStateOrder }) {
 	const { orders } = useStateOrder;
 	const renderOrders = orders?.map((order) => (
 		<KitchenOrderCard
 			key={order.id}
 			order={order}
+			user={user}
 			useStateOrder={useStateOrder}
 		/>
 	));

@@ -1,16 +1,9 @@
 import React from 'react';
 import WaiterOrderCard from './WaiterOrderCard';
 
-function WaiterOrderContainer({ useStateOrder }) {
+function WaiterOrderContainer({ useStateOrder, user }) {
 	const { orders } = useStateOrder;
 
-	const renderOrders = orders.map((order) => (
-		<WaiterOrderCard
-			key={order.id}
-			order={order}
-			useStateOrder={useStateOrder}
-		/>
-	));
 	const renderPendingOrders = orders.map((order) => {
 		if (order.status == 0) {
 			return (
@@ -18,6 +11,7 @@ function WaiterOrderContainer({ useStateOrder }) {
 					key={order.id}
 					order={order}
 					useStateOrder={useStateOrder}
+					user={user}
 				/>
 			);
 		}
@@ -29,6 +23,7 @@ function WaiterOrderContainer({ useStateOrder }) {
 					key={order.id}
 					order={order}
 					useStateOrder={useStateOrder}
+					user={user}
 				/>
 			);
 		}

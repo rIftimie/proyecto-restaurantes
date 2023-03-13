@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { getOrders } from '../../helpers/orders';
 import WaiterOrderContainer from './WaiterOrderContainer';
 
-function WaiterPage() {
+function WaiterPage({ user }) {
 	const [orders, setOrders] = useState([]);
 
 	const fetchGetOrders = async () => {
-		const response = await getOrders();
+		const response = await getOrders(user.restaurant);
 		setOrders(
 			response.filter((order) => order.status == 0 || order.status == 2)
 		);
@@ -19,7 +19,7 @@ function WaiterPage() {
 		const eventSource = new EventSource(url);
 
 		eventSource.onmessage = (event) => {
-			// Will be called every time an update is published by the server
+			// Will be called every time an update is published to the server
 			if (
 				JSON.parse(event.data).status == 0 ||
 				JSON.parse(event.data).status == 2
@@ -32,7 +32,10 @@ function WaiterPage() {
 	return (
 		<main>
 			{orders.length > 0 ? (
-				<WaiterOrderContainer useStateOrder={{ orders, setOrders }} />
+				<WaiterOrderContainer
+					user={user}
+					useStateOrder={{ orders, setOrders }}
+				/>
 			) : (
 				<h1>Loading ...</h1>
 			)}

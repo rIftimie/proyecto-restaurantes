@@ -1,14 +1,14 @@
 const ordersUrl = 'http://127.0.0.1:8000/orders';
-const productsUrl = 'http://127.0.0.1:8000/products';
+const productsUrl = 'http://127.0.0.1:8000/api/products';
 const menuUrl = 'http://127.0.0.1:8000/api/menu';
 
-// PUT: Termina un pedido: status 1 -> 2
-export const finishOrder = async (order) => {
+// POST: Termina un pedido: status 1 -> 2
+export const finishOrder = async (order, user) => {
 	try {
 		const response = await fetch(`${ordersUrl}/kitchen/${order.id}/finish`, {
-			method: 'PUT',
+			method: 'POST',
 			headers: { 'Content-Type': 'application/json; charset=utf-8' },
-			body: JSON.stringify(order),
+			body: JSON.stringify(user.id),
 		});
 		if (!response.ok)
 			throw new Error(response.status + ' ' + response.statusText);
@@ -19,13 +19,13 @@ export const finishOrder = async (order) => {
 	}
 };
 
-// PUT: Cancela un pedido: status -> 4
-export const declineOrder = async (order) => {
+// POST: Cancela un pedido: status -> 4
+export const declineOrder = async (order, user) => {
 	try {
 		const response = await fetch(`${ordersUrl}/kitchen/${order.id}/decline`, {
-			method: 'PUT',
+			method: 'POST',
 			headers: { 'Content-Type': 'application/json; charset=utf-8' },
-			body: JSON.stringify(order),
+			body: JSON.stringify(user.id),
 		});
 		if (!response.ok)
 			throw new Error(response.status + ' ' + response.statusText);
@@ -36,15 +36,35 @@ export const declineOrder = async (order) => {
 	}
 };
 
-// GET: Trae los productos
-export const getProducts = async () => {
+// GET: Trae el menu del restaurante del usuario
+export const getMenu = async (restaurant) => {
 	try {
-		const response = await fetch(menuUrl);
+		const response = await fetch(menuUrl, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(restaurant),
+		});
 
 		if (!response.ok)
 			throw new Error(response.status + ' ' + response.statusText);
 
 		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+// GET: Trae los productos de la cadena
+export const getProducts = async () => {
+	try {
+		const response = await fetch(productsUrl);
+
+		if (!response.ok)
+			throw new Error(response.status + ' ' + response.statusText);
+
+		const data = await response.json();
+		console.log(data);
 		return data;
 	} catch (error) {
 		console.log(error);

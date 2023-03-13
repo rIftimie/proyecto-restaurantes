@@ -1,7 +1,7 @@
 import React from 'react';
-import { acceptOrder, declineOrder, finishOrder } from '../../helpers/kitchen';
+import { declineOrder, finishOrder } from '../../helpers/kitchen';
 
-function KitchenOrderCard({ order, useStateOrder }) {
+function KitchenOrderCard({ order, useStateOrder, user }) {
 	const { orders, setOrders } = useStateOrder;
 	const classes = [
 		'card text-light m-3 p-3 col-12 col-md-5 col-xl-3 bg-warning',
@@ -25,7 +25,7 @@ function KitchenOrderCard({ order, useStateOrder }) {
 	// Marcar pedido como realizado
 	async function handleFinish(order) {
 		try {
-			await finishOrder(order); // actualiza el estado en el servidor
+			await finishOrder(order, user); // actualiza el estado en el servidor
 			setOrders(orders.filter((item) => item.id != order.id));
 		} catch (error) {
 			console.error(error);
@@ -35,7 +35,7 @@ function KitchenOrderCard({ order, useStateOrder }) {
 	// Cancelar pedido
 	async function handleDecline(order) {
 		try {
-			await declineOrder(order); // actualiza el estado en el servidor
+			await declineOrder(order, user); // actualiza el estado en el servidor
 			useStateOrder.setOrders(
 				useStateOrder.orders.filter((item) => order != item)
 			); // actualiza el estado en el cliente
@@ -47,14 +47,14 @@ function KitchenOrderCard({ order, useStateOrder }) {
 	return (
 		<>
 			<article className={classes.join(' ')}>
-				<header className="fw-bolder d-flex justify-content-between">
-					Mesa nº {order.table}
+				<header className="mb-2 text-dark card-header fs-3 fw-bolder d-flex justify-content-between">
+					Mesa Nº {order.table}
 				</header>
-				<ul className="list-group">{orderProducts}</ul>
+				<ul className="card-content list-group">{orderProducts}</ul>
 				<h5 className="text-end">{fecha}</h5>
 				<button
 					onClick={() => handleFinish(order)}
-					className="p-3 mx-1 btn btn-primary"
+					className="p-3 mx-1 mt-2 btn btn-primary"
 				>
 					Terminar comanda
 				</button>

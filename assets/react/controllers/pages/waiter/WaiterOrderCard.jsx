@@ -1,8 +1,7 @@
 import React from 'react';
 import { payWaiter, deliver } from '../../helpers/waiter';
-import classNames from 'classnames';
 
-function WaiterOrderCard({ order, useStateOrder }) {
+function WaiterOrderCard({ order, useStateOrder, user }) {
 	const { orders, setOrders } = useStateOrder;
 	const classes = ['card text-light m-3 p-3 col-5'];
 
@@ -28,24 +27,27 @@ function WaiterOrderCard({ order, useStateOrder }) {
 	};
 
 	const handleDeliver = (order) => {
-		deliver(order); // actualiza el estado en el servidor
+		deliver(order, user); // actualiza el estado en el servidor
 		setOrders(orders.filter((item) => item.id != order.id)); // actualiza el estado en el cliente
 	};
 
 	return (
 		<article className={classes.join(' ')}>
-			<header className="fw-bolder d-flex justify-content-between">
-				Mesa nº {order.table}
+			<header className="mb-2 text-light card-header fs-3 fw-bolder d-flex justify-content-between">
+				Mesa Nº {order.table}
 			</header>
-			<ul className="list-group">{orderProducts}</ul>
+			<ul className="card-content list-group">{orderProducts}</ul>
 			{order.status == 0 && (
-				<button className="btn btn-primary" onClick={() => handlePay(order)}>
+				<button
+					className="mt-2 btn btn-primary"
+					onClick={() => handlePay(order)}
+				>
 					Pagar en efectivo
 				</button>
 			)}
 			{order.status == 2 && (
 				<button
-					className="btn btn-primary"
+					className="mt-2 btn btn-primary"
 					onClick={() => handleDeliver(order)}
 				>
 					Entregar

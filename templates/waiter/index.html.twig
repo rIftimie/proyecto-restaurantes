@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 	<div
-		{{ react_component('pages/waiter/WaiterPage', { }) }}>
+		{{ react_component('pages/waiter/WaiterPage', { 'user' : user}) }}>
 	</div>
 
 	<script type="application/json" id="mercure-url">

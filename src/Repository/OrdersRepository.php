@@ -132,13 +132,13 @@ class OrdersRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    //Get orders paid by waiter
+    //Get orders paid by waiter (cash)
     public function getOrdersPaidByWaiter(Restaurant $restaurant, \DateTime $startDate, \DateTime $endDate): array
     {
         $query = $this->createQueryBuilder('o')
             ->andWhere('o.restaurant = :restaurant')
             ->andWhere('o.createdAt BETWEEN :startDate AND :endDate')
-            ->andWhere('o.paidByWaiter = 1')
+            ->andWhere('o.payment = cash')
             ->setParameter('restaurant', $restaurant)
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
@@ -153,7 +153,7 @@ class OrdersRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('o')
             ->andWhere('o.restaurant = :restaurant')
             ->andWhere('o.createdAt BETWEEN :startDate AND :endDate')
-            ->andWhere('o.paidByWaiter = 0')
+            ->andWhere('o.payment = card')
             ->setParameter('restaurant', $restaurant)
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)

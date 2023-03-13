@@ -1,2 +1,32 @@
 // Importa Bootstrap
+$danger: #e95f5f;
+$warning: #ff9800;
+$success: #81a55a;
+
+body {
+	min-height: 100svh;
+	font-family: 'Poppins' !important;
+}
+
+input[type='number'] {
+	appearance: textfield;
+}
+
+.btn-primary {
+	background: #313131 !important;
+	border-color: #313131 !important;
+	color: #9ce070 !important;
+}
+.btn-primary:hover {
+	background: #454545 !important;
+}
+
+.card-content {
+	flex: 1 1 100%;
+}
+// SelectProducts
+#product-select {
+	width: fit-content;
+}
+
 @import '~bootstrap/scss/bootstrap';

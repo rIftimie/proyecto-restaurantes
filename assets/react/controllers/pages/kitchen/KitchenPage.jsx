@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { getOrders } from '../../helpers/orders';
-import { getProducts } from '../../helpers/kitchen';
+import { getMenu } from '../../helpers/kitchen';
 import KitchenOrderContainer from './KitchenOrderContainer';
-import './kitchen.css';
 import SelectProducts from './SelectProducts';
 
-function KitchenPage({}) {
+function KitchenPage({ user }) {
 	const [orders, setOrders] = useState([]);
 	const [products, setProducts] = useState([]);
 
 	const fetchGetOrders = async () => {
-		const response = await getOrders();
-		setOrders(response.filter((order) => order.status == 1));
+		const response = await getOrders(user.restaurant);
+		setOrders(response.filter((order) => order.status == 1)); // Actualiza en cliente
 	};
 
 	const fetchGetProducts = async () => {
-		const response = await getProducts();
-		setProducts(response);
+		const response = await getMenu(user.restaurant);
+		setProducts(response); // Actualiza en cliente
 	};
 
 	useEffect(() => {
@@ -27,7 +26,7 @@ function KitchenPage({}) {
 		const eventSource = new EventSource(url);
 
 		eventSource.onmessage = (event) => {
-			// Will be called every time an update is published by the server
+			// Will be called every time an update is published to the server
 			if (JSON.parse(event.data).status == 1) {
 				fetchGetOrders();
 			}
@@ -38,8 +37,14 @@ function KitchenPage({}) {
 		<main className="p-3">
 			{orders.length > 0 && products.length > 0 ? (
 				<>
-					<SelectProducts useStateProduct={{ products, setProducts }} />
-					<KitchenOrderContainer useStateOrder={{ orders, setOrders }} />
+					<SelectProducts
+						user={user}
+						useStateProduct={{ products, setProducts }}
+					/>
+					<KitchenOrderContainer
+						user={user}
+						useStateOrder={{ orders, setOrders }}
+					/>
 				</>
 			) : (
 				<h1>Loading ...</h1>
