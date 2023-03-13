@@ -5,16 +5,16 @@ import WaitingCard from '../../components/Cards/WaitingCard';
 const ShowPage = ( { order } ) => {
   const [waiting, setWaiting] = useState(true);
 
-  if(order.status){
-    showProducts();
-  }
   
   const showProducts=() =>{
     setWaiting(false);
   }
-
+  
   useEffect(() => {
-		const url = JSON.parse(document.getElementById('mercure-url').textContent);
+    if(order.status){
+      showProducts();
+    }
+    const url = JSON.parse(document.getElementById('mercure-url').textContent);
 		const eventSource = new EventSource(url);
 
 		eventSource.onmessage = (event) => {

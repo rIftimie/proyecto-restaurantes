@@ -10,7 +10,8 @@ const Products = ({
   setOrderProducts,
   setShow,
   order,
-  orderId
+  orderId,
+  menu
 }) => {
   const [prods, setProds] = useState([]);
   const [ordId, setOrdId] = useState(0);
@@ -22,16 +23,10 @@ const Products = ({
       })
       setProds(save);
     }else{
-      getProds(idres);
+      setProds(menu)
     }
   }, []);
 
-  const getProds = async (el) => {
-    const prt = await getProducts(el);
-    
-    setProds(prt);
-    setShow(true);
-  };
 
   const icons={
     'Gluten':<i class="fa-light fa-wheat"></i>,

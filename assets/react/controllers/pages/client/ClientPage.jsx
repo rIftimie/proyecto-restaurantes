@@ -5,7 +5,7 @@ import "../../App.css"
 import { postOrder } from "../../helpers/orders";
 
 
-const ClientPage = ({ idres, idtable }) => {
+const ClientPage = ({ idres, idtable, menu }) => {
   const [orderProducts, setOrderProducts] = useState([]);
   const [charge, setCharge] = useState(true);
   const [show, setShow] = useState(false);
@@ -36,9 +36,10 @@ const ClientPage = ({ idres, idtable }) => {
           setOrderProducts={setOrderProducts}
           setShow={setShow}
           paying={ false }
+          menu={ menu } 
         />
       )}
-      {charge && show && (
+      {charge && (
         <button
           type="button"
           className="btn btn-outline-success fw-bold m-3"

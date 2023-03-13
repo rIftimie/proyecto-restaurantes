@@ -159,14 +159,18 @@ class OrdersController extends AbstractController
     }
     
     #[Route('/new/{idres}/{idtable}', name: 'app_orders_new', methods: ['GET', 'POST'])]
-    public function new(RestaurantRepository $restaurantRepository, TableRepository $tableRepository, $idres, $idtable): Response
+    public function new(ApiFormatter $apiFormatter , MenuRepository $menuRepository ,RestaurantRepository $restaurantRepository, TableRepository $tableRepository, $idres, $idtable): Response
     {
       $res= $restaurantRepository->findOneById($idres);
       $table= $tableRepository->findOneById($idtable);
-
+      $menu=[];
+      foreach($menuRepository->findBy(['restaurant'=> $res->getId()]) as $m){
+        $menu[]=$apiFormatter->menuToArray($m);
+      }
       return $this->render('orders/new.html.twig', [
           'idrestaurant' => $res->getId(),
           'idtable' => $table->getId(),
+          'menu' => $menu
       ]);
     }
 
