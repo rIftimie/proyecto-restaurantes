@@ -67,7 +67,7 @@ class OrdersController extends AbstractController
         $orderProduct= new OrderProducts();
         $orderProduct->setProducts($productsRepository->findOneById($product['products_id']));
         $orderProduct->setQuantity($product['quantity']);
-        $orderProduct->setTotalPrice($productsRepository->findOneById($product['products_id'])->getPrice()*$prod['quantity']);
+        $orderProduct->setTotalPrice($productsRepository->findOneById($product['products_id'])->getPrice()*$product['quantity']);
         $order->addOrderProduct($orderProduct);
         $entityManager->persist($orderProduct);
       }
@@ -140,6 +140,10 @@ class OrdersController extends AbstractController
 
         return new Response(true);
       }else{
+        $ord->setPayment(1);
+        $entityManager->persist($ord);
+        $entityManager->flush();
+
         $order = $apiFormatter->orderToArray($ord);;
 
         return $this->render('orders/pay.html.twig', [
@@ -182,7 +186,7 @@ class OrdersController extends AbstractController
       $restaurant = $restaurantRepository->findOneById($idres);
       $table= $tableRepository->findOneById($idtable);
       $menu=[];
-      foreach($menuRepository->findBy(['restaurant'=> $res->getId()]) as $m){
+      foreach($menuRepository->findBy(['restaurant'=> $restaurant->getId()]) as $m){
         $menu[]=$apiFormatter->menuToArray($m);
       }
       return $this->render('orders/new.html.twig', [
