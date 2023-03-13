@@ -1,6 +1,6 @@
 import React from 'react'
 
-const WaitingPage = ({ orderId }) => {
+const WaitingCard = ({ orderId }) => {
   return (
     <div>
       <h1>Su número de pedido es el:</h1>
@@ -9,4 +9,4 @@ const WaitingPage = ({ orderId }) => {
   )
 }
 
-export default WaitingPage
+export default WaitingCard

@@ -1,11 +1,14 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import React from 'react';
+import React, { useState } from 'react';
 import { payOrder2 } from '../../helpers/pay';
 
 const StripeForm = ({ orderId, orderProducts }) => {
+  const [waiting, setWaiting] = useState(false);
 	const stripe = useStripe();
 	const elements = useElements();
 	const handleSubmit = async (e) => {
+    setWaiting(true);
+    document.querySelector('.formPayment').classList.add('d-none');
 		e.preventDefault();
 		const { error, paymentMethod } = await stripe.createPaymentMethod({
 			type: 'card',
@@ -20,7 +23,7 @@ const StripeForm = ({ orderId, orderProducts }) => {
 				.then((response) => {
 					if (response.ok) {
 						window.location.href =
-							`http://localhost:8000/orders/${orderId}/completed`;
+							`http://localhost:8000/orders/${orderId}/watch`;
 					}
 				})
 				.catch((error) => {
@@ -29,18 +32,24 @@ const StripeForm = ({ orderId, orderProducts }) => {
 		}
 	};
 	return (
-		<form onSubmit={handleSubmit}>
-			<div className="form-group">
-				<CardElement className="text-black form-control" />
-			</div>
-			<button
-				onClick={handleSubmit}
-				type="button"
-				className="btn btn-outline-success"
-			>
-				Pagar
-			</button>
-		</form>
+		<>
+      <form onSubmit={handleSubmit} className='formPayment'>
+        <div className="form-group">
+          <CardElement className="text-black form-control" />
+        </div>
+        <button
+          onClick={handleSubmit}
+          type="button"
+          className="btn btn-outline-success"
+        >
+          Pagar
+        </button>
+      </form>
+    {
+      waiting && <h3>Loading...</h3>
+    }
+
+    </>
 	);
 };
 

@@ -37,7 +37,8 @@ const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , 
         products_id : idprod,
         quantity:1,
         restaurant_id: idres,
-        table_order_id: idtable
+        table_order_id: idtable,
+        price : prods.filter((prodc)=> prodc.id==idprod)[0].product.price
       }
       const prods2=[ ...orderProducts ];
       prods2.push(producto);

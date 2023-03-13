@@ -12,7 +12,7 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey, orderId , orderPro
   };
 
   const handleStripe = () => setStripe(!stripe);
-
+  const handleEfectivo = () => window.location.href = `http://localhost:8000/orders/${orderId}/watch`;
   return (
     <div className={`drawer ${isOpen ? "open" : ""}`}>
       <div className="d-flex flex-column col-8 mt-5 m-4">
@@ -32,7 +32,7 @@ function DrawerSubtotal({ isOpen, setIsDrawerOpen, stripeKey, orderId , orderPro
         </div>
         <div className="container-lg">
           <button
-            onClick={handleStripe}
+            onClick={handleEfectivo}
             type="button"
             className="btn btn-info fw-bold m-1"
           >

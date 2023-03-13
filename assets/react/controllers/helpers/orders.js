@@ -8,9 +8,9 @@ export const getOrders = async () => {
 
 		if (!response.ok)
 			throw new Error(response.status + ' ' + response.statusText);
-
 		const data = await response.json();
-		return data;
+		console.log(data);
+    return data;
 	} catch (error) {
 		console.log(error);
 	}

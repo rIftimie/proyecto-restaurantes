@@ -1,17 +1,12 @@
 import React, {useEffect, useState} from 'react'
-import ProductCompleted from "./ProductCompleted";
-import {getOrderById} from "../../helpers/orders";
+import ProductCard from "./ProductCard";
 
-const Completed = ({ order }) => {
+const CompletedCard = ({ order }) => {
 
   const [productos, setProductos] = useState([]);
-  const fetchGetOrders = async () => {
-    const response = await getOrderById(order);
-    setProductos(response.products);
-  };
 
   useEffect(() => {
-    fetchGetOrders();
+    setProductos(order.products);
   }, []);
 
     return (
@@ -20,11 +15,11 @@ const Completed = ({ order }) => {
             <div className='col-12 text-center'>
               <h1>Número de pedido</h1>
             </div>
-            <h1 className='col-12 text-center my-3'>{ order }</h1>
+            <h1 className='col-12 text-center my-3'>{ order.id }</h1>
             <h5 className="text-center">Pedido hecho</h5>
             {
               productos.map(producto => (
-                  <ProductCompleted key={producto.id} data={producto}></ProductCompleted>
+                  <ProductCard key={producto.id} data={producto}></ProductCard>
               ))
             }
             <div className='col-12 text-center'>
@@ -35,4 +30,4 @@ const Completed = ({ order }) => {
     )
 }
 
-export default Completed
+export default CompletedCard

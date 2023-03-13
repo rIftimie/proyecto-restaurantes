@@ -1,17 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 
-const Header = (props) => {
-	const texto = props.texto;
-	return <h4> {texto} </h4>;
-};
-
-Header.propTypes = {
-	texto: PropTypes.string.isRequired,
-};
-
-Header.defaultProps = {
-	texto: 'Precio total: 3$',
+const Header = ({ orderProducts }) => {
+  
+	return <h4 className='mx-auto bg bg-dark w-25 text-center mt-2'> Precio total {orderProducts.reduce((curr,obj)=>(obj.price*obj.quantity+curr) ,0)}€ </h4>;
 };
 
 export default Header;

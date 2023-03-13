@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 
-const ProductCompleted = ({data}) => {
+const ProductCard = ({ data }) => {
 
   return (
       <div key={data.id}>
@@ -19,4 +19,4 @@ const ProductCompleted = ({data}) => {
   )
 }
 
-export default ProductCompleted
+export default ProductCard

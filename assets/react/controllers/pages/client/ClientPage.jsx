@@ -27,7 +27,7 @@ const ClientPage = ({ idres, idtable }) => {
 
   return (
     <div>
-      {charge && show && <Header />}
+      {charge && show && <Header orderProducts={ orderProducts } />}
       {charge && (
         <Products
           idres={idres}

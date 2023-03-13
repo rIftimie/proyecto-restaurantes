@@ -120,6 +120,9 @@ class OrdersController extends AbstractController
           "payment_method"=>$request->toArray()['id'],
           "confirm" => true
         ]);
+        $ord->setStatus(1);
+        $entityManager->persist($ord);
+        $entityManager->flush();
         return new Response(true);
       }else{
         $order = $apiFormatter->orderToArray($ord);;
@@ -131,27 +134,27 @@ class OrdersController extends AbstractController
       }
     }
 
-    #[Route('/{id}/waiting', name: 'app_orders_waiting', methods: ['GET'])]
-    public function waiting( MercureGenerator $mercure, Orders $order, EntityManagerInterface $entityManager): Response
-    // Orders $order
+    #[Route('/{id}', name: 'app_orders_show', methods: ['GET'])]
+    public function show(Request $request, Orders $order, OrdersRepository $ordersRepository): Response
     {
-      // $order->setStatus(0);
-      // $entityManager->persist($order);
-      // $entityManager->flush();
-      // $mercure->publish($order);
-        return $this->render('orders/waiting.html.twig', [
-            'orderId' => $order->getId(),
-        ]);
+        if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->request->get('_token'))) {
+            $ordersRepository->remove($order, true);
+        }
+
+        return $this->redirectToRoute('app_orders_index', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/{id}/completed', name: 'app_orders_completed', methods: ['GET'])]
-    public function completed( MercureGenerator $mercure, Orders $order, EntityManagerInterface $entityManager): Response
-    // Orders $order
+
+    #[Route('/{id}/watch', name: 'app_orders_watch', methods: ['GET'])]
+    public function watch( ApiFormatter $apiFormatter , MercureGenerator $mercure, Orders $order , EntityManagerInterface $entityManager): Response
     {
-      $order->setStatus(1);
-      $entityManager->persist($order);
-      $entityManager->flush();
-      return $this->render('orders/completed.html.twig', [
-        'order' => $order->getId(),
+      
+      if(!$order->getStatus()){
+        $order->setStatus(0);
+        $entityManager->flush();
+        $mercure->publish($order);
+      }
+      return $this->render('orders/watch.html.twig', [
+        'order' => $apiFormatter->orderToArray($order),
       ]);
     }
     
@@ -233,7 +236,7 @@ class OrdersController extends AbstractController
         }
     
         $order->setStatus(3);
-        $order->setDeliverBy($user);
+        $order->setDeliveredBy($user);
         $orderRepository->save($order, true);
         
         // Mercure publica una actualizacion
@@ -242,13 +245,7 @@ class OrdersController extends AbstractController
         return new Response('Pedido entregado', Response::HTTP_OK);
     }
 
-    #[Route('/{id}', name: 'app_orders_show', methods: ['GET'])]
-    public function show(Orders $order): Response
-    {
-        return $this->render('orders/show.html.twig', [
-            'order' => $order,
-        ]);
-    }
+    
 
     #[Route('/{id}/edit', name: 'app_orders_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Orders $order, OrdersRepository $ordersRepository): Response

@@ -11,7 +11,7 @@ const Subtotal = ({ stripeKey, orderId, orderProducts }) => {
     }
   };
   return (
-    <div className="pagar">
+    <div className="pagar bg bg-dark mb-5">
       <div className="container d-flex justify-content-between border-bottom border-light border-top">
         <p className="fw-bold m-3">SubTotal</p>
         <p className="fw-bold m-3">300€</p>
