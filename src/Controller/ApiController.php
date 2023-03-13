@@ -17,7 +17,7 @@ use App\Entity\Restaurant;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_USER')]
+// #[IsGranted('ROLE_USER')]
 #[Route('/api')]
 class ApiController extends AbstractController
 {

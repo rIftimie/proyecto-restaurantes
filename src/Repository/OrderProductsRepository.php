@@ -58,6 +58,19 @@ class OrderProductsRepository extends ServiceEntityRepository
 
         return $products;
     }
+    public function getProductsByOrderAndProd($idOrder, $idProd): array
+    {
+        $products = $this->createQueryBuilder('op')
+            ->innerJoin('op.products', 'p')
+            ->innerJoin('op.orders', 'o')
+            ->where('o.id = :idOrder AND p.id = :idProd')
+            ->setParameter('idOrder', $idOrder)
+            ->setParameter('idProd', $idProd)
+            ->getQuery()
+            ->getResult();
+
+        return $products;
+    }
 
     //Get the total number of products sold in a given period of time
     public function getTotalProductsSold($idRestaurant, $startDate, $endDate): int

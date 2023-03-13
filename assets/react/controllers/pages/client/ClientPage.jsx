@@ -4,23 +4,11 @@ import Products from "../../components/products/Products";
 import "../../App.css"
 import { postOrder } from "../../helpers/orders";
 
-const initialStateOrder = {
-  waiter_id: 1,
-  restaurant_id: 1,
-  table_order_id: 1,
-  status: 0,
-};
+
 const ClientPage = ({ idres, idtable }) => {
-  const [order, setOrder] = useState({});
   const [orderProducts, setOrderProducts] = useState([]);
   const [charge, setCharge] = useState(true);
   const [show, setShow] = useState(false);
-  useEffect(() => {
-    const orderCopy = { ...order };
-    orderCopy.restaurant_id = idres;
-    orderCopy.table_order_id = idtable;
-    setOrder(orderCopy);
-  }, []);
 
   const handleClickPay = async () => {
     if (orderProducts.length) {
@@ -28,7 +16,7 @@ const ClientPage = ({ idres, idtable }) => {
       await postOrder(orderProducts)
         .then((res) => {
           window.location.href =
-            "http://localhost:8000/orders/pay/" + res[0].id;
+            "http://localhost:8000/orders/" + res[0].id+"/pay";
         })
         .catch((error) => {
           setCharge(true);

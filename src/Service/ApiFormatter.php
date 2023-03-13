@@ -12,9 +12,12 @@ class ApiFormatter
         foreach ($order->getOrderProducts() as $orderProduct) {
 
             $obj = new \stdClass();
+            $obj -> id = $orderProduct->getProducts()->getId();
             $obj -> name = $orderProduct->getProducts()->getName();
             $obj -> quantity = $orderProduct->getQuantity();
-
+            $obj -> price = round($orderProduct->getProducts()->getPrice(),2);
+            $obj -> description = $orderProduct->getProducts()->getDescription();
+            $obj -> allergens = $orderProduct->getProducts()->getAllergens();
             $products[]=($obj);
         }
         $orderJSON = array(

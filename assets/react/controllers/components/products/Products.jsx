@@ -10,7 +10,6 @@ const Products = ({
   setOrderProducts,
   setShow,
   order,
-  paying,
   orderId
 }) => {
   const [prods, setProds] = useState([]);
@@ -19,10 +18,8 @@ const Products = ({
     if(order){
       const save= order.map(ord=>{
         const hidden= ord.hidden;
-        console.log(ord.quantity)
         return  {product : ord , hidden}
       })
-      setOrdId(orderId);
       setProds(save);
     }else{
       getProds(idres);
@@ -42,22 +39,20 @@ const Products = ({
     'Frutos Secos':<i class="fa-light fa-peanuts"></i>,
     'Huevos':<i class="fa-light fa-egg"></i>,
 }
-  console.log(icons);
-
   return (
     <>
       {prods.map((prod) => (
         <>
           {(order || prod.stock ) && !prod.hidden && (
-            <div key={prod.id} className="row my-5 prod bg-danger">
-              <div className="col-2 mx-2">
+            <div key={prod.id} className="row my-5 prod bg-dark">
+              <div className="col-3 mx-2">
                 <img
                   src={prod.product.img}
                   alt={prod.product.name}
                   width={200}
                 />
               </div>
-              <div className="col-9">
+              <div className="col-8">
                 <div className="row">
                   <div className="col-9 border-dotted">
                     <h5> {prod.product.name} </h5>
@@ -79,7 +74,6 @@ const Products = ({
                   setOrderProducts={setOrderProducts}
                   idprod={prod.product.id}
                   quantity={prod.product.quantity}
-                  paying={ paying }
                   prods= { prods }
                   orderId= { orderId }
                 />

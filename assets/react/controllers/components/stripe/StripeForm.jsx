@@ -2,7 +2,7 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import React from 'react';
 import { payOrder2 } from '../../helpers/pay';
 
-const StripeForm = ({ orderId }) => {
+const StripeForm = ({ orderId, orderProducts }) => {
 	const stripe = useStripe();
 	const elements = useElements();
 	const handleSubmit = async (e) => {
@@ -14,11 +14,10 @@ const StripeForm = ({ orderId }) => {
 
 		if (!error) {
 			const id = paymentMethod.id;
-			const amount = 800;
+			const amount = orderProducts.reduce((acc, obj)=> acc + obj.price*obj.quantity,0)*100;
 			const description = 'Pago del pedido 1';
-			await payOrder2({ amount, description, id })
+			await payOrder2( orderId, { amount, description, id, orderProducts })
 				.then((response) => {
-					console.log(response.ok);
 					if (response.ok) {
 						window.location.href =
 							`http://localhost:8000/orders/${orderId}/completed`;

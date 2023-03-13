@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 
 const ProductCompleted = ({data}) => {
 
-
   return (
       <div key={data.id}>
         <div className="d-flex align-items-center">
@@ -11,10 +10,11 @@ const ProductCompleted = ({data}) => {
         </div>
 
         <div className='d-flex my-1' style={{alignItems: "baseline", borderBottom: "1px solid #fafad2"}}>
-          <div className='me-auto'>SubTotal</div>
-          <div className='ms-auto'>{data.price} €</div>
+          <div className='me-auto'>{data.price}€ x{data.quantity}</div>
+          <div className='ms-auto'>{data.quantity*data.price}€</div>
         </div>
         <br/>
+
       </div>
   )
 }

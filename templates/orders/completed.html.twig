@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Pay{% endblock %}
+{% block title %}Completed{% endblock %}
 
 {% block body %}
-  <div {{ react_component('pages/client/CompletedPage', { order: order }) }}></div>
+  <div {{ react_component('pages/client/CompletedPage', { 'order': order }) }}></div>
 {% endblock %}

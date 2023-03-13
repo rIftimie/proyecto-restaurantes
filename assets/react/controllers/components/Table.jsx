@@ -10,8 +10,6 @@ const Table = () => {
         try {
             const respuesta = fetch("http://127.0.0.1:8000/admin/tables");
             const json = await respuesta.json();
-            // console.log("buenas tardes");
-            console.log(json);
             setTables(json);
         }
         catch (error) {

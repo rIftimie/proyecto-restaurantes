@@ -6,10 +6,12 @@ use App\Entity\OrderProducts;
 use App\Entity\Orders;
 use App\Form\OrdersType;
 use App\Repository\MenuRepository;
+use App\Repository\OrderProductsRepository;
 use App\Repository\OrdersRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\RestaurantRepository;
 use App\Repository\TableRepository;
+use App\Service\ApiFormatter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -95,50 +97,38 @@ class OrdersController extends AbstractController
         return $this->render('kitchen/index.html.twig' );
     }
 
-    #[Route('/pay/{id}', name: 'app_orders_pay', methods: ['GET'])]
-    public function pay(OrdersRepository $orderRepository, ProductsRepository $prodRep ,$id): Response
+    #[Route('/{id}/pay', name: 'app_orders_pay', methods: ['GET','POST'])]
+    public function pay(OrderProductsRepository $orderProductsRepository ,ApiFormatter $apiFormatter , Request $request ,Orders $ord,EntityManagerInterface $entityManager, ProductsRepository $productsRepository): Response
     {
-      $order = $orderRepository->findOneById($id);
-      $products=[];
-      foreach ($order->getOrderProducts() as $prod){
-        $product= $prodRep->findOneById($prod->getProducts()->getId());
-        $products[]=array(
-          'id'=> $product->getId(),
-          'name'=>$product->getName(),
-          'description'=>$product->getDescription(),
-          'allergens'=>$product->getAllergens(),
-          'hidden'=>$product->isHidden(),
-          'price'=>round($product->getPrice(),2),
-          'img'=>$product->getImg(),
-          'quantity'=>$prod->getQuantity(),
+      if($request->isMethod('post')){
+        $realProducts = $request->toArray()['orderProducts'];
+        foreach($realProducts as $prod){
+          $ordprod= $orderProductsRepository->getProductsByOrderAndProd($ord->getId(),$prod['products_id'])[0];
+          $ordprod->setProducts($productsRepository->findOneById($prod['products_id']));
+          $ordprod->setQuantity($prod['quantity']);
+          $ordprod->setTotalPrice($prod['price']*$prod['quantity']);
+          $entityManager->persist($ordprod);
+          $entityManager->flush();
+        }
+        $stripe = new \Stripe\StripeClient(
+          $_ENV["STRIPE_SECRET"],
         );
-      }
+        $stripe->paymentIntents->create([
+          "amount" => $request->toArray()['amount'],
+          "currency" => "eur",
+          "description" => $request->toArray()['description'],
+          "payment_method"=>$request->toArray()['id'],
+          "confirm" => true
+        ]);
+        return new Response(true);
+      }else{
+        $order = $apiFormatter->orderToArray($ord);;
         return $this->render('orders/pay.html.twig', [
-            // 'order' => $order,
-            'order_id' => $id,
-            'orderProds'=>$products,
+            'order_id' => $ord->getId(),
+            'orderProds'=>$order['products'],
             'stripe_key' => $_ENV["STRIPE_KEY"],
         ]);
-    }
-
-    #[Route('/paid', name: 'app_orders_paid', methods: ['POST'])]
-    public function paid(Request $request): Response
-    {
-      $stripe = new \Stripe\StripeClient(
-        $_ENV["STRIPE_SECRET"],
-      );
-      $stripe->paymentIntents->create([
-        "amount" => $request->toArray()['amount'],
-        "currency" => "eur",
-        "description" => $request->toArray()['description'],
-        "payment_method"=>$request->toArray()['id'],
-        "confirm" => true
-      ]);
-        $this->addFlash(
-            'success',
-            'Payment Successful!'
-        );
-        return new Response(true);
+      }
     }
 
     #[Route('/{id}/waiting', name: 'app_orders_waiting', methods: ['GET'])]
@@ -165,20 +155,6 @@ class OrdersController extends AbstractController
       ]);
     }
     
-    #[Route('/{id}/update', name: 'app_orders_update', methods: ['PUT'])]
-    public function update( MercureGenerator $mercure, Orders $order, EntityManagerInterface $entityManager, Request $request): Response
-    // Orders $order
-    {
-      dd($request->toArray());
-      $entityManager->persist($order);
-      $entityManager->flush();
-      $mercure->publish($order);
-        return $this->render('orders/completed.html.twig', [
-            // 'order' => $order,
-        ]);
-    }
-
-
     #[Route('/new/{idres}/{idtable}', name: 'app_orders_new', methods: ['GET', 'POST'])]
     public function new(RestaurantRepository $restaurantRepository, TableRepository $tableRepository, $idres, $idtable): Response
     {
@@ -186,7 +162,7 @@ class OrdersController extends AbstractController
       $table= $tableRepository->findOneById($idtable);
 
       return $this->render('orders/new.html.twig', [
-          'idres' => $res->getId(),
+          'idrestaurant' => $res->getId(),
           'idtable' => $table->getId(),
       ]);
     }

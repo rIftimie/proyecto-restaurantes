@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { updateOrderProduct } from "../../helpers/products";
 
-const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , idprod, quantity, paying , orderId, prods}) => {
+const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , idprod, quantity , orderId, prods}) => {
   const [borrarVisible, setBorrarVisible] = useState(false);
   const [contador, setContador] = useState(0);
   useEffect(() => {
@@ -12,51 +11,40 @@ const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , 
       const newProds = prods.map(prod =>( {
         products_id: prod.product.id, 
         quantity : prod.product.quantity,
-        restaurant_id : 0,
-        table_order_id : 0
+        name : prod.product.name,
+        price : prod.product.price,
+        allergens : prod.product.allergens,
+        description : prod.product.description
       })
       )
-      console.log(newProds)
       setOrderProducts(newProds);
     }
-  }, [])
-  
-  useEffect(() => {
-    // if(paying){
-    //   updateOrderProduct(orderId,orderProducts);
-    // }
-    console.log(orderProducts)
-  }, [orderProducts])
-  
-
+  }, [])  
   const handleAgregarClick = () => {
     if (!borrarVisible) {
       setBorrarVisible(true);
     }
     setContador(contador + 1);
-    if(order){
-      console.log(first)
+
+    if(orderProducts.filter((prod)=> prod.products_id==idprod)[0] ){
+      const products = orderProducts.filter((prod)=> prod.products_id!=idprod);
+      const newProduct = orderProducts.filter((prod)=> prod.products_id==idprod)[0];
+      newProduct.quantity++;
+      products.push(newProduct);
+      setOrderProducts(products);
     }else{
-      if(orderProducts.filter((prod)=> prod.products_id==idprod)[0] ){
-        const products = orderProducts.filter((prod)=> prod.products_id!=idprod);
-        console.log(products)
-        const newProduct = orderProducts.filter((prod)=> prod.products_id==idprod)[0];
-        console.log(newProduct);
-        newProduct.quantity++;
-        products.push(newProduct);
-        setOrderProducts(products);
-      }else{
-        const producto={
-          products_id : idprod,
-          quantity:1,
-          restaurant_id: idres,
-          table_order_id: idtable
-        }
-        const prods=[ ...orderProducts ];
-        prods.push(producto);
-        setOrderProducts(prods);
+      const producto={
+        products_id : idprod,
+        quantity:1,
+        restaurant_id: idres,
+        table_order_id: idtable
       }
+      const prods2=[ ...orderProducts ];
+      prods2.push(producto);
+      setOrderProducts(prods2);
     }
+      
+    
   };
 
   const handleQuitarClick = () => {
@@ -86,7 +74,7 @@ const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , 
     <div className="d-flex">
       <div>
         <button
-          className="btn btn-outline-success border border-dark m-1 ms-0"
+          className="btn btn-outline-success border m-1 ms-0"
           type="button"
           onClick={handleAgregarClick}
         >
@@ -97,11 +85,11 @@ const ProductsButtons = ({ idres , idtable , orderProducts , setOrderProducts , 
             visibility: contador > 0 || borrarVisible ? "visible" : "hidden",
             
           }}>
-              <button className="btn btn-outline-light m-1 border border-dark">{contador}</button>
+              <button className="btn btn-outline-light m-1 border">{contador}</button>
             </div>
       <div>
         <button
-          className="btn btn-outline-danger border border-dark m-1"
+          className="btn btn-outline-danger border m-1"
           type="button"
           style={{
             visibility: contador > 0 || borrarVisible ? "visible" : "hidden",

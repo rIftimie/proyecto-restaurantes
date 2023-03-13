@@ -19,8 +19,6 @@ class Orders
     #[ORM\Column(nullable: true)]
     private ?int $status = null;
 
-    #[ORM\Column]
-    private ?int $paidByWaiter = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $orderDate = null;
